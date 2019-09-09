@@ -1,9 +1,9 @@
 package com.accenture.flowershop.fe.servlets;
 
-import com.accenture.flowershop.be.business.UserRepositoryImpl;
-import com.accenture.flowershop.be.business.UsersRepository;
-import com.accenture.flowershop.be.entity.user.User;
+import com.accenture.flowershop.be.business.UserBusinessServiceImpl;
+import com.accenture.flowershop.be.business.UserBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,19 +11,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDate;
 
 @WebServlet(name = "RegisterServlet", urlPatterns = "/registerServlet")
 public class RegisterServlet extends HttpServlet {
-    private UsersRepository usersRepository;
-
-    @Override
-    public void init() throws ServletException {
-        this.usersRepository = new UserRepositoryImpl();
+    @Autowired
+    private UserBusinessService userBusinessService;
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+                config.getServletContext());
     }
+//    private UserBusinessService userBusinessService;
+//    @Override
+//    public void init() throws ServletException {
+//        this.userBusinessService = new UserBusinessServiceImpl();
+//    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,7 +40,7 @@ public class RegisterServlet extends HttpServlet {
 
 
 
-        if (usersRepository.createNewUser(login,password)) {
+        if (userBusinessService.createNewUser(login,password)) {
             req.getRequestDispatcher("/userInfo.jsp").forward(req, resp);
         } else {
             req.setAttribute("error","This login have in system!\n"+

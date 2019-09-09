@@ -1,11 +1,14 @@
 package com.accenture.flowershop.be.access;
 
 import com.accenture.flowershop.be.entity.user.User;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Service
 public class FakeStorage {
     private static final FakeStorage storage;
     static {
