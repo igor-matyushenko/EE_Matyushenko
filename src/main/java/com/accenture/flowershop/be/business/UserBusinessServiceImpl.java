@@ -1,62 +1,79 @@
 package com.accenture.flowershop.be.business;
 
-import com.accenture.flowershop.be.access.FakeStorage;
+import com.accenture.flowershop.be.DAO.user.UserDAO;
 import com.accenture.flowershop.be.entity.user.User;
-import org.springframework.stereotype.Service;
-
-//import java.util.logging.Logger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 
 @Service
 public class UserBusinessServiceImpl implements UserBusinessService {
-    private static final Logger LOG = LoggerFactory.getLogger(UserBusinessService.class);
-//    private static final Logger LOG = Logger.getLogger(UserBusinessService.class.getName());
-    private List<User> userList;
 
+    @Autowired
+    private UserDAO userDAO;
 
-    @Override
-    public List<User> finAll() {
-        return FakeStorage.storage().users();
-    }
+    private static final Logger LOG = 	LoggerFactory.getLogger(UserBusinessServiceImpl.class);
 
     @Override
-    public void save(User user) {
-        FakeStorage.storage().users().add(user);
-    }
-
-    @Override
-    public boolean isExist(User user) {
-        for (User u: FakeStorage.storage().users()) {
-            if(user.equals(u)){
-                LOG.debug("User: {} successfully sign in"+ u.getLogin());
-//                LOG.info("User: login:passowrd  "+user.getLogin()+":"+ user.getPassword()+" successfully sign in");
-
-                return true;
-            }
+    public User userVerification(String login, String password) {
+        if(login.isEmpty() || password.isEmpty()) {
+            LOG.debug("Is Empty login or password");
+            return null;
         }
-        LOG.debug("User: {}:{} not find in system", user.getLogin(),user.getPassword());
-//        LOG.info("User: login:passowrd  "+user.getLogin()+":"+ user.getPassword()+" not find in system" );
-        return false;
+        User user = findUserByLogin(login);
+        if (user.getPassword().equals(password)) {
+            LOG.debug("User Access");
+            return user;
+        }
+        return null;
     }
 
     @Override
-    public boolean createNewUser(String login, String password) {
-        User user = new User(login, password);
-        for (User u: FakeStorage.storage().users()) {
-            if(u.getLogin().toLowerCase().equals(login.toLowerCase())){
-                LOG.debug("User: {}:{} is exists",user.getLogin(),user.getPassword());
-//                LOG.info("User: login:passowrd  "+user.getLogin()+":"+ user.getPassword()+"   is exists");
-                return false;
-            }
-        }
-        save(user);
-        LOG.debug("User: {}:{} is register",user.getLogin(),user.getPassword());
-//        LOG.info("User: login:passowrd  "+user.getLogin()+":"+ user.getPassword()+"  is register");
-        return true;
+    public User userRegistration(User user) {
+        return null;
     }
 
+    @Override
+    public Boolean checkLogin(String login) {
+        return null;
+    }
 
+    @Override
+    public User updateBalance(String login, BigDecimal balance) {
+        return null;
+    }
+
+    @Override
+    public void deleteUser(User user) {
+
+    }
+
+    @Override
+    public void updateUser(User user) {
+
+    }
+
+    @Override
+    public User findUserByLogin(String login) {
+        return null;
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void updateDiscount(Long idUser, Integer newDiscount) {
+
+    }
+
+    @Override
+    public void pay(Long idUser, BigDecimal priceOrder) {
+
+    }
 }

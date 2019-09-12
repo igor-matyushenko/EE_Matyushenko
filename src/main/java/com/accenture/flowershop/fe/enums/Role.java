@@ -1,5 +1,5 @@
 package com.accenture.flowershop.fe.enums;
 
-public enum Roles {
+public enum Role {
     ADMIN, USER, UNKNOW;
 }

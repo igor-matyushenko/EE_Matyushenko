@@ -1,7 +1,5 @@
 package com.accenture.flowershop.fe.servlets;
 
-import com.accenture.flowershop.be.business.UserBusinessServiceImpl;
-import com.accenture.flowershop.be.business.UserBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -15,22 +13,17 @@ import java.io.IOException;
 
 @WebServlet(name = "RegisterServlet", urlPatterns = "/registerServlet")
 public class RegisterServlet extends HttpServlet {
+
     @Autowired
     private UserBusinessService userBusinessService;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-                config.getServletContext());
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
     }
-//    private UserBusinessService userBusinessService;
-//    @Override
-//    public void init() throws ServletException {
-//        this.userBusinessService = new UserBusinessServiceImpl();
-//    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        req.getRequestDispatcher("/registration.jsp").forward(req,resp);
+        req.getRequestDispatcher("/registration.jsp").forward(req,resp);
     }
 
     @Override

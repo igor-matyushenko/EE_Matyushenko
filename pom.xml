@@ -20,6 +20,7 @@
     <spring.version>5.1.9.RELEASE</spring.version>
     <slf4j.version>1.8.0-beta4</slf4j.version>
     <logback.version>1.2.3</logback.version>
+    <hibernate.version>5.4.4.Final</hibernate.version>
   </properties>
 
   <dependencies>
@@ -45,8 +46,46 @@
 
 
 
+   <!-- Spring ORM начало с БД -->
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-orm -->
+    <!-- https://mvnrepository.com/artifact/org.springframework/org.springframework.orm -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
 
-    <!-- Подключение Spring core-->
+    <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core
+            Подключение FLYWAY-->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.4.199</version>
+      <scope>compile</scope>
+    </dependency>
+
+
+
+
+
+    <!-- Подключение Spring core   Подключение Spring-->
     <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
     <dependency>
       <groupId>org.springframework</groupId>

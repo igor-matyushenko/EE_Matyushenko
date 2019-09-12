@@ -1,8 +1,5 @@
 package com.accenture.flowershop.fe.servlets;
 
-import com.accenture.flowershop.be.business.UserBusinessServiceImpl;
-import com.accenture.flowershop.be.business.UserBusinessService;
-import com.accenture.flowershop.be.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -18,17 +15,12 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     @Autowired
     private UserBusinessService userBusinessService;
-
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
     }
-//    private UserBusinessService userBusinessService;
-//    @Override
-//    public void init() throws ServletException {
-//        this.userBusinessService = new UserBusinessServiceImpl();
-//
-//    }
+
+
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,7 +40,7 @@ public class LoginServlet extends HttpServlet {
         } else {
             request.setAttribute("error","Invalid login or password!\n"+
                     "Please check");
-            request.getRequestDispatcher("/index.jsp").forward(request,response);
+            request.getServletContext().getRequestDispatcher("/index.jsp").forward(request,response);
 //            response.sendRedirect(request.getContextPath()+"/login.jsp");
         }
 
