@@ -5,8 +5,8 @@
     <!-- url="jdbc:h2:tcp://localhost/flowershop“  -	file DB, H2 should be running on PC for this mode -->
     <Resource name="jdbc/flowerShopDS" auth="Container"
               type="javax.sql.DataSource" driverClassName="org.h2.Driver"
-              url="jdbc:h2:C:\Users\igor.matyushenko\Documents\EE_Matyushenko\flower-shop\src\main\resources\DB\flowershop"
-              username="flower" password="flower"
+              url="jdbc:h2:mem:flowershop"
+              username="sa" password=""
               maxActive="10" maxIdle="3"
               initialSize="1"
               removeAbandoned="true"
@@ -14,4 +14,17 @@
               testWhileIdle="true"
               validationQuery="Select 1 From dual"
               maxWait="-1"/>
+    <!--    <Resource name="jdbc/flowerShopDS" auth="Container"-->
+    <!--              type="javax.sql.DataSource" driverClassName="org.h2.Driver"-->
+    <!--              url="jdbc:h2:C:\Users\igor.matyushenko\Documents\EE_Matyushenko\flower-shop\src\main\resources\DB\flowershop"-->
+    <!--              username="flower" password="flower"-->
+    <!--              maxActive="10" maxIdle="3"-->
+    <!--              initialSize="1"-->
+    <!--              removeAbandoned="true"-->
+    <!--              removeAbandonedTimeout="30"-->
+    <!--              testWhileIdle="true"-->
+    <!--              validationQuery="Select 1 From dual"-->
+    <!--              maxWait="-1"/>-->
+
 </Context>
+

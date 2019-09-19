@@ -6,10 +6,8 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
-
     <logger name="com.accenture.flowershop" level="debug"/>
-
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

@@ -17,12 +17,13 @@
     <h1>Flower SHOP!</h1>
 </div>
 <div class="w3-container w3-center">
-    <h2>Log in successfully!</h2>
 
-    <form method="post" action="indexServlet">
-        <h3>Welcome <b><% out.print( request.getParameter("login"));%></b>!</h3>
+    <h3>Welcome <b><% out.print( request.getParameter("login"));%></b>!</h3>
+
+    <form method="get" action="logoutServlet">
         <input class="w3-btn w3-black w3-hover-light-green w3-round-large " type=submit  value="Log out"/>
     </form>
+
 </div>
 </body>
 </html>

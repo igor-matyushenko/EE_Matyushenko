@@ -1,59 +1,60 @@
 package com.accenture.flowershop.be.entity.user;
 
 
-import com.accenture.flowershop.be.entity.order.OrderRepository;
-import com.accenture.flowershop.fe.enums.Role;
+import com.accenture.flowershop.fe.enums.Roles;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-
 
 @Entity(name = "User")
 @Table(name = "USERS")
 public class User implements Serializable {
 
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
-    @SequenceGenerator(name = "USERS_SEQ", sequenceName = "USERS_SEQ", allocationSize = 1)
+    @SequenceGenerator(name = "USERS_SEQ", sequenceName = "USERS_SEQ", allocationSize = 1, initialValue = 2)
+    @Column(name = "id_user")
     private Long id;
 
     @Column(name = "LOGIN")
     private String login;
 
+
     @Column(name = "PASSWORD")
     private String password;
 
     @Column(name = "ROLE")
-    private Role role = Role.USER ;
+    @Enumerated(EnumType.STRING)
+    private Roles role = Roles.USER;
 
     @Column(name = "FIRST_NAME")
     private String firstName;
 
     @Column(name = "SECOND_NAME")
-    private String secondName;
+    private String lastName;
 
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
 
-    @Column(name = "EMAIL")
-    private String email;
-
     @Column(name = "ADDRESS")
     private String address;
+
+    @Column(name = "EMAIL")
+    private String email;
 
     @Column(name = "BALANCE")
     private BigDecimal balance;
 
     @Column(name = "DISCOUNT")
-    private Integer discount;
+    private int discount;
 
-    public User() {    }
+    public User() {
+        setBalance(new BigDecimal(2000));
+        setDiscount(3);
+        setRole(Roles.USER);
+    }
 
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-    private List<OrderRepository> orders;
 
     public Long getId() {
         return id;
@@ -79,11 +80,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Role getRole() {
+    public Roles getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(Roles role) {
         this.role = role;
     }
 
@@ -95,12 +96,12 @@ public class User implements Serializable {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhoneNumber() {
@@ -111,20 +112,20 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public BigDecimal getBalance() {
@@ -135,28 +136,31 @@ public class User implements Serializable {
         this.balance = balance;
     }
 
-    public Integer getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Integer discount) {
+    public void setDiscount(int discount) {
         this.discount = discount;
     }
 
+
     @Override
     public String toString() {
-        return "User{" +
+        return "UserEntity{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
                 ", balance=" + balance +
                 ", discount=" + discount +
                 '}';
     }
 }
+
+

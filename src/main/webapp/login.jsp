@@ -49,12 +49,14 @@
 
 
     </div>
+
     <div class="w3-container w3-center"><%
         Object error = request.getAttribute("error");
         if(error!=null) {
             out.println("<div style=\"color: red\">" + error + "</p>");
         }%>
     </div>
+
 </div>
 </body>
 </html>

@@ -22,7 +22,7 @@
     <div class="w3-bar w3-padding-large w3-padding-24">
 
         <table>
-            <form method=post action=registerServlet>
+            <form method="post" action="registrationServlet">
                 <tr>
                     <td colspan="1">Login:</td>
                     <td colspan="2"><input type="text"  name="login" required></td>
@@ -30,6 +30,27 @@
                 <tr>
                     <td colspan="1">Passwords:</td>
                     <td colspan="2"><input type="password" name="password" required></td>
+                </tr>
+                <tr>
+                    <td colspan="1">First Name:</td>
+                    <td colspan="2"><input type="text" name="fisrtName" value="First Name" required/></td>
+                </tr>
+                <tr>
+                     <td colspan="1">Second Name:</td>
+                     <td colspan="2"><input type="text" name="lastName" value="Second Name" required/></td>
+                </tr>
+                <tr>
+                      <td colspan="1">Your address:</td>
+                      <td colspan="2"><input type="text" name="address" value="Your address" required/></td>
+                </tr>
+                <tr>
+                  <td colspan="1">Your email:</td>
+                  <td colspan="2"><input type="text"  name="email"  value="Your email" required/></td>
+                </tr>
+
+                <tr>
+                    <td colspan="1">Your phone:</td>
+                    <td colspan="2"><input type="text"  name="email"  value="Your phone" required/></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -41,12 +62,14 @@
             </tr>
         </table>
     </div>
+
     <div class="w3-container w3-center"><%
         Object error = request.getAttribute("error");
         if(error!=null) {
-            out.println("<div style=\"color: red\">" + error + "</p>");
+            out.println("<div style=\"color: red\">" + request.getAttribute("error") + "</p>");
         }%>
     </div>
+
 </div>
 
 </body>
