@@ -2,6 +2,7 @@ package com.accenture.flowershop.be.business.user;
 
 import com.accenture.flowershop.be.access.user.UserDAO;
 import com.accenture.flowershop.be.entity.user.User;
+import com.accenture.flowershop.fe.dto.user.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,6 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     public User userRegistration(User user) {
-        if(StringUtils.containsWhitespace(user.getLogin()) && StringUtils.containsWhitespace(user.getPassword())) {
-            log.debug("Registration invalid");
-            return null;
-        }
         if (userDAO.findUserByLogin(user.getLogin()) == null) {
             userDAO.saveUser(user);
             log.debug("Registration successful");

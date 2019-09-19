@@ -33,24 +33,24 @@
                 </tr>
                 <tr>
                     <td colspan="1">First Name:</td>
-                    <td colspan="2"><input type="text" name="fisrtName" value="First Name" required/></td>
+                    <td colspan="2"><input type="text" name="firstName"  required/></td>
                 </tr>
                 <tr>
                      <td colspan="1">Second Name:</td>
-                     <td colspan="2"><input type="text" name="lastName" value="Second Name" required/></td>
+                     <td colspan="2"><input type="text" name="lastName"  required/></td>
                 </tr>
                 <tr>
                       <td colspan="1">Your address:</td>
-                      <td colspan="2"><input type="text" name="address" value="Your address" required/></td>
+                      <td colspan="2"><input type="text" name="address" required/></td>
                 </tr>
                 <tr>
                   <td colspan="1">Your email:</td>
-                  <td colspan="2"><input type="text"  name="email"  value="Your email" required/></td>
+                  <td colspan="2"><input type="text"  name="email"   required/></td>
                 </tr>
 
                 <tr>
                     <td colspan="1">Your phone:</td>
-                    <td colspan="2"><input type="text"  name="email"  value="Your phone" required/></td>
+                    <td colspan="2"><input type="text"  name="phoneNumber"   required/></td>
                 </tr>
                 <tr>
                     <td></td>

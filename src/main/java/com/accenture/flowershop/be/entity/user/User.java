@@ -20,13 +20,12 @@ public class User implements Serializable {
     @Column(name = "LOGIN")
     private String login;
 
-
     @Column(name = "PASSWORD")
     private String password;
 
     @Column(name = "ROLE")
     @Enumerated(EnumType.STRING)
-    private Roles role = Roles.USER;
+    private Roles role;
 
     @Column(name = "FIRST_NAME")
     private String firstName;
@@ -47,12 +46,10 @@ public class User implements Serializable {
     private BigDecimal balance;
 
     @Column(name = "DISCOUNT")
-    private int discount;
+    private Integer discount;
 
     public User() {
-        setBalance(new BigDecimal(2000));
-        setDiscount(3);
-        setRole(Roles.USER);
+
     }
 
 
@@ -136,11 +133,11 @@ public class User implements Serializable {
         this.balance = balance;
     }
 
-    public int getDiscount() {
+    public Integer getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(Integer discount) {
         this.discount = discount;
     }
 

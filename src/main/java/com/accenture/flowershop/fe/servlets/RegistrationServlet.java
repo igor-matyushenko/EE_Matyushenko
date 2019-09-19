@@ -2,6 +2,8 @@ package com.accenture.flowershop.fe.servlets;
 
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
+import com.accenture.flowershop.fe.dto.user.UserDTO;
+import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +15,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "registrationServlet", urlPatterns = "/registrationServlet")
 public class RegistrationServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     @Autowired
     private UserBusinessService userBusinessService;
+    private static DozerBeanMapper mapper;
+    private static List<String> list;
+
+
+
+
+
     private static final Logger log = 	LoggerFactory.getLogger(LoginServlet.class);
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -29,17 +40,22 @@ public class RegistrationServlet extends HttpServlet {
             throws ServletException, IOException, NullPointerException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
+
+            list = new ArrayList<>();
+            list.add("dozer_mapping.xml");
+            mapper = new DozerBeanMapper(list);
+
         if(login != null && password != null){
-            User user = new User();
-            user.setLogin(login);
-            user.setPassword(password);
-            user.setFirstName(request.getParameter("FirstName"));
-            user.setLastName(request.getParameter("LastName"));
-            user.setAddress(request.getParameter("Address"));
-            user.setPhoneNumber(request.getParameter("PhoneNumber"));
+            UserDTO user = new UserDTO(login,password);
+            user.setFirstName(request.getParameter("firstName"));
+            user.setLastName(request.getParameter("lastName"));
+            user.setAddress(request.getParameter("address"));
+            user.setEmail(request.getParameter("email"));
+            user.setPhoneNumber(request.getParameter("phoneNumber"));
             if(!userBusinessService.checkLogin(user.getLogin())){
+                User userEntity = mapper.map(user,User.class);
+                userBusinessService.userRegistration(userEntity);
                 log.debug("User успешно зарегистрирован : " + user.getLogin());
-                userBusinessService.userRegistration(user);
                 request.getRequestDispatcher("/userPage.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Пользователь существует  : " + user.getLogin());
