@@ -12,13 +12,12 @@ public class IndexServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = "/login.jsp";
+        if(request.getSession(false)!=null){
+            request.getSession().invalidate();
+        }
+
+        String path = "/WEB-INF/lib/login.jsp";
         request.getRequestDispatcher(path).forward(request,response);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = "/login.jsp";
-        req.getRequestDispatcher(path).forward(req,resp);
-    }
 }

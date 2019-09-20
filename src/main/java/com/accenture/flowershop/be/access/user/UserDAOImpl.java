@@ -4,12 +4,13 @@ import com.accenture.flowershop.be.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 
 @Repository
@@ -22,24 +23,22 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     @Transactional
-    public User saveUser(User user) {
-        log.debug("addUser:"+user);
+    public void saveUser(User user) {
+        log.debug("saveUser:"+user);
         em.persist(user);
-//        em.flush();
-        return user;
+        em.flush();
     }
 
     @Override
     @Transactional
-    public User updateUser(User user) {
+    public void editUser(User user) {
         log.debug("updateUser");
         em.merge(user);
         em.flush();
-        return user;
+
     }
 
     @Override
-    @Transactional
     public User findUserByLogin(String login) {
 
         try {
@@ -56,7 +55,6 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    @Transactional
     public User findUserById(Long idUser) {
         return em.find(User.class,idUser);
     }

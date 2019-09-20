@@ -1,11 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: igor.matyushenko
-  Date: 02.09.2019
-  Time: 12:35
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" isELIgnored = "false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,7 +29,7 @@
                     <td></td>
                     <td><input class="w3-btn w3-grey w3-hover-light-green w3-round-large " type=submit  value="Log in" /></td>
                 </form>
-                <form method="get" action="registration.jsp">
+                <form method="get" action="registrationServlet">
                     <td><input class="w3-btn w3-grey w3-hover-light-green w3-round-large" type=submit  value="Registration" /></td>
                     <td></td>
                 </form>

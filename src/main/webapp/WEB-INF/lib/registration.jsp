@@ -1,19 +1,19 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: igor.matyushenko
-  Date: 02.09.2019
-  Time: 12:35
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" isELIgnored = "false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Flower Shop 1.0</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 </head>
 
 <body class="w3-light-grey">
+<script>
+    document.getElementById('check').onkeydown = function (e) {
+        return !(/^[А-Яа-яA-Za-z ]$/.test(e.key));  // IE > 9
+    }
+    </script>
 <div class="w3-container w3-blue-grey w3-opacity w3-left-align">
     <h1>Registration</h1>
 </div>
@@ -45,18 +45,18 @@
                 </tr>
                 <tr>
                   <td colspan="1">Your email:</td>
-                  <td colspan="2"><input type="text"  name="email"   required/></td>
+                  <td colspan="2"><input type="email"  name="email"   required/></td>
                 </tr>
 
                 <tr>
                     <td colspan="1">Your phone:</td>
-                    <td colspan="2"><input type="text"  name="phoneNumber"   required/></td>
+                    <td colspan="2"><input  type="number" id="check" step="any" name="phoneNumber" pattern="[1-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{2}--[0-9]{2}" required/></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td colspan="1"><input class="w3-btn w3-grey w3-hover-light-green w3-round-large " type=submit  value="Registration"/></td>
             </form>
-            <form method="post" action="indexServlet">
+            <form method="get" action="indexServlet">
                 <td colspan="1"><input class="w3-btn w3-black w3-hover-light-green w3-round-large " type=submit  value="Back"/></td>
             </form>
             </tr>

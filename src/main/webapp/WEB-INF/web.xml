@@ -15,20 +15,20 @@
 <!--    JSP-->
     <servlet>
         <servlet-name>login</servlet-name>
-        <jsp-file>/login.jsp</jsp-file>
+        <jsp-file>/WEB-INF/lib/login.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>registration</servlet-name>
-        <jsp-file>/registration.jsp</jsp-file>
+        <jsp-file>/WEB-INF/lib/registration.jsp</jsp-file>
     </servlet>
 
     <servlet>
         <servlet-name>adminPage</servlet-name>
-        <jsp-file>/adminPage.jsp</jsp-file>
+        <jsp-file>/WEB-INF/lib/adminPage.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>userPage</servlet-name>
-        <jsp-file>/userPage.jsp</jsp-file>
+        <jsp-file>/WEB-INF/lib/userPage.jsp</jsp-file>
     </servlet>
 
     <welcome-file-list>

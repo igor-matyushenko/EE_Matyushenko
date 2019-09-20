@@ -2,12 +2,10 @@ package com.accenture.flowershop.be.business.user;
 
 import com.accenture.flowershop.be.access.user.UserDAO;
 import com.accenture.flowershop.be.entity.user.User;
-import com.accenture.flowershop.fe.dto.user.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class UserBusinessServiceImpl implements UserBusinessService {

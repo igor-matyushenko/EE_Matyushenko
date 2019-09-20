@@ -1,4 +1,4 @@
-package com.accenture.flowershop.fe.dto.user;
+package com.accenture.flowershop.fe.dto;
 
 import com.accenture.flowershop.fe.enums.Roles;
 import java.math.BigDecimal;

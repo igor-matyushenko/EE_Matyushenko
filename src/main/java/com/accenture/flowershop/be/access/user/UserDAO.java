@@ -4,8 +4,8 @@ import com.accenture.flowershop.be.entity.user.User;
 
 public interface UserDAO {
 
-    User saveUser(User user);
-    User updateUser(User user);
+    void saveUser(User user);
+    void editUser(User user);
     User findUserByLogin(String login);
     User findUserById(Long idUser);
 

@@ -11,48 +11,24 @@ import java.util.List;
 @Table(name = "USERS")
 public class User implements Serializable {
 
+    private Long id;
+    private String login;
+    private String password;
+    private Roles role;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String address;
+    private String email;
+    private BigDecimal balance;
+    private Integer discount;
+
+    public User() { }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
     @SequenceGenerator(name = "USERS_SEQ", sequenceName = "USERS_SEQ", allocationSize = 1, initialValue = 2)
     @Column(name = "id_user")
-    private Long id;
-
-    @Column(name = "LOGIN")
-    private String login;
-
-    @Column(name = "PASSWORD")
-    private String password;
-
-    @Column(name = "ROLE")
-    @Enumerated(EnumType.STRING)
-    private Roles role;
-
-    @Column(name = "FIRST_NAME")
-    private String firstName;
-
-    @Column(name = "SECOND_NAME")
-    private String lastName;
-
-    @Column(name = "PHONE_NUMBER")
-    private String phoneNumber;
-
-    @Column(name = "ADDRESS")
-    private String address;
-
-    @Column(name = "EMAIL")
-    private String email;
-
-    @Column(name = "BALANCE")
-    private BigDecimal balance;
-
-    @Column(name = "DISCOUNT")
-    private Integer discount;
-
-    public User() {
-
-    }
-
-
     public Long getId() {
         return id;
     }
@@ -61,6 +37,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    @Column(name = "LOGIN")
     public String getLogin() {
         return login;
     }
@@ -69,6 +46,7 @@ public class User implements Serializable {
         this.login = login;
     }
 
+    @Column(name = "PASSWORD")
     public String getPassword() {
         return password;
     }
@@ -77,6 +55,8 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    @Column(name = "ROLE")
+    @Enumerated(EnumType.STRING)
     public Roles getRole() {
         return role;
     }
@@ -85,6 +65,7 @@ public class User implements Serializable {
         this.role = role;
     }
 
+    @Column(name = "FIRST_NAME")
     public String getFirstName() {
         return firstName;
     }
@@ -92,7 +73,7 @@ public class User implements Serializable {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    @Column(name = "SECOND_NAME")
     public String getLastName() {
         return lastName;
     }
@@ -101,6 +82,7 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    @Column(name = "PHONE_NUMBER")
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -109,6 +91,7 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    @Column(name = "ADDRESS")
     public String getAddress() {
         return address;
     }
@@ -117,6 +100,7 @@ public class User implements Serializable {
         this.address = address;
     }
 
+    @Column(name = "EMAIL")
     public String getEmail() {
         return email;
     }
@@ -125,6 +109,7 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    @Column(name = "BALANCE")
     public BigDecimal getBalance() {
         return balance;
     }
@@ -133,6 +118,7 @@ public class User implements Serializable {
         this.balance = balance;
     }
 
+    @Column(name = "DISCOUNT")
     public Integer getDiscount() {
         return discount;
     }

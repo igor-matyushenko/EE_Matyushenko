@@ -1,7 +1,6 @@
 package com.accenture.flowershop.be.business.user;
 
 import com.accenture.flowershop.be.entity.user.User;
-import com.accenture.flowershop.fe.dto.user.UserDTO;
 
 public interface UserBusinessService {
 
