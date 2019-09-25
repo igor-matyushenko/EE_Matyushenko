@@ -22,6 +22,7 @@
         <slf4j.version>1.7.28</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <hibernate.version>5.4.4.Final</hibernate.version>
+        <dozer.version>5.5.1</dozer.version>
         <h.v> 4.1.2</h.v>
 
     </properties>
@@ -95,8 +96,15 @@
         <dependency>
             <groupId>net.sf.dozer</groupId>
             <artifactId>dozer</artifactId>
-            <version>5.5.1</version>
+            <version>${dozer.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/net.sf.dozer/dozer-spring -->
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer-spring</artifactId>
+            <version>${dozer.version}</version>
+        </dependency>
+
 
 
 

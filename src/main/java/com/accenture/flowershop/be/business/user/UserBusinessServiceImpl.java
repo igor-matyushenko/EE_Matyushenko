@@ -1,11 +1,20 @@
 package com.accenture.flowershop.be.business.user;
 
+import com.accenture.flowershop.be.access.order.OrderDAO;
 import com.accenture.flowershop.be.access.user.UserDAO;
+import com.accenture.flowershop.be.business.order.BasketBusinessService;
+import com.accenture.flowershop.be.business.order.OrderBusinessService;
+import com.accenture.flowershop.be.entity.Order.Basket;
+import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.be.entity.user.User;
+import com.accenture.flowershop.fe.enums.StatusOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class UserBusinessServiceImpl implements UserBusinessService {
@@ -14,6 +23,11 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private OrderBusinessService orderBusinessService;
+    @Autowired
+    private BasketBusinessService basketBusinessService;
+
 
 
     @Override
@@ -22,16 +36,13 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             log.debug("Wrong login or password");
             return null;
         }
-        try {
             User user = findUserByLogin(login);
+        if(user!=null){
             if (user.getPassword().equals(password)) {
                 log.debug("Login Access");
                 return user;
             }
-        }catch (NullPointerException e){
-            return null;
         }
-
         return null;
     }
 
@@ -57,9 +68,34 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
+    public Boolean payCreatedOrder(String login, Long orderID) {
+        if(orderID==null) return false;
+        User user = userDAO.findUserByLogin(login);
+        Order order = orderBusinessService.getOrderById(orderID);
+        return payOfOrder(user, order);
+    }
+    private boolean payOfOrder(User user, Order order){
+        if(user.getBalance().compareTo(order.getTotalPrice())<0){
+            return false;
+        }
+        editUser(user.getLogin(),user.getBalance().subtract(order.getTotalPrice()));
+        order.setStatus(StatusOrder.PAID);
+        orderBusinessService.editOrder(order);
+        basketBusinessService.editBasket(basketBusinessService.getBasketByUserId(user.getId()));
+        return true;
+    }
+
+    @Override
     public User findUserByLogin(String login) {
         log.debug("FindUserByLogin");
         return userDAO.findUserByLogin(login);
+    }
+
+    @Override
+    public void editUser(String loginUser, BigDecimal balance) {
+        User user = findUserByLogin(loginUser);
+        user.setBalance(balance);
+        userDAO.editUser(user);
     }
 
 

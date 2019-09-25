@@ -1,10 +1,14 @@
 package com.accenture.flowershop.be.entity.user;
 
 
+import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.fe.enums.Roles;
+import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "User")
@@ -23,11 +27,22 @@ public class User implements Serializable {
     private BigDecimal balance;
     private Integer discount;
 
+    private List<Order> orderList;
+
+    @OneToMany(mappedBy = "user")
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
+
     public User() { }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
-    @SequenceGenerator(name = "USERS_SEQ", sequenceName = "USERS_SEQ", allocationSize = 1, initialValue = 2)
+    @SequenceGenerator(name = "USERS_SEQ", sequenceName = "USERS_SEQ", allocationSize = 1)
     @Column(name = "id_user")
     public Long getId() {
         return id;

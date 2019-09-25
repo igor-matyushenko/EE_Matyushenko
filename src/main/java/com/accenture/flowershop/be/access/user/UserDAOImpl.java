@@ -34,7 +34,7 @@ public class UserDAOImpl implements UserDAO {
     public void editUser(User user) {
         log.debug("updateUser");
         em.merge(user);
-        em.flush();
+
 
     }
 

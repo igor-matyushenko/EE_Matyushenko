@@ -58,28 +58,34 @@
 <table align="center" border="1">
     <caption> Список заказов </caption>
     <tr align=center>
-        <th>id</th>
-        <th>title</th>
-        <th>Customer</th>
+        <th>idOrder</th>
+        <th>idUser</th>
         <th>sum</th>
         <th>Date create</th>
         <th>Date close</th>
+        <th>Order status</th>
     </tr>
-    <%--
-    <c:forEach var="order" items="${orderList}">
+    <c:forEach var="order" items="${orderListAdmin}">
         <tr>
             <td>${order.id}</td>
-            <td>${order.title}</td>
-            <td>${order.year}</td>
-            <td>${order.genre}</td>
-            <td>${order.watched}</td>
+            <td>${order.id}</td>
+            <td>${order.totalPrice}</td>
+            <td>${order.dateCreate}</td>
+            <td>${order.dateClose}</td>
+
             <td>
-                <a href="/edit/${film.id}">edit</a>
-                <a href="/delete/${film.id}">delete</a>
+                <c:if test="${order.status  eq 'CLOSED'}">
+
+                    <form method="post" action="ClosedServlet">  >
+                	<input type="button" type=submit  value="Closed"/>
+                	<form>
+
+                </c:if>
+
             </td>
         </tr>
     </c:forEach>
-    --%>
+
 </table>
 </div>
 </body>
