@@ -72,15 +72,16 @@
             <td>${order.totalPrice}</td>
             <td>${order.dateCreate}</td>
             <td>${order.dateClose}</td>
+            <td>${order.status}</td>
 
             <td>
-                <c:if test="${order.status  eq 'CLOSED'}">
+
 
                     <form method="post" action="ClosedServlet">  >
                 	<input type="button" type=submit  value="Closed"/>
                 	<form>
 
-                </c:if>
+
 
             </td>
         </tr>

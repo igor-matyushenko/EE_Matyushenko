@@ -27,7 +27,7 @@ public class BasketBusinessServiceImpl implements BasketBusinessService{
     private UserBusinessService userBusinessService;
 
     private static final Logger log = LoggerFactory.getLogger(BasketBusinessServiceImpl.class);
-    private BigDecimal total = new BigDecimal(0.00);
+    private BigDecimal total;
 
 
     @Override
@@ -65,8 +65,10 @@ public class BasketBusinessServiceImpl implements BasketBusinessService{
     }
 
     private boolean addTOBasketWithCheck(Basket basket, Flower flower){
+
         Basket basket1 = basketDAO.getBasketByFlowerName(basket.getFlowerName());
         if(basket1==null){
+            if(total==null) total = new BigDecimal(0);
             total = total.add(basket.getTotalPrice());
             basketDAO.addBasket(basket);
             changeQuantityFlower(basket,flower);
@@ -89,8 +91,8 @@ public class BasketBusinessServiceImpl implements BasketBusinessService{
 
         return total.setScale(2,BigDecimal.ROUND_HALF_UP);
     }
-
-    private void setTotal(BigDecimal total) {
+    @Override
+    public void setTotalSum(BigDecimal total) {
         this.total = total;
     }
 }

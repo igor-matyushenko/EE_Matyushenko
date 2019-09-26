@@ -75,7 +75,7 @@ public class LoginServlet extends HttpServlet {
             if (user.getRole().equals(Roles.USER)) {
                 session.setAttribute("user", user);
                 session.setAttribute("flowers", flowerBusinessService.getAllFlower());
-                session.setAttribute("AllOrderList", orderBusinessService.getOrderByUserID(user.getId()));
+                session.setAttribute("orderList", orderBusinessService.getOrderByUserID(user.getId()));
                 request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
             }
         } else {

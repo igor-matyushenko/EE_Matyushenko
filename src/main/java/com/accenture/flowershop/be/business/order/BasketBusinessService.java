@@ -12,4 +12,5 @@ public interface BasketBusinessService {
     List<Basket> getBasketByOrderId(Long orderID);
     void editBasket(List<Basket> basketList);
     BigDecimal getTotal();
+    void setTotalSum(BigDecimal bigDecimal);
 }

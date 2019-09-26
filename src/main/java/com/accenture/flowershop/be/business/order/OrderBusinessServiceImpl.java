@@ -49,6 +49,7 @@ public class OrderBusinessServiceImpl implements OrderBusinessService{
         order.setBasketList(basketList);
         order.setUser(user);
         order.setTotalPrice(totalPriceOfBasket);
+        basketBusinessService.setTotalSum(new BigDecimal(0));
         addOrder(order);
         return order;
     }
