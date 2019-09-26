@@ -59,32 +59,36 @@
     <caption> Список заказов </caption>
     <tr align=center>
         <th>idOrder</th>
-        <th>idUser</th>
+        <th>UserLogin</th>
         <th>sum</th>
         <th>Date create</th>
         <th>Date close</th>
         <th>Order status</th>
     </tr>
     <c:forEach var="order" items="${orderListAdmin}">
-        <tr>
-            <td>${order.id}</td>
-            <td>${order.id}</td>
-            <td>${order.totalPrice}</td>
-            <td>${order.dateCreate}</td>
-            <td>${order.dateClose}</td>
-            <td>${order.status}</td>
 
-            <td>
+        		<tr>
+
+                    <td>${order.id}</td>
+                    <td>${order.user.login}</td>
+                    <td>${order.totalPrice}</td>
+                    <td>${order.dateCreate}</td>
+                    <td>${order.dateClose}</td>
+                    <td>${order.status}</td>
+                    <td>
+                           <c:set var="status" value="${'order.status'}"/>
+                           <c:if test = "${true}">
+                           <form method="post" action="closeOrderServlet">
+                             <input type="hidden" name="orderId" value="${order.id}"/>
+        						<input type=submit  value="Closed"/>
+        						</form>
+                        	</c:if>
 
 
-                    <form method="post" action="ClosedServlet">  >
-                	<input type="button" type=submit  value="Closed"/>
-                	<form>
+                    </td>
+                </tr>
 
 
-
-            </td>
-        </tr>
     </c:forEach>
 
 </table>

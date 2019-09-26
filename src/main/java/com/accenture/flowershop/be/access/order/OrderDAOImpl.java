@@ -39,7 +39,7 @@ public class OrderDAOImpl implements OrderDAO{
     public List<Order> getAllOrder() {
         try {
             TypedQuery<Order> query =
-                    em.createQuery("select e from Order e " , Order.class);
+                    em.createQuery(" from Order e " , Order.class);
             log.debug("getAllOrder: " );
             return query.getResultList();
         } catch (NoResultException e) {

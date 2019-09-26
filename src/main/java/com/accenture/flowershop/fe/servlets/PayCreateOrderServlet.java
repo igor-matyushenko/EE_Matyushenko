@@ -21,6 +21,7 @@ import java.io.IOException;
 
 @WebServlet(name = "payCreateOrderServlet", urlPatterns = "/payCreateOrderServlet")
 public class PayCreateOrderServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     @Autowired
     private OrderBusinessService orderBusinessService;

@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +24,16 @@ public class Order implements Serializable {
     @Column(name = "total_price")
     private BigDecimal totalPrice;
 
-    @Enumerated(EnumType.STRING)
+
     @Column(name = "status_order")
+    @Enumerated(EnumType.STRING)
     private StatusOrder status;
 
     @Column(name = "date_create")
     private LocalDate dateCreate;
 
     @Column(name = "date_close")
-    private LocalDateTime dateClose;
+    private LocalDate dateClose;
 
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_order")
@@ -99,20 +99,20 @@ public class Order implements Serializable {
         this.dateCreate = dateCreate;
     }
 
-    public LocalDateTime getDateClose() {
-        return dateClose;
-    }
-
-    public void setDateClose(LocalDateTime dateClose) {
-        this.dateClose = dateClose;
-    }
-
     public List<Basket> getBasketList() {
         return basketList;
     }
 
     public void setBasketList(List<Basket> basketList) {
         this.basketList = basketList;
+    }
+
+    public LocalDate getDateClose() {
+        return dateClose;
+    }
+
+    public void setDateClose(LocalDate dateClose) {
+        this.dateClose = dateClose;
     }
 
     @Override

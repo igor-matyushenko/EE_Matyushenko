@@ -14,6 +14,7 @@ import java.io.IOException;
 
 @WebServlet(name = "logoutServlet", urlPatterns = "/logoutServlet")
 public class LogoutServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void init(ServletConfig config) throws ServletException {

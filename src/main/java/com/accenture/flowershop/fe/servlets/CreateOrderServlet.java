@@ -23,6 +23,7 @@ import java.util.List;
 
 @WebServlet(name = "createOrderServlet", urlPatterns = "/createOrderServlet")
 public class CreateOrderServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     @Autowired
     private OrderBusinessService orderBusinessService;

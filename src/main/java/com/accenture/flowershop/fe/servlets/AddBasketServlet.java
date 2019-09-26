@@ -29,6 +29,7 @@ import java.util.Set;
 
 @WebServlet(name = "addBasketServlet", urlPatterns = "/addBasketServlet")
 public class AddBasketServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     @Autowired
     private OrderBusinessService orderBusinessService;
 

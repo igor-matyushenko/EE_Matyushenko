@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -30,6 +31,18 @@ public class OrderBusinessServiceImpl implements OrderBusinessService{
     private BasketBusinessService basketBusinessService;
 
     private static final Logger log = LoggerFactory.getLogger(OrderBusinessServiceImpl.class);
+
+    @Override
+    public Boolean closeOrder(Long orderId) {
+        Order order = orderDAO.getOrderById(orderId);
+        if(order==null){
+            return false;
+        }
+        order.setDateClose(LocalDate.now());
+        order.setStatus(StatusOrder.CLOSED);
+        orderDAO.editOrder(order);
+        return true;
+    }
 
     @Override
     public void addOrder(Order order) {

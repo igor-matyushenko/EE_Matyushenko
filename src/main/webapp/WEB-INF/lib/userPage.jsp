@@ -127,7 +127,7 @@
              <td>${item.totalPrice}</td>
              <td>${item.status}</td>
 
-
+                <input type="hidden" name="orderListPayId" value="${order.id}"/>
 
                      <td colspan="3"></td>
                      <c:if test="${item.status eq 'CREATED'}">
