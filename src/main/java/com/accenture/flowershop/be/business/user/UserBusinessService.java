@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public interface UserBusinessService {
 
-
+    BigDecimal userSumDiscount(BigDecimal priceFlower, Integer userDiscount, Long quantityToBasket) ;
     User userVerification(String login, String password);
     User userRegistration(User user);
     Boolean checkLogin(String login);

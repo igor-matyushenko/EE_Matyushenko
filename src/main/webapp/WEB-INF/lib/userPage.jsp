@@ -88,8 +88,8 @@
                      				        <td colspan="4"> </td>
                      				    </tr>
                      				        <tr>
-                                                <td colspan="3"></td>
-                                                <td><input type="number" name="basket.totalPrice" readonly value="${total}"/></td>
+                                                <td align="left" colspan="3">total cost: </td>
+                                                <td><input type="number" readonly value="${total}"/></td>
                                             </tr>
                      				        <tr>
                      				            <td colspan="3"></td>

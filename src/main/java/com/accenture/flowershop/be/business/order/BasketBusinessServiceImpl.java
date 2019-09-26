@@ -1,7 +1,6 @@
 package com.accenture.flowershop.be.business.order;
 
 import com.accenture.flowershop.be.access.order.BasketDAO;
-import com.accenture.flowershop.be.access.order.OrderDAOImpl;
 import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.Order.Basket;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,13 +58,13 @@ public class BasketBusinessServiceImpl implements BasketBusinessService{
             return false;
         }
         User user = userBusinessService.findUserByLogin(userLogin);
-        BigDecimal discaountUser = new BigDecimal(user.getDiscount()).divide(BigDecimal.valueOf(100));
-        if(discaountUser.compareTo(new BigDecimal(0))<0){
-            discaountUser = new BigDecimal(1);
-        }
         Flower flower=flowerBusinessService.getFlowerById(flowerID);
-        Basket basket = new Basket(user.getId(), flower.getId(), flower.getTitleFlower(), quantityToBasket,
-                flower.getPriceFlower().multiply(new BigDecimal(quantityToBasket)).multiply(discaountUser));
+        BigDecimal sumWithDiscountUser = userBusinessService.userSumDiscount(flower.getPriceFlower(),user.getDiscount(),quantityToBasket);
+        Basket basket = new Basket(user.getId(), flower.getId(), flower.getTitleFlower(), quantityToBasket, sumWithDiscountUser);
+        return addTOBasketWithCheck(basket,flower);
+    }
+
+    private boolean addTOBasketWithCheck(Basket basket, Flower flower){
         Basket basket1 = basketDAO.getBasketByFlowerName(basket.getFlowerName());
         if(basket1==null){
             total = total.add(basket.getTotalPrice());
@@ -81,13 +79,15 @@ public class BasketBusinessServiceImpl implements BasketBusinessService{
         changeQuantityFlower(basket1,flower);
         return true;
     }
+
     private void changeQuantityFlower(Basket basket,Flower flower){
         flower.setQuantity(flower.getQuantity()-basket.getQuantity());
         flowerBusinessService.editFlower(flower);
     }
     @Override
     public BigDecimal getTotal() {
-        return total;
+
+        return total.setScale(2,BigDecimal.ROUND_HALF_UP);
     }
 
     private void setTotal(BigDecimal total) {

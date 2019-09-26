@@ -2,10 +2,12 @@ package com.accenture.flowershop.be.business.user;
 
 import com.accenture.flowershop.be.access.order.OrderDAO;
 import com.accenture.flowershop.be.access.user.UserDAO;
+import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.order.BasketBusinessService;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.entity.Order.Basket;
 import com.accenture.flowershop.be.entity.Order.Order;
+import com.accenture.flowershop.be.entity.flower.Flower;
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.enums.StatusOrder;
 import org.slf4j.Logger;
@@ -27,8 +29,18 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     private OrderBusinessService orderBusinessService;
     @Autowired
     private BasketBusinessService basketBusinessService;
+    @Autowired
+    private FlowerBusinessService flowerBusinessService;
 
 
+    @Override
+    public BigDecimal userSumDiscount(BigDecimal priceFlower, Integer userDiscount, Long quantityToBasket) {
+        BigDecimal discount =  new BigDecimal(userDiscount*0.01);
+        BigDecimal sumFlower = priceFlower.multiply(new BigDecimal(quantityToBasket));
+        BigDecimal discountForUser = sumFlower.multiply(discount);
+        BigDecimal sumForFlowerWithUserCount = sumFlower.subtract(discountForUser);
+        return sumForFlowerWithUserCount.setScale(2,BigDecimal.ROUND_HALF_UP);
+    }
 
     @Override
     public User userVerification(String login, String password) {
