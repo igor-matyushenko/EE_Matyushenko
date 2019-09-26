@@ -42,7 +42,8 @@ public class PayCreateOrderServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session != null) {
             String login = ((UserDTO) session.getAttribute("user")).getLogin();
-            Long orderId = ((Order) session.getAttribute("order")).getId();
+            Long orderId = Long.parseLong(request.getParameter("orderListPayId"));
+
             if (!userBusinessService.payCreatedOrder(login,orderId)){
                 request.setAttribute("orderMessage", "Заказ не создан!");
             } else {

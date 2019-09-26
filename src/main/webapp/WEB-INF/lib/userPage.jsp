@@ -110,7 +110,7 @@
 
  <br>
  <table align="left" border="1">
-  <form   method="post" action="payCreateOrderServlet">
+
 
      <tr align="left">
          <th>Id Order</th>
@@ -119,23 +119,25 @@
          <th>Sum</th>
          <th>Status order</th>
      </tr>
-        <c:forEach items="${orderList}" var="item" >
+     <c:forEach items="${orderList}" var="item" >
+     <form   method="post" action="payCreateOrderServlet">
         <tr>
              <td>${item.id}</td>
              <td>${item.dateCreate}</td>
              <td>${item.dateClose}</td>
              <td>${item.totalPrice}</td>
              <td>${item.status}</td>
+         </tr>
 
-                <input type="hidden" name="orderListPayId" value="${order.id}"/>
+              <td colspan="3"></td>
 
-                     <td colspan="3"></td>
-                     <c:if test="${item.status eq 'CREATED'}">
-                         <td><input type=submit value="Оплатить" ></td>
-                     </c:if>
-
+              <input type="hidden" name="orderListPayId" value="${order.id}"/>
+              <c:if test="${item.status eq 'CREATED'}">
+                     <td><input type=submit value="Оплатить" ></td>
+              </c:if>
+              </form>
           </c:forEach>
-        </form>
+
  </table>
 
  </div>

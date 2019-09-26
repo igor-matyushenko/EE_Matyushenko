@@ -81,7 +81,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     public Boolean payCreatedOrder(String login, Long orderID) {
-        if(orderID==null) return false;
+//        if(orderID==null) return false;
         User user = userDAO.findUserByLogin(login);
         Order order = orderBusinessService.getOrderById(orderID);
         return payOfOrder(user, order);
