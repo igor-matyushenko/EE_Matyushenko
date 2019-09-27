@@ -6,11 +6,18 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface BasketBusinessService {
-    List<Basket> getBasketByUserId(Long idUser);
+
+    List<Basket> getBasketsByUserId(Long idUser);
+
     List<Basket> getNewBasketByUserId(Long idUser);
-    Boolean addBasket(String userLogin, Long flowerID, Long quantityToBasket, Long quantityFlower );
-    List<Basket> getBasketByOrderId(Long orderID);
-    void editBasket(List<Basket> basketList);
-    BigDecimal getTotal();
-    void setTotalSum(BigDecimal bigDecimal);
+
+    Boolean addBasket(String userLogin, Long idFlower, Long quantityToBasket, Long quantityFlower);
+
+    List<Basket> getBasketByOrderId(Long idOrder);
+
+    void updateBasketList(List<Basket> basketList);
+
+    BigDecimal getTotalSumFromActualBasket();
+
+    void setTotalSumFromActualBasket(BigDecimal totalSumFromActualBasketSum);
 }

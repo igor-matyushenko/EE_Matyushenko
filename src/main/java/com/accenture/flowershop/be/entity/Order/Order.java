@@ -2,15 +2,17 @@ package com.accenture.flowershop.be.entity.Order;
 
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.enums.StatusOrder;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "OrderList")
+@Table(name = "ORDERS_LIST")
 public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDER_SEQ")
@@ -18,37 +20,34 @@ public class Order implements Serializable {
     @Column(name = "ID_ORDER")
     private Long id;
 
-//    @Column(name = "id_user")
-//    private Long userId;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_ORDER")
+    private List<Basket> basketList = new ArrayList<>();
 
-    @Column(name = "total_price")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_USER")
+    private User user;
+
+    @Column(name = "TOTAL_PRICE")
     private BigDecimal totalPrice;
 
-
-    @Column(name = "status_order")
+    @Column(name = "STATUS_ORDER")
     @Enumerated(EnumType.STRING)
-    private StatusOrder status;
+    private StatusOrder statusOrder;
 
-    @Column(name = "date_create")
-    private LocalDate dateCreate;
+    @Column(name = "DATE_CREATE")
+    private Date dateCreate;
 
-    @Column(name = "date_close")
-    private LocalDate dateClose;
+    @Column(name = "DATE_CLOSE")
+    private Date dateClose;
 
-    @OneToMany(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_order")
-    private List<Basket> basketList=new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "id_user")
-    private User user;
 
     public Order() {
     }
 
-    public Order(StatusOrder statusOrder){
-        this.status = statusOrder;
-        setDateCreate(LocalDate.now());
+    public Order(StatusOrder statusOrder) {
+        this.statusOrder = statusOrder;
+        this.dateCreate = new Date();
     }
 
     public User getUser() {
@@ -67,14 +66,6 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-//    public Long getUserId() {
-//        return userId;
-//    }
-//
-//    public void setUserId(Long userId) {
-//        this.userId = userId;
-//    }
-
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
@@ -83,19 +74,19 @@ public class Order implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public StatusOrder getStatus() {
-        return status;
+    public StatusOrder getStatusOrder() {
+        return statusOrder;
     }
 
-    public void setStatus(StatusOrder status) {
-        this.status = status;
+    public void setStatusOrder(StatusOrder statusOrder) {
+        this.statusOrder = statusOrder;
     }
 
-    public LocalDate getDateCreate() {
+    public Date getDateCreate() {
         return dateCreate;
     }
 
-    public void setDateCreate(LocalDate dateCreate) {
+    public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
     }
 
@@ -107,11 +98,11 @@ public class Order implements Serializable {
         this.basketList = basketList;
     }
 
-    public LocalDate getDateClose() {
+    public Date getDateClose() {
         return dateClose;
     }
 
-    public void setDateClose(LocalDate dateClose) {
+    public void setDateClose(Date dateClose) {
         this.dateClose = dateClose;
     }
 
@@ -119,12 +110,12 @@ public class Order implements Serializable {
     public String toString() {
         return "Order{" +
                 "id=" + id +
-
+                ", basketList=" + basketList +
+                ", userLogin=" + user.getLogin() +
                 ", totalPrice=" + totalPrice +
-                ", status=" + status +
+                ", status=" + statusOrder +
                 ", dateCreate=" + dateCreate +
                 ", dateClose=" + dateClose +
-                ", basketList=" + basketList +
                 '}';
     }
 }

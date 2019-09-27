@@ -1,7 +1,9 @@
 package com.accenture.flowershop.fe.servlets;
 
+import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
+import com.accenture.flowershop.fe.dto.FlowerDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 
 import org.dozer.Mapper;
@@ -24,6 +26,8 @@ public class RegistrationServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     @Autowired
     private UserBusinessService userBusinessService;
+    @Autowired
+    private FlowerBusinessService flowerBusinessService;
     @Autowired
     private  Mapper mapper;
 
@@ -48,6 +52,7 @@ public class RegistrationServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(30 * 60);
                 session.setAttribute("user", user);
+                session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), FlowerDTO.class));
                 request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Пользователь существует  : " + user.getLogin());

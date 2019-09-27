@@ -12,52 +12,46 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-
+@Transactional
 @Repository
 public class UserDAOImpl implements UserDAO {
 
     @PersistenceContext
     private EntityManager em;
 
-    private static final Logger log = LoggerFactory.getLogger(UserDAOImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserDAOImpl.class);
 
     @Override
-    @Transactional
     public void saveUser(User user) {
-        log.debug("saveUser:"+user);
+        LOG.debug("saveUser: " + user);
         em.persist(user);
-        em.flush();
     }
 
     @Override
-    @Transactional
-    public void editUser(User user) {
-        log.debug("updateUser");
+    public void updateUser(User user) {
+        LOG.debug("updateUser: " + user);
         em.merge(user);
-
-
     }
 
     @Override
     public User findUserByLogin(String login) {
-
         try {
             TypedQuery<User> query =
-                    em.createQuery("select e from User e where e.login =:LOGIN" , User.class);
+                    em.createQuery("select e from User e where e.login =:LOGIN", User.class);
             query.setParameter("LOGIN", login);
-            log.debug("findUserByLogin: " + login);
+            LOG.debug("findUserByLogin: " + login);
             return query.getSingleResult();
         } catch (NoResultException e) {
 //            e.printStackTrace();
-            log.debug("findUserByLogin: " + login + " не найден");
+            LOG.warn("findUserByLogin: " + login + " не найден");
             return null;
         }
     }
 
     @Override
     public User findUserById(Long idUser) {
-        return em.find(User.class,idUser);
+        LOG.debug("findUserById: " + idUser);
+        return em.find(User.class, idUser);
     }
-
 
 }

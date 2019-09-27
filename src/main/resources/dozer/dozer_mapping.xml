@@ -6,70 +6,19 @@
     <mapping>
         <class-a>com.accenture.flowershop.be.entity.user.User</class-a>
         <class-b>com.accenture.flowershop.fe.dto.UserDTO</class-b>
-        <field>
-            <a>id</a>
-            <b>id</b>
-        </field>
-        <field>
-            <a>login</a>
-            <b>login</b>
-        </field>
-        <field>
-            <a>password</a>
-            <b>password</b>
-        </field>
-        <field>
-            <a>role</a>
-            <b>role</b>
-        </field>
-        <field>
-            <a>firstName</a>
-            <b>firstName</b>
-        </field>
-        <field>
-            <a>lastName</a>
-            <b>lastName</b>
-        </field>
-        <field>
-            <a>phoneNumber</a>
-            <b>phoneNumber</b>
-        </field>
-        <field>
-            <a>address</a>
-            <b>address</b>
-        </field>
-        <field>
-            <a>email</a>
-            <b>email</b>
-        </field>
-        <field>
-            <a>balance</a>
-            <b>balance</b>
-        </field>
-        <field>
-            <a>discount</a>
-            <b>discount</b>
-        </field>
     </mapping>
     <mapping>
         <class-a>com.accenture.flowershop.be.entity.flower.Flower</class-a>
         <class-b>com.accenture.flowershop.fe.dto.FlowerDTO</class-b>
-        <field>
-            <a>id</a>
-            <b>id</b>
-        </field>
-        <field>
-            <a>titleFlower</a>
-            <b>titleFlower</b>
-        </field>
-        <field>
-            <a>quantity</a>
-            <b>quantity</b>
-        </field>
-        <field>
-            <a>priceFlower</a>
-            <b>priceFlower</b>
-        </field>
+
+    </mapping>
+    <mapping>
+        <class-a>com.accenture.flowershop.be.entity.Order.Order</class-a>
+        <class-b>com.accenture.flowershop.fe.dto.OrderDTO</class-b>
+<!--        <field-exclude>-->
+<!--            <a>dateCreate</a>-->
+<!--            <b>dateCreate</b>-->
+<!--        </field-exclude>-->
     </mapping>
 </mappings>
 

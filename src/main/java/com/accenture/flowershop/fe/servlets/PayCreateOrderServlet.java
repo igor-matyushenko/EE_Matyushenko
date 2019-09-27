@@ -2,7 +2,6 @@ package com.accenture.flowershop.fe.servlets;
 
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
-import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.dto.OrderDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "payCreateOrderServlet", urlPatterns = "/payCreateOrderServlet")
 public class PayCreateOrderServlet extends HttpServlet {
@@ -43,15 +43,13 @@ public class PayCreateOrderServlet extends HttpServlet {
         if (session != null) {
             String login = ((UserDTO) session.getAttribute("user")).getLogin();
             Long orderId = Long.parseLong(request.getParameter("orderListPayId"));
-
             if (!userBusinessService.payCreatedOrder(login,orderId)){
-                request.setAttribute("orderMessage", "Заказ не создан!");
+                request.setAttribute("orderMessage", "Не хватает денежных средств!");
             } else {
                 User userEntity = userBusinessService.findUserByLogin(login);
                 UserDTO user = mapper.map(userEntity,UserDTO.class);
                 session.setAttribute("user", user);
-                session.setAttribute("order", null);
-                session.setAttribute("orderList",orderBusinessService.getOrderByUserID(user.getId()));
+                session.setAttribute("orderList", mapper.map(orderBusinessService.getOrdersByUserID(user.getId()), List.class));
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         } else {

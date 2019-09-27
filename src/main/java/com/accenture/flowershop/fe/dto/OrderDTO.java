@@ -1,29 +1,26 @@
 package com.accenture.flowershop.fe.dto;
 
 import com.accenture.flowershop.be.entity.Order.Basket;
-import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.enums.StatusOrder;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OrderDTO {
 
     private Long id;
-    private User user;
-    private List<Basket> orderBasket;
+    private UserDTO user;
     private BigDecimal totalPrice;
-    private StatusOrder status;
-    private LocalDateTime dateCreate;
-    private LocalDateTime dateClose;
+    private StatusOrder statusOrder;
+    private Date dateCreate;
+    private Date dateClose;
+    private List<Basket> basketList;
 
     public OrderDTO() {
-    }
-
-    public OrderDTO(StatusOrder statusOrder){
-        this.status = statusOrder;
-        setDateCreate(LocalDateTime.now());
+        basketList = new ArrayList<>();
     }
 
     public Long getId() {
@@ -34,20 +31,12 @@ public class OrderDTO {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
-    }
-
-    public List<Basket> getOrderBasket() {
-        return orderBasket;
-    }
-
-    public void setOrderBasket(List<Basket> orderBasket) {
-        this.orderBasket = orderBasket;
     }
 
     public BigDecimal getTotalPrice() {
@@ -58,27 +47,48 @@ public class OrderDTO {
         this.totalPrice = totalPrice;
     }
 
-    public StatusOrder getStatus() {
-        return status;
+    public StatusOrder getStatusOrder() {
+        return statusOrder;
     }
 
-    public void setStatus(StatusOrder status) {
-        this.status = status;
+    public void setStatusOrder(StatusOrder statusOrder) {
+        this.statusOrder = statusOrder;
     }
 
-    public LocalDateTime getDateCreate() {
+    public Date getDateCreate() {
         return dateCreate;
     }
 
-    public void setDateCreate(LocalDateTime dateCreate) {
+    public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
     }
 
-    public LocalDateTime getDateClose() {
+    public Date getDateClose() {
         return dateClose;
     }
 
-    public void setDateClose(LocalDateTime dateClose) {
+    public void setDateClose(Date dateClose) {
         this.dateClose = dateClose;
+    }
+
+    public List<Basket> getBasketList() {
+        return basketList;
+    }
+
+    public void setBasketList(List<Basket> basketList) {
+        this.basketList = basketList;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDTO{" +
+                "id=" + id +
+                ", user=" + user.getPassword() +
+                ", totalPrice=" + totalPrice +
+                ", status=" + statusOrder +
+                ", dateCreate=" + dateCreate +
+                ", dateClose=" + dateClose +
+                ", basketList=" + basketList +
+                '}';
     }
 }

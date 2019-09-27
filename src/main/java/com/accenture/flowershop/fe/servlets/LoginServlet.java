@@ -5,9 +5,10 @@ import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
+import com.accenture.flowershop.fe.dto.FlowerDTO;
+import com.accenture.flowershop.fe.dto.OrderDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 import com.accenture.flowershop.fe.enums.Roles;
-import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -69,13 +69,13 @@ public class LoginServlet extends HttpServlet {
             session.setMaxInactiveInterval(30 * 60);
             if (user.getRole().equals(Roles.ADMIN)) {
                 session.setAttribute("user", user);
-                session.setAttribute("orderListAdmin", orderBusinessService.getAllOrder());
+                session.setAttribute("orderListAdmin", mapper.map(orderBusinessService.getAllOrders(), List.class));
                 request.getRequestDispatcher("/WEB-INF/lib/adminPage.jsp").forward(request, response);
             }
             if (user.getRole().equals(Roles.USER)) {
                 session.setAttribute("user", user);
-                session.setAttribute("flowers", flowerBusinessService.getAllFlower());
-                session.setAttribute("orderList", orderBusinessService.getOrderByUserID(user.getId()));
+                session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
+                session.setAttribute("orderList",  mapper.map(orderBusinessService.getOrdersByUserID(user.getId()),List.class));
                 request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
             }
         } else {

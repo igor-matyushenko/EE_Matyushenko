@@ -6,30 +6,35 @@ import java.math.BigDecimal;
 
 
 @Entity
-@Table(name = "Flowers")
+@Table(name = "FLOWERS")
 public class Flower {
-    private Long id;
-    private String titleFlower;
-    private Long quantity;
-    private BigDecimal priceFlower;
-
-    public Flower() {    }
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FLOWERS_SEQ")
-    @SequenceGenerator(name = "FLOWERS_SEQ", sequenceName = "FLOWERS_SEQ", allocationSize = 1, initialValue = 2)
+    @SequenceGenerator(name = "FLOWERS_SEQ", sequenceName = "FLOWERS_SEQ", allocationSize = 1)
     @Column(name = "ID_FLOWER")
+    private Long id;
+    @Column(name = "TITLE_FLOWER")
+    private String titleFlower;
+    @Column(name = "QUANTITY_FLOWER")
+    private Long quantity;
+    @Column(name = "PRICE_FLOWER")
+    private BigDecimal priceFlower;
+
+    public Flower() {
+    }
+
     public Long getId() {
         return id;
     }
-    @Column(name = "TITLE_FLOWER")
+
     public String getTitleFlower() {
         return titleFlower;
     }
-    @Column(name = "QUANTITY_FLOWER")
+
     public Long getQuantity() {
         return quantity;
     }
-    @Column(name = "PRICE_FLOWER")
+
     public BigDecimal getPriceFlower() {
         return priceFlower;
     }

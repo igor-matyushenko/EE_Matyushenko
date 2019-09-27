@@ -4,7 +4,6 @@ import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 
 import com.accenture.flowershop.be.entity.Order.Order;
-import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.dto.OrderDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 import org.dozer.Mapper;
@@ -40,19 +39,18 @@ public class CreateOrderServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-
         HttpSession session = request.getSession(false);
         if (session != null) {
             UserDTO user = (UserDTO) session.getAttribute("user");
             Order order = orderBusinessService.newOrderCreate(user.getLogin());
-            if (order==null) {
+            if (order == null) {
                 request.setAttribute("orderMessage", "Создайте заказ!");
             } else {
                 session.setAttribute("user", user);
                 session.setAttribute("basket", null);
-                session.setAttribute("total",null);
-                session.setAttribute("order",order);
-                session.setAttribute("orderList",orderBusinessService.getOrderByUserID(user.getId()));
+                session.setAttribute("total", null);
+                session.setAttribute("order", mapper.map(order, OrderDTO.class));
+                session.setAttribute("orderList", mapper.map(orderBusinessService.getOrdersByUserID(user.getId()), List.class));
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         } else {

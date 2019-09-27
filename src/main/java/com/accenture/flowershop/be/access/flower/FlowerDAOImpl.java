@@ -11,55 +11,69 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
+@Transactional
 @Repository
 public class FlowerDAOImpl implements FlowerDAO {
+
     @PersistenceContext
     private EntityManager em;
 
-    private static final Logger log = LoggerFactory.getLogger(UserDAOImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserDAOImpl.class);
 
     @Override
-    public List<Flower> getAllFlower() {
+    public List<Flower> getAllFlowers() {
         try {
             TypedQuery<Flower> query =
-                    em.createQuery("from Flower f " , Flower.class);
-            log.debug("getAllFlower: " );
+                    em.createQuery("from Flower f ", Flower.class);
+            LOG.debug("getAllFlowers: " + query.getResultList().toString());
             return query.getResultList();
         } catch (NoResultException e) {
 //            e.printStackTrace();
-            log.debug("List flower  : " + " не найден");
+            LOG.warn("List flowers  : не найден");
             return null;
         }
     }
 
     @Override
-    @Transactional
     public void addFlower(Flower flower) {
-        log.debug("addFlower:"+flower);
+        LOG.debug("addFlower: " + flower);
         em.persist(flower);
-        em.flush();
     }
 
     @Override
-    @Transactional
     public void deleteFlower(Flower flower) {
-        log.debug("deleteFlower:"+flower);
+        LOG.debug("deleteFlower: " + flower);
         em.remove(flower);
     }
 
     @Override
-    @Transactional
-    public void editFlower(Flower flower) {
-        log.debug("editFlower:"+flower);
+    public void updateFlower(Flower flower) {
+        LOG.debug("updateFlower: " + flower);
         em.merge(flower);
-        em.flush();
     }
 
     @Override
-    @Transactional
     public Flower getFlowerById(Long idFlower) {
-        return em.find(Flower.class,idFlower);
+        LOG.debug("getFlowerById: " + idFlower);
+        return em.find(Flower.class, idFlower);
     }
+
+    @Override
+    public List<Flower> getAllFlowersBySearch(String flowerName, BigDecimal minPrice, BigDecimal maxPrice) {
+        TypedQuery<Flower> query =
+                em.createQuery("from  Flower f where upper(f.titleFlower) like :flowerName " +
+                        "and f.priceFlower between :minPrice and :maxPrice", Flower.class);
+        query.setParameter("minPrice", minPrice);
+        query.setParameter("maxPrice", maxPrice);
+        query.setParameter("flowerName", "%" + flowerName + "%");
+        LOG.debug("getAllFlowerBySearch  : " +
+                "flowerName: " + flowerName +
+                "; minPrice: " + minPrice +
+                "; maxPrice: " + maxPrice);
+        return query.getResultList();
+    }
+
 }

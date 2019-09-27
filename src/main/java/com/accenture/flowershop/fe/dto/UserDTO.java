@@ -22,9 +22,9 @@ public class UserDTO {
     public UserDTO(String login,String password) {
         this.login = login;
         this.password = password;
-        setDiscount(3);
-        setRole(Roles.USER);
-        setBalance(new BigDecimal(2000));
+        this.setDiscount(3);
+        this.setRole(Roles.USER);
+        this.setBalance(new BigDecimal(2000));
     }
 
 
@@ -115,5 +115,22 @@ public class UserDTO {
 
     public void setDiscount(Integer discount) {
         this.discount = discount;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", balance=" + balance +
+                ", discount=" + discount +
+                '}';
     }
 }

@@ -74,9 +74,9 @@
                     <td>${order.totalPrice}</td>
                     <td>${order.dateCreate}</td>
                     <td>${order.dateClose}</td>
-                    <td>${order.status}</td>
+                    <td>${order.statusOrder}</td>
                     <td>
-                           <c:set var="status" value="${'order.status'}"/>
+                           <c:set var="statusOrder" value="${'order.statusOrder'}"/>
                            <c:if test = "${true}">
                            <form method="post" action="closeOrderServlet">
                              <input type="hidden" name="orderId" value="${order.id}"/>

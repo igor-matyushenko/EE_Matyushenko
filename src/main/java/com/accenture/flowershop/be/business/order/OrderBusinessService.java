@@ -6,11 +6,18 @@ import com.accenture.flowershop.be.entity.user.User;
 import java.util.List;
 
 public interface OrderBusinessService {
-    Boolean closeOrder(Long orderId);
+
+    boolean closeOrder(Long idOrder);
+
     void addOrder(Order order);
-    Order newOrderCreate(String  userLogin);
+
+    Order newOrderCreate(String loginUser);
+
     Order getOrderById(Long idOrder);
-    List<Order> getAllOrder();
-    List<Order> getOrderByUserID(Long idUser);
-    void editOrder(Order order);
+
+    List<Order> getAllOrders();
+
+    List<Order> getOrdersByUserID(Long idUser);
+
+    void updateOrder(Order order);
 }

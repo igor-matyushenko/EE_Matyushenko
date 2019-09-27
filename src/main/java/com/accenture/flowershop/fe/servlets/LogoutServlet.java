@@ -21,7 +21,6 @@ public class LogoutServlet extends HttpServlet {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
                 config.getServletContext());
-
     }
 
     @Override
@@ -29,7 +28,7 @@ public class LogoutServlet extends HttpServlet {
         if(request.getSession(false)!=null){
             request.getSession().invalidate();
         }
-
         request.getRequestDispatcher("/WEB-INF/lib/login.jsp").forward(request, response);
     }
+
 }

@@ -1,49 +1,45 @@
 package com.accenture.flowershop.be.entity.Order;
 
-import com.accenture.flowershop.be.entity.flower.Flower;
-import com.accenture.flowershop.be.entity.user.User;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
-@Table
+@Table(name = "BASKET")
 public class Basket implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Basket_SEQ")
-    @SequenceGenerator(name = "Basket_SEQ", sequenceName = "BASKET_SEQ", allocationSize = 1)
-    @Column(name = "id_basket")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BASKET_SEQ")
+    @SequenceGenerator(name = "BASKET_SEQ", sequenceName = "BASKET_SEQ", allocationSize = 1)
+    @Column(name = "ID_BASKET")
     private Long idBasket;
 
-    @Column(name = "id_order")
+    @Column(name = "ID_ORDER")
     private Long orderID;
 
-    @Column(name = "id_flower")
+    @Column(name = "ID_FLOWER")
     private Long flowerID;
 
-    @Column(name = "flower_name")
-    private String flowerName;
-
-    @Column(name = "id_user")
+    @Column(name = "ID_USER")
     private Long userID;
 
-    @Column(name = "quantity")
+    @Column(name = "FLOWER_NAME")
+    private String flowerName;
+
+    @Column(name = "QUANTITY")
     private Long quantity;
-    @Column(name = "totalPrice")
+
+    @Column(name = "TOTAL_PRICE")
     private BigDecimal totalPrice;
 
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @ManyToOne
 //    @JoinColumn(name = "id_order")
 //    private Order order;
 
+    public Basket() {
+    }
 
-
-    public Basket() {   }
-
-    public Basket(Long userID,  Long flowerID, String flowerName, Long quantity, BigDecimal totalPrice) {
+    public Basket(Long userID, Long flowerID, String flowerName, Long quantity, BigDecimal totalPrice) {
         this.userID = userID;
         this.flowerID = flowerID;
         this.flowerName = flowerName;

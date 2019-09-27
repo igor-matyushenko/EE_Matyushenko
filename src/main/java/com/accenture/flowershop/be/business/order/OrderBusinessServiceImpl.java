@@ -1,12 +1,10 @@
 package com.accenture.flowershop.be.business.order;
 
 import com.accenture.flowershop.be.access.order.OrderDAO;
-import com.accenture.flowershop.be.access.order.OrderDAOImpl;
 import com.accenture.flowershop.be.access.user.UserDAO;
 import com.accenture.flowershop.be.entity.Order.Basket;
 import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.be.entity.user.User;
-import com.accenture.flowershop.fe.dto.UserDTO;
 import com.accenture.flowershop.fe.enums.StatusOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +14,10 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
+@Transactional
 @Service
 public class OrderBusinessServiceImpl implements OrderBusinessService{
 
@@ -33,21 +33,20 @@ public class OrderBusinessServiceImpl implements OrderBusinessService{
     private static final Logger log = LoggerFactory.getLogger(OrderBusinessServiceImpl.class);
 
     @Override
-    public Boolean closeOrder(Long orderId) {
+    public boolean closeOrder(Long orderId) {
         Order order = orderDAO.getOrderById(orderId);
         if(order==null){
             return false;
         }
-        order.setDateClose(LocalDate.now());
-        order.setStatus(StatusOrder.CLOSED);
-        orderDAO.editOrder(order);
+        order.setDateClose(new Date());
+        order.setStatusOrder(StatusOrder.CLOSED);
+        orderDAO.updateOrder(order);
         return true;
     }
 
     @Override
     public void addOrder(Order order) {
         orderDAO.addOrder(order);
-
     }
 
     @Override
@@ -62,7 +61,7 @@ public class OrderBusinessServiceImpl implements OrderBusinessService{
         order.setBasketList(basketList);
         order.setUser(user);
         order.setTotalPrice(totalPriceOfBasket);
-        basketBusinessService.setTotalSum(new BigDecimal(0));
+        basketBusinessService.setTotalSumFromActualBasket(new BigDecimal(0));
         addOrder(order);
         return order;
     }
@@ -73,18 +72,18 @@ public class OrderBusinessServiceImpl implements OrderBusinessService{
     }
 
     @Override
-    public List<Order> getAllOrder() {
-        return orderDAO.getAllOrder();
+    public List<Order> getAllOrders() {
+        return orderDAO.getAllOrders();
     }
 
     @Override
-    public List<Order> getOrderByUserID(Long idUser) {
+    public List<Order> getOrdersByUserID(Long idUser) {
         return orderDAO.getOrderByUserID(idUser);
     }
 
     @Override
-    public void editOrder(Order order) {
-        orderDAO.editOrder(order);
+    public void updateOrder(Order order) {
+        orderDAO.updateOrder(order);
     }
 
 

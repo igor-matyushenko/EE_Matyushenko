@@ -1,9 +1,6 @@
 package com.accenture.flowershop.be.access.order;
 
-import com.accenture.flowershop.be.access.user.UserDAOImpl;
-import com.accenture.flowershop.be.entity.Order.Basket;
 import com.accenture.flowershop.be.entity.Order.Order;
-import com.accenture.flowershop.be.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,34 +14,35 @@ import java.util.List;
 
 @Service
 @Transactional
-public class OrderDAOImpl implements OrderDAO{
+public class OrderDAOImpl implements OrderDAO {
+
     @PersistenceContext
     private EntityManager em;
 
-    private static final Logger log = LoggerFactory.getLogger(OrderDAOImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OrderDAOImpl.class);
 
 
     @Override
     public void addOrder(Order order) {
         em.persist(order);
-        em.flush();
     }
 
     @Override
     public Order getOrderById(Long idOrder) {
-        return em.find(Order.class,idOrder);
+        LOG.debug("getOrderById: " + idOrder);
+        return em.find(Order.class, idOrder);
     }
 
     @Override
-    public List<Order> getAllOrder() {
+    public List<Order> getAllOrders() {
         try {
             TypedQuery<Order> query =
-                    em.createQuery(" from Order e " , Order.class);
-            log.debug("getAllOrder: " );
+                    em.createQuery(" from Order o ", Order.class);
+            LOG.debug("getAllOrder: " + query.getResultList().toString());
             return query.getResultList();
         } catch (NoResultException e) {
 //            e.printStackTrace();
-            log.debug("List Order  : " + " не найден");
+            LOG.warn("List Order  : не найден");
             return null;
         }
     }
@@ -55,17 +53,18 @@ public class OrderDAOImpl implements OrderDAO{
             TypedQuery<Order> query =
                     em.createQuery("from Order o where o.user.id=:userID", Order.class);
             query.setParameter("userID", userID);
-            log.debug("getOrderByUserID: " + userID);
+            LOG.debug("getOrderByUserID: " + userID);
             return query.getResultList();
         } catch (NoResultException e) {
 //            e.printStackTrace();
-            log.debug("getOrderByUserID: " + userID + " не найден");
+            LOG.warn("getOrderByUserID: " + userID + " не найден");
             return null;
         }
     }
 
     @Override
-    public void editOrder(Order order) {
+    public void updateOrder(Order order) {
+        LOG.debug("updateOrder: " + order);
         em.merge(order);
     }
 }

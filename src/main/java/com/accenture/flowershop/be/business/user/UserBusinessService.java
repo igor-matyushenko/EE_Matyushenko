@@ -6,13 +6,19 @@ import java.math.BigDecimal;
 
 public interface UserBusinessService {
 
-    BigDecimal userSumDiscount(BigDecimal priceFlower, Integer userDiscount, Long quantityToBasket) ;
+    BigDecimal userSumDiscount(BigDecimal priceFlower, int discountUser, Long quantityToBasket);
+
     User userVerification(String login, String password);
+
     User userRegistration(User user);
+
     Boolean checkLogin(String login);
-    Boolean payCreatedOrder(String login, Long orderID);
-    User findUserByLogin(String login);
-    void editUser(String loginUser, BigDecimal balance);
+
+    boolean payCreatedOrder(String login, Long idOrder);
+
+    User findUserByLogin(String loginUser);
+
+    void updateUser(String loginUser, BigDecimal balance);
 
 
 }
