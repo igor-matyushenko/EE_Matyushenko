@@ -1,11 +1,7 @@
 package com.accenture.flowershop.fe.servlets;
 
 import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
-import com.accenture.flowershop.be.business.order.BasketBusinessService;
-import com.accenture.flowershop.be.business.order.OrderBusinessService;
-import com.accenture.flowershop.be.business.user.UserBusinessService;
-import com.accenture.flowershop.be.entity.Order.Basket;
-import com.accenture.flowershop.fe.dto.FlowerDTO;
+import com.accenture.flowershop.be.business.order.OrderPositionBusinessService;
 import com.accenture.flowershop.fe.dto.UserDTO;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "addBasketServlet", urlPatterns = "/addBasketServlet")
@@ -31,7 +25,7 @@ public class AddBasketServlet extends HttpServlet {
     @Autowired
     private FlowerBusinessService flowerBusinessService;
     @Autowired
-    private BasketBusinessService basketBusinessService;
+    private OrderPositionBusinessService orderPositionBusinessService;
     @Autowired
     private Mapper mapper;
 
@@ -49,14 +43,13 @@ public class AddBasketServlet extends HttpServlet {
         } else {
             UserDTO user = (UserDTO) session.getAttribute("user");
             Long flowerID = Long.parseLong(request.getParameter("flowerID"));
-            Long quantityToBasket =Long.parseLong(request.getParameter("quantityToBasket"));
+            Long quantityToOrderPos =Long.parseLong(request.getParameter("quantityToPos"));
             Long quantityFlower = Long.parseLong(request.getParameter("quantity"));
-            if (basketBusinessService.addBasket(user.getLogin(),flowerID,quantityToBasket,quantityFlower)) {
+            if (orderPositionBusinessService.addOrderPosition(user.getLogin(),flowerID,quantityToOrderPos,quantityFlower)) {
                 session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
-                session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
-                session.setAttribute("basket",  mapper.map(basketBusinessService.getBasketsByUserId(user.getId()), List.class));
+                session.setAttribute("basket",  mapper.map(orderPositionBusinessService.getNewOrderPositionByUserId(user.getId()), List.class));
                 session.setAttribute("user", user);
-                session.setAttribute("total",basketBusinessService.getTotalSumFromActualBasket());
+                session.setAttribute("total", orderPositionBusinessService.getTotalSumFromActualBasket());
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         }

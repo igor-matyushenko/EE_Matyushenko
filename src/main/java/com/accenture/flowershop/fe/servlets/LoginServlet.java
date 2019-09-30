@@ -5,8 +5,6 @@ import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
-import com.accenture.flowershop.fe.dto.FlowerDTO;
-import com.accenture.flowershop.fe.dto.OrderDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 import com.accenture.flowershop.fe.enums.Roles;
 import org.dozer.Mapper;
@@ -75,7 +73,7 @@ public class LoginServlet extends HttpServlet {
             if (user.getRole().equals(Roles.USER)) {
                 session.setAttribute("user", user);
                 session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
-                session.setAttribute("orderList",  mapper.map(orderBusinessService.getOrdersByUserID(user.getId()),List.class));
+                session.setAttribute("orderList",  mapper.map(orderBusinessService.getOrdersByUserLogin(user.getLogin()),List.class));
                 request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
             }
         } else {

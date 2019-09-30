@@ -3,8 +3,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Flower Shop 1.0</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <title>Flower Shop 1.0</title>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <style type="text/css">
+            table {
+              font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+              border-collapse: collapse;
+              color: #686461;
+            }
+            caption {
+              padding: 10px;
+              color: white;
+              background: #8FD4C1;
+              font-size: 18px;
+              text-align: left;
+              font-weight: bold;
+            }
+            th {
+              border-bottom: 3px solid #B9B29F;
+              padding: 10px;
+              text-align: left;
+            }
+            td {
+              padding: 10px;
+            }
+            tr:nth-child(odd) {
+              background: white;
+            }
+            tr:nth-child(even) {
+              background: #E8E6D1;
+            }
+        </style>
+
 
 </head>
 
@@ -71,6 +101,5 @@
     </div>
 
 </div>
-
 </body>
 </html>

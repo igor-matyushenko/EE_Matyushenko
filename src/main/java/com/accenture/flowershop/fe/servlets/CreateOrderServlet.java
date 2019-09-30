@@ -50,7 +50,7 @@ public class CreateOrderServlet extends HttpServlet {
                 session.setAttribute("basket", null);
                 session.setAttribute("total", null);
                 session.setAttribute("order", mapper.map(order, OrderDTO.class));
-                session.setAttribute("orderList", mapper.map(orderBusinessService.getOrdersByUserID(user.getId()), List.class));
+                session.setAttribute("orderList", mapper.map(orderBusinessService.getOrdersByUserLogin(user.getLogin()), List.class));
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         } else {

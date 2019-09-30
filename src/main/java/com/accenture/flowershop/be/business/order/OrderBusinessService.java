@@ -17,7 +17,7 @@ public interface OrderBusinessService {
 
     List<Order> getAllOrders();
 
-    List<Order> getOrdersByUserID(Long idUser);
+    List<Order> getOrdersByUserLogin(String userLogin);
 
     void updateOrder(Order order);
 }

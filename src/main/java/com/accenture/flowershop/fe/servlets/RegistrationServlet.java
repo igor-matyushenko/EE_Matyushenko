@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "registrationServlet", urlPatterns = "/registrationServlet")
 public class RegistrationServlet extends HttpServlet {
@@ -52,7 +53,7 @@ public class RegistrationServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(30 * 60);
                 session.setAttribute("user", user);
-                session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), FlowerDTO.class));
+                session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
                 request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Пользователь существует  : " + user.getLogin());

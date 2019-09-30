@@ -1,16 +1,16 @@
-CREATE sequence BASKET_SEQ;
+CREATE sequence ORDER_POSITION_SEQ;
 
 
-create table BASKET
+create table ORDER_POSITION
 (
-	id_basket INT auto_increment,
+	ID_ORDER_POSITION INT auto_increment,
 	id_order INT,
 	id_flower INT,
 	flower_name VARCHAR(255),
 	id_user INT ,
     quantity  INT ,
     TOTAL_PRICE DECIMAL(15,2) ,
-    primary key (id_basket),
+    primary key (ID_ORDER_POSITION),
 
  );
 

@@ -2,6 +2,8 @@ package com.accenture.flowershop.fe.dto;
 
 import com.accenture.flowershop.fe.enums.Roles;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDTO {
     private Long id;
@@ -15,6 +17,7 @@ public class UserDTO {
     private String email;
     private BigDecimal balance ;
     private Integer discount ;
+    private List<OrderDTO> orderList;
 
     public UserDTO() {
 
@@ -25,6 +28,7 @@ public class UserDTO {
         this.setDiscount(3);
         this.setRole(Roles.USER);
         this.setBalance(new BigDecimal(2000));
+        this.orderList = new ArrayList<>();
     }
 
 

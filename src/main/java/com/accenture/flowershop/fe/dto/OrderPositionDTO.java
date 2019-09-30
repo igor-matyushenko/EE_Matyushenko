@@ -1,28 +1,27 @@
 package com.accenture.flowershop.fe.dto;
 
-import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.be.entity.flower.Flower;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public class BasketDTO {
+public class OrderPositionDTO {
 
-    private Long idBasket;
+    private Long idOrderPos;
     private List<Flower> flower;
     private UserDTO user;
     private Long quantity;
     private BigDecimal sumForFlowers;
-    private Order order;
+    private OrderDTO order;
 
-    public BasketDTO() {   }
+    public OrderPositionDTO() {   }
 
-    public Long getIdBasket() {
-        return idBasket;
+    public Long getIdOrderPos() {
+        return idOrderPos;
     }
 
-    public void setIdBasket(Long idBasket) {
-        this.idBasket = idBasket;
+    public void setIdOrderPos(Long idOrderPos) {
+        this.idOrderPos = idOrderPos;
     }
 
     public List<Flower> getFlower() {
@@ -57,23 +56,23 @@ public class BasketDTO {
         this.sumForFlowers = sumForFlowers;
     }
 
-    public Order getOrder() {
+    public OrderDTO getOrder() {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(OrderDTO order) {
         this.order = order;
     }
 
     @Override
     public String toString() {
-        return "BasketDTO{" +
-                "idBasket=" + idBasket +
+        return "OrderPosDTO{" +
+                "idOrderPos=" + idOrderPos +
                 ", flower=" + flower +
                 ", user=" + user.getLogin() +
                 ", quantity=" + quantity +
                 ", sumForFlowers=" + sumForFlowers +
-                ", order=" + order +
+                ", order=" + order.getId() +
                 '}';
     }
 }

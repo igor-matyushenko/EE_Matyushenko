@@ -13,7 +13,7 @@ public interface OrderDAO {
 
     List<Order> getAllOrders();
 
-    List<Order> getOrderByUserID(Long userId);
+    List<Order> getOrderByUser(String userLogin);
 
     void updateOrder(Order order);
 }

@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -20,13 +20,12 @@ public class Order implements Serializable {
     @Column(name = "ID_ORDER")
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ORDER")
-    private List<Basket> basketList = new ArrayList<>();
+    private List<OrderPosition> orderPositionList = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ID_USER")
-    private User user;
+    @Column(name = "LOGIN_USER")
+    private String userLogin;
 
     @Column(name = "TOTAL_PRICE")
     private BigDecimal totalPrice;
@@ -41,14 +40,11 @@ public class Order implements Serializable {
     @Column(name = "DATE_CLOSE")
     private Date dateClose;
 
-
-    public Order() {
-    }
-
-    public Order(StatusOrder statusOrder) {
-        this.statusOrder = statusOrder;
-        this.dateCreate = new Date();
-    }
+//    @Column(name = "ID_USER")
+//    private Long userID;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_USER")
+    private User user;
 
     public User getUser() {
         return user;
@@ -56,6 +52,31 @@ public class Order implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+//    public Long getUserID() {
+//        return userID;
+//    }
+//
+//    public void setUserID(Long userID) {
+//        this.userID = userID;
+//    }
+
+    public Order() {
+    }
+
+    public Order(StatusOrder statusOrder) {
+        this.statusOrder = statusOrder;
+        this.dateCreate = Date.valueOf(LocalDate.now());
+    }
+
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
     public Long getId() {
@@ -82,20 +103,20 @@ public class Order implements Serializable {
         this.statusOrder = statusOrder;
     }
 
+    public List<OrderPosition> getOrderPositionList() {
+        return orderPositionList;
+    }
+
+    public void setOrderPositionList(List<OrderPosition> orderPositionList) {
+        this.orderPositionList = orderPositionList;
+    }
+
     public Date getDateCreate() {
         return dateCreate;
     }
 
     public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
-    }
-
-    public List<Basket> getBasketList() {
-        return basketList;
-    }
-
-    public void setBasketList(List<Basket> basketList) {
-        this.basketList = basketList;
     }
 
     public Date getDateClose() {
@@ -106,14 +127,14 @@ public class Order implements Serializable {
         this.dateClose = dateClose;
     }
 
+
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", basketList=" + basketList +
-                ", userLogin=" + user.getLogin() +
+                ", userLogin=" + userLogin +
                 ", totalPrice=" + totalPrice +
-                ", status=" + statusOrder +
+                ", statusOrder=" + statusOrder +
                 ", dateCreate=" + dateCreate +
                 ", dateClose=" + dateClose +
                 '}';

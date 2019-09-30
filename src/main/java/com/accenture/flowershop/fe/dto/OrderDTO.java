@@ -1,26 +1,42 @@
 package com.accenture.flowershop.fe.dto;
 
-import com.accenture.flowershop.be.entity.Order.Basket;
+import com.accenture.flowershop.be.entity.Order.OrderPosition;
 import com.accenture.flowershop.fe.enums.StatusOrder;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class OrderDTO {
 
     private Long id;
+    private Long userId;
     private UserDTO user;
     private BigDecimal totalPrice;
     private StatusOrder statusOrder;
     private Date dateCreate;
     private Date dateClose;
-    private List<Basket> basketList;
+    private List<OrderPosition> orderPositionList;
 
     public OrderDTO() {
-        basketList = new ArrayList<>();
+        orderPositionList = new ArrayList<>();
+    }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public Date getDateClose() {
+        return dateClose;
+    }
+
+    public void setDateClose(Date dateClose) {
+        this.dateClose = dateClose;
     }
 
     public Long getId() {
@@ -55,40 +71,32 @@ public class OrderDTO {
         this.statusOrder = statusOrder;
     }
 
-    public Date getDateCreate() {
-        return dateCreate;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setDateCreate(Date dateCreate) {
-        this.dateCreate = dateCreate;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Date getDateClose() {
-        return dateClose;
+    public List<OrderPosition> getOrderPositionList() {
+        return orderPositionList;
     }
 
-    public void setDateClose(Date dateClose) {
-        this.dateClose = dateClose;
-    }
-
-    public List<Basket> getBasketList() {
-        return basketList;
-    }
-
-    public void setBasketList(List<Basket> basketList) {
-        this.basketList = basketList;
+    public void setOrderPositionList(List<OrderPosition> orderPositionList) {
+        this.orderPositionList = orderPositionList;
     }
 
     @Override
     public String toString() {
         return "OrderDTO{" +
                 "id=" + id +
-                ", user=" + user.getPassword() +
+                ", user=" + user.getLogin() +
                 ", totalPrice=" + totalPrice +
                 ", status=" + statusOrder +
                 ", dateCreate=" + dateCreate +
                 ", dateClose=" + dateClose +
-                ", basketList=" + basketList +
+                ", basketList=" + orderPositionList +
                 '}';
     }
 }

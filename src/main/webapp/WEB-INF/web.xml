@@ -30,6 +30,10 @@
         <servlet-name>userPage</servlet-name>
         <jsp-file>/WEB-INF/lib/userPage.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>userPage</servlet-name>
+        <jsp-file>/WEB-INF/lib/updateUser.jsp</jsp-file>
+    </servlet>
 
     <welcome-file-list>
         <welcome-file>indexServlet</welcome-file>

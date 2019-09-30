@@ -5,17 +5,18 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "BASKET")
-public class Basket implements Serializable {
+@Table(name = "ORDER_POSITION")
+public class OrderPosition implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BASKET_SEQ")
-    @SequenceGenerator(name = "BASKET_SEQ", sequenceName = "BASKET_SEQ", allocationSize = 1)
-    @Column(name = "ID_BASKET")
-    private Long idBasket;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDER_POSITION_SEQ")
+    @SequenceGenerator(name = "ORDER_POSITION_SEQ", sequenceName = "ORDER_POSITION_SEQ", allocationSize = 1)
+    @Column(name = "ID_ORDER_POSITION")
+    private Long idOrderPosition;
 
-    @Column(name = "ID_ORDER")
-    private Long orderID;
+    @ManyToOne
+    @JoinColumn(name = "ID_ORDER")
+    private Order order;
 
     @Column(name = "ID_FLOWER")
     private Long flowerID;
@@ -32,14 +33,12 @@ public class Basket implements Serializable {
     @Column(name = "TOTAL_PRICE")
     private BigDecimal totalPrice;
 
-//    @ManyToOne
-//    @JoinColumn(name = "id_order")
-//    private Order order;
 
-    public Basket() {
+
+    public OrderPosition() {
     }
 
-    public Basket(Long userID, Long flowerID, String flowerName, Long quantity, BigDecimal totalPrice) {
+    public OrderPosition(Long userID, Long flowerID, String flowerName, Long quantity, BigDecimal totalPrice) {
         this.userID = userID;
         this.flowerID = flowerID;
         this.flowerName = flowerName;
@@ -55,20 +54,20 @@ public class Basket implements Serializable {
         this.flowerName = flowerName;
     }
 
-    public Long getIdBasket() {
-        return idBasket;
+    public Long getIdOrderPosition() {
+        return idOrderPosition;
     }
 
-    public void setIdBasket(Long idBasket) {
-        this.idBasket = idBasket;
+    public void setIdOrderPosition(Long idOrderPosition) {
+        this.idOrderPosition = idOrderPosition;
     }
 
-    public Long getOrderID() {
-        return orderID;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderID(Long orderID) {
-        this.orderID = orderID;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Long getFlowerID() {
@@ -105,8 +104,8 @@ public class Basket implements Serializable {
 
     @Override
     public String toString() {
-        return "Basket{" +
-                "idBasket=" + idBasket +
+        return "OrderPosition{" +
+                "idOrderPosition=" + idOrderPosition +
                 ", flowerID=" + flowerID +
                 ", userID=" + userID +
                 ", quantity=" + quantity +

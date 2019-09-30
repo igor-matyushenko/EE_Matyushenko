@@ -1,18 +1,16 @@
 package com.accenture.flowershop.be.access.user;
 
 import com.accenture.flowershop.be.entity.user.User;
+import com.accenture.flowershop.fe.enums.Roles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.*;
+import java.util.List;
 
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
-
-@Transactional
 @Repository
 public class UserDAOImpl implements UserDAO {
 
@@ -22,18 +20,21 @@ public class UserDAOImpl implements UserDAO {
     private static final Logger LOG = LoggerFactory.getLogger(UserDAOImpl.class);
 
     @Override
+    @Transactional
     public void saveUser(User user) {
         LOG.debug("saveUser: " + user);
         em.persist(user);
     }
 
     @Override
+    @Transactional
     public void updateUser(User user) {
         LOG.debug("updateUser: " + user);
         em.merge(user);
     }
 
     @Override
+    @Transactional
     public User findUserByLogin(String login) {
         try {
             TypedQuery<User> query =
@@ -48,7 +49,25 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
+
     @Override
+    @Transactional
+    public List<User> getUserList() {
+        try {
+//            Roles role = Roles.USER;
+            TypedQuery<User> query =
+                    em.createQuery("from User u ", User.class);
+//            query.setParameter("role",role);where u.role =:role
+            LOG.debug("getUserList: " + query.getResultList());
+            return query.getResultList();
+        } catch (NoResultException e) {
+//            e.printStackTrace();
+            LOG.warn("getUserList: не найден");
+            return null; }
+    }
+
+    @Override
+    @Transactional
     public User findUserById(Long idUser) {
         LOG.debug("findUserById: " + idUser);
         return em.find(User.class, idUser);

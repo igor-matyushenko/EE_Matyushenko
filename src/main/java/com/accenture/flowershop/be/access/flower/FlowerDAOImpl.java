@@ -5,16 +5,14 @@ import com.accenture.flowershop.be.entity.flower.Flower;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Transactional
+
 @Repository
 public class FlowerDAOImpl implements FlowerDAO {
 
@@ -24,6 +22,7 @@ public class FlowerDAOImpl implements FlowerDAO {
     private static final Logger LOG = LoggerFactory.getLogger(UserDAOImpl.class);
 
     @Override
+    @Transactional
     public List<Flower> getAllFlowers() {
         try {
             TypedQuery<Flower> query =
@@ -38,30 +37,35 @@ public class FlowerDAOImpl implements FlowerDAO {
     }
 
     @Override
+    @Transactional
     public void addFlower(Flower flower) {
         LOG.debug("addFlower: " + flower);
         em.persist(flower);
     }
 
     @Override
+    @Transactional
     public void deleteFlower(Flower flower) {
         LOG.debug("deleteFlower: " + flower);
         em.remove(flower);
     }
 
     @Override
+    @Transactional
     public void updateFlower(Flower flower) {
         LOG.debug("updateFlower: " + flower);
         em.merge(flower);
     }
 
     @Override
+    @Transactional
     public Flower getFlowerById(Long idFlower) {
         LOG.debug("getFlowerById: " + idFlower);
         return em.find(Flower.class, idFlower);
     }
 
     @Override
+    @Transactional
     public List<Flower> getAllFlowersBySearch(String flowerName, BigDecimal minPrice, BigDecimal maxPrice) {
         TypedQuery<Flower> query =
                 em.createQuery("from  Flower f where upper(f.titleFlower) like :flowerName " +

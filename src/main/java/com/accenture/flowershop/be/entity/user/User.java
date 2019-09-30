@@ -52,7 +52,7 @@ public class User implements Serializable {
     @Column(name = "DISCOUNT")
     private Integer discount;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Order> orderList;
 
     public List<Order> getOrderList() {
@@ -64,6 +64,7 @@ public class User implements Serializable {
     }
 
     public User() {
+        this.orderList = new ArrayList<>();
     }
 
     public Long getId() {

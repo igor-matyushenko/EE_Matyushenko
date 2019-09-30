@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Flower Shop 1.0</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
     <style>
     .raz {
       all: unset;
@@ -15,6 +15,7 @@
     .raz::-webkit-inner-spin-button {
       display: none;
     }
+
     </style>
 </head>
 <body>
@@ -25,17 +26,17 @@
                             <form method="get" action="logoutServlet">
                                    <input class="w3-btn w3-black w3-hover-light-green w3-round-large " type=submit  value="Log out"/>
                             </form>
-                            <p>Your balance: <${user.balance}> rub</p>
+                            <p>Your balance: ${user.balance} rub</p>
                             <p>Your discount: ${user.discount} %</p>
 <br>
-<dib>
+<div>
     <form method="post" action="searchFlowerServlet">
     <table>
         <tr>
-            <td colspan="2"><input type="search"  name="flowerName" placeholder="Введите текст для поиска" ></td>
+            <td colspan="2" width="70"><input type="search"  name="flowerName" placeholder="Введите текст для поиска" ></td>
             <td colspan="1"><input type=submit value="Поиск"></td>
         </tr>
-            <td colspan="1"><input type="number" name="flowerMinPrice" placeholder="начальная цена" ></td>
+            <td colspan="1" width="35"><input type="number" name="flowerMinPrice" placeholder="начальная цена" ></td>
             <td colspan="1"><input type="number" name="flowerMaxPrice" placeholder="конечная цена"></td>
         </tr>
     </table>
@@ -66,7 +67,7 @@
                          <input type="hidden" name="quantity" value="${item.quantity}"/>
                          <input type="hidden" name="price" value="${item.priceFlower}"/>
     					 <button type="button" onclick="this.nextElementSibling.stepDown()">-</button>
-                             <input type="number" min="0" max="1000" value="0" readonly name="quantityToBasket" class="raz">
+                             <input type="number" min="0" max="1000" value="0" readonly name="quantityToPos" class="raz">
                           <button type="button" onclick="this.previousElementSibling.stepUp()">+</button>
                           </td>
     					  <td align="center"><input type=submit value="Add to basket"/><td>
@@ -76,10 +77,10 @@
 </table>
 </div>
     <div>
-       <p>${orderMessage}</p>
+
        <c:if test = "${basket != null}">
 
-                <h6>Корзина</h6>
+
     			    <table  border="1">
                                    <tr align="center">
                                          <th colspan="4">Корзина</th>
@@ -121,7 +122,7 @@
     <br>
     </div>
  <div div class="w3-container w3-center">
-
+ <p> <span style="color: red">${orderMessage}</span></p>
  <br>
  <table align="left" border="1">
 
@@ -141,23 +142,46 @@
              <td>${item.dateClose}</td>
              <td>${item.totalPrice}</td>
              <td>${item.statusOrder}</td>
+             <input type="hidden" name="orderListPayId" value="${item.id}"/>
+                           <c:if test="${item.statusOrder eq 'CREATED'}">
+                                  <td><input type=submit value="Оплатить" ></td>
+                           </c:if>
+      </form>
          </tr>
 
-              <td colspan="3"></td>
+              <td colspan="3"><tr>
+                   <td colspan="5">
+                        <details>
+                          <table>
+                              <c:forEach items = "${order.orderPositionList}" var="iterator">
+                                   <tr>
+                                        <td >${iterator.flowerName}   </td>
+                                        <td >${iterator.quantity}  шт. </td>
+                                        <td >${iterator.totalPrice} р.</td>
+                                    </tr>
+                              </c:forEach>
+                            </table>
+                           </details>
+                     </td>
 
-              <input type="hidden" name="orderListPayId" value="${item.id}"/>
-              <c:if test="${item.statusOrder eq 'CREATED'}">
-                     <td><input type=submit value="Оплатить" ></td>
-              </c:if>
-              </form>
+
           </c:forEach>
 
  </table>
 
+
  </div>
  <br>
  <br>
-<d
+  <br>
+   <br>
+    <br>
+     <br>
+      <br>
+       <br> <br>
+
+
+
 
 </body>
 </html>

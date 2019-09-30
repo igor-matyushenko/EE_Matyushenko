@@ -1,19 +1,19 @@
 package com.accenture.flowershop.be.access.order;
 
 import com.accenture.flowershop.be.entity.Order.Order;
+import com.accenture.flowershop.be.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class OrderDAOImpl implements OrderDAO {
 
     @PersistenceContext
@@ -23,11 +23,13 @@ public class OrderDAOImpl implements OrderDAO {
 
 
     @Override
+    @Transactional
     public void addOrder(Order order) {
         em.persist(order);
     }
 
     @Override
+    @Transactional
     public Order getOrderById(Long idOrder) {
         LOG.debug("getOrderById: " + idOrder);
         return em.find(Order.class, idOrder);
@@ -48,21 +50,23 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public List<Order> getOrderByUserID(Long userID) {
+    @Transactional
+    public List<Order> getOrderByUser(String userLogin) {
         try {
             TypedQuery<Order> query =
-                    em.createQuery("from Order o where o.user.id=:userID", Order.class);
-            query.setParameter("userID", userID);
-            LOG.debug("getOrderByUserID: " + userID);
+                    em.createQuery("from Order o where o.userLogin=:userLogin", Order.class);
+            query.setParameter("userLogin", userLogin);
+            LOG.debug("getOrderByUserID: " + userLogin);
             return query.getResultList();
         } catch (NoResultException e) {
 //            e.printStackTrace();
-            LOG.warn("getOrderByUserID: " + userID + " не найден");
+            LOG.warn("getOrderByUserID: " + userLogin + " не найден");
             return null;
         }
     }
 
     @Override
+    @Transactional
     public void updateOrder(Order order) {
         LOG.debug("updateOrder: " + order);
         em.merge(order);

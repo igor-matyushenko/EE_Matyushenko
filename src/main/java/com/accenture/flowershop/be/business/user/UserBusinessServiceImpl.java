@@ -1,7 +1,7 @@
 package com.accenture.flowershop.be.business.user;
 
 import com.accenture.flowershop.be.access.user.UserDAO;
-import com.accenture.flowershop.be.business.order.BasketBusinessService;
+import com.accenture.flowershop.be.business.order.OrderPositionBusinessService;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.be.entity.user.User;
@@ -10,11 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 
-@Transactional
 @Service
 public class UserBusinessServiceImpl implements UserBusinessService {
 
@@ -25,7 +25,13 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     @Autowired
     private OrderBusinessService orderBusinessService;
     @Autowired
-    private BasketBusinessService basketBusinessService;
+    private OrderPositionBusinessService orderPositionBusinessService;
+
+    @Override
+    @Transactional
+    public List<User> getAllUser() {
+        return userDAO.getUserList();
+    }
 
     @Override
     public BigDecimal userSumDiscount(BigDecimal priceFlower, int discountUser, Long quantityToBasket) {
@@ -84,24 +90,34 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         if (user.getBalance().compareTo(order.getTotalPrice()) < 0) {
             return false;
         }
-        updateUser(user.getLogin(), user.getBalance().subtract(order.getTotalPrice()));
+        user = findUserByLogin(user.getLogin());
+        user.setBalance(user.getBalance().subtract(order.getTotalPrice()));
+        updateUser(user);
         order.setStatusOrder(StatusOrder.PAID);
         orderBusinessService.updateOrder(order);
-        basketBusinessService.updateBasketList(basketBusinessService.getBasketsByUserId(user.getId()));
+        orderPositionBusinessService.updateOrderPositionList(orderPositionBusinessService.getOrderPositionByUserId(user.getId()));
         return true;
     }
 
     @Override
+    @Transactional
     public User findUserByLogin(String login) {
         log.debug("FindUserByLogin" + login);
         return userDAO.findUserByLogin(login);
     }
 
     @Override
-    public void updateUser(String loginUser, BigDecimal balance) {
-        User user = findUserByLogin(loginUser);
-        user.setBalance(balance);
-        userDAO.updateUser(user);
+    @Transactional
+    public void updateUser(User user) {
+        User updateUser = findUserByLogin(user.getLogin());
+        updateUser.setLogin(user.getLogin());
+        updateUser.setPassword(user.getPassword());
+        updateUser.setBalance(user.getBalance());
+        updateUser.setDiscount(user.getDiscount());
+        updateUser.setAddress(user.getAddress());
+        updateUser.setFirstName(user.getFirstName());
+        updateUser.setLastName(user.getLastName());
+        userDAO.updateUser(updateUser);
     }
 
 }

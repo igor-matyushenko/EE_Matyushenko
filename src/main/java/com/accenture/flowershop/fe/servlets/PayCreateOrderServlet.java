@@ -3,7 +3,6 @@ package com.accenture.flowershop.fe.servlets;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
-import com.accenture.flowershop.fe.dto.OrderDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class PayCreateOrderServlet extends HttpServlet {
                 User userEntity = userBusinessService.findUserByLogin(login);
                 UserDTO user = mapper.map(userEntity,UserDTO.class);
                 session.setAttribute("user", user);
-                session.setAttribute("orderList", mapper.map(orderBusinessService.getOrdersByUserID(user.getId()), List.class));
+                session.setAttribute("orderList", mapper.map(orderBusinessService.getOrdersByUserLogin(user.getLogin()), List.class));
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         } else {
