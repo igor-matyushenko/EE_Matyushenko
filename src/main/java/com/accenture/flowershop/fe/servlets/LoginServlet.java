@@ -3,6 +3,7 @@ package com.accenture.flowershop.fe.servlets;
 
 import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
+import com.accenture.flowershop.be.business.order.OrderPositionBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.dto.UserDTO;
@@ -30,7 +31,8 @@ public class LoginServlet extends HttpServlet {
 
     @Autowired
     private UserBusinessService userBusinessService;
-
+    @Autowired
+    private OrderPositionBusinessService orderPositionBusinessService;
     @Autowired
     private FlowerBusinessService flowerBusinessService;
     @Autowired
@@ -49,10 +51,6 @@ public class LoginServlet extends HttpServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/lib/login.jsp").forward(request, response);
-    }
-
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String login = request.getParameter("login");
@@ -65,7 +63,7 @@ public class LoginServlet extends HttpServlet {
             user = mapper.map(userEntity, UserDTO.class);
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(30 * 60);
-            if (user.getRole().equals(Roles.ADMIN)) {
+            if (Roles.ADMIN.equals(user.getRole())) {
                 session.setAttribute("user", user);
                 session.setAttribute("orderListAdmin", mapper.map(orderBusinessService.getAllOrders(), List.class));
                 request.getRequestDispatcher("/WEB-INF/lib/adminPage.jsp").forward(request, response);
@@ -73,12 +71,12 @@ public class LoginServlet extends HttpServlet {
             if (user.getRole().equals(Roles.USER)) {
                 session.setAttribute("user", user);
                 session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
-                session.setAttribute("orderList",  mapper.map(orderBusinessService.getOrdersByUserLogin(user.getLogin()),List.class));
+                session.setAttribute("orderList",  mapper.map(orderBusinessService.getAllOrdersByUserId(user.getId()), List.class));
                 request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
             }
         } else {
             request.setAttribute("error", "Invalid login or password");
-            doGet(request, response);
+            request.getRequestDispatcher("/WEB-INF/lib/login.jsp").forward(request, response);
         }
 
 

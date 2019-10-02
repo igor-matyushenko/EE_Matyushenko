@@ -7,13 +7,15 @@ import java.util.List;
 
 public interface OrderDAO {
 
-    void addOrder(Order order);
+    Order getOrderByIdActualBasket(Long userId);
+
+    Order addOrder(Order order);
 
     Order getOrderById(Long idOrder);
 
     List<Order> getAllOrders();
 
-    List<Order> getOrderByUser(String userLogin);
+    Order getOrderByUser(User user);
 
     void updateOrder(Order order);
 }

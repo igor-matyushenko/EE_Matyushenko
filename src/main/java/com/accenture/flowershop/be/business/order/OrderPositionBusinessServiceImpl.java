@@ -3,9 +3,11 @@ package com.accenture.flowershop.be.business.order;
 import com.accenture.flowershop.be.access.order.OrderPositionDAO;
 import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
+import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.be.entity.Order.OrderPosition;
 import com.accenture.flowershop.be.entity.flower.Flower;
 import com.accenture.flowershop.be.entity.user.User;
+import com.accenture.flowershop.fe.enums.StatusOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Transactional
+
 @Service
 public class OrderPositionBusinessServiceImpl implements OrderPositionBusinessService {
 
@@ -28,72 +30,80 @@ public class OrderPositionBusinessServiceImpl implements OrderPositionBusinessSe
     @Autowired
     private UserBusinessService userBusinessService;
 
-    private static final Logger log = LoggerFactory.getLogger(OrderPositionBusinessServiceImpl.class);
+    @Autowired
+    private OrderBusinessService orderBusinessService;
+
+
+    private static final Logger LOG = LoggerFactory.getLogger(OrderPositionBusinessServiceImpl.class);
     private BigDecimal totalSumBasket;
 
-
-    @Override
-    public List<OrderPosition> getOrderPositionByOrderId(Long idOrder) {
-        return orderPositionDAO.getOrderPositionByOrderId(idOrder);
-    }
-
-    @Override
-    public void updateOrderPositionList(List<OrderPosition> orderPositionList) {
-        orderPositionDAO.updateOrderPositionList(orderPositionList);
+    public BigDecimal getTotalSumBasket() {
+        return totalSumBasket;
     }
 
 
-    @Override
-    public List<OrderPosition> getOrderPositionByUserId(Long idUser) {
-        return orderPositionDAO.getOrderPositionByUserId(idUser);
+    public void setTotalSumBasket(BigDecimal totalSumBasket) {
+        this.totalSumBasket = totalSumBasket;
     }
 
     @Override
     @Transactional
-    public List<OrderPosition> getNewOrderPositionByUserId(Long idUser) {
-        return orderPositionDAO.getActualOrderPositionByUserId(idUser);
+    public List<OrderPosition> getActualBasketByUserId(Long userId) {
+        Order order = orderBusinessService.getOrderByIdActualBasket(userId);
+        return orderPositionDAO.getActualOrderPositionByUserId(userId, order.getId());
     }
+
 
     @Override
-    public Boolean addOrderPosition(String userLogin, Long flowerID, Long quantityToOrderPosition, Long quantityFlower) {
-        if (quantityToOrderPosition <= 0 || quantityToOrderPosition > quantityFlower) {
+    @Transactional
+    public boolean addOrderPositionToBasket(Long userId, Long flowerID, Long quantityFromOrderPosition, Long quantityFlower) {
+        if (quantityFromOrderPosition <= 0 || quantityFromOrderPosition > quantityFlower) {
             return false;
         }
-        User user = userBusinessService.findUserByLogin(userLogin);
-        Flower flower = flowerBusinessService.getFlowerById(flowerID);
-        BigDecimal sumWithDiscountUser = userBusinessService.userSumDiscount(flower.getPriceFlower(), user.getDiscount(), quantityToOrderPosition);
-        OrderPosition orderPosition = new OrderPosition(user.getId(), flower.getId(), flower.getTitleFlower(), quantityToOrderPosition, sumWithDiscountUser);
-        return addToBasketWithCheckExist(orderPosition, flower);
-    }
-
-    private boolean addToBasketWithCheckExist(OrderPosition orderPosition, Flower flower) {
-        OrderPosition orderPositionByFlowerName = orderPositionDAO.getOrderPositionByFlowerName(orderPosition.getFlowerName());
-        if (orderPositionByFlowerName == null) {
-            if (totalSumBasket == null) totalSumBasket = new BigDecimal(0);
-            totalSumBasket = totalSumBasket.add(orderPosition.getTotalPrice());
-            orderPositionDAO.addOrderPosition(orderPosition);
-            return changeQuantityFlower(orderPosition, flower);
+        User user = userBusinessService.findUserById(userId);
+        Order newOrderUser = null;
+        if(orderBusinessService.getOrderByIdActualBasket(user.getId()) == null) {
+            totalSumBasket = BigDecimal.ZERO;
+            newOrderUser = new Order(StatusOrder.BASKET);
+            user.addOrder(newOrderUser);
+            orderBusinessService.addOrder(newOrderUser);
+        } else {
+            newOrderUser = orderBusinessService.getOrderByIdActualBasket(user.getId());
         }
-        orderPositionByFlowerName.setTotalPrice(orderPositionByFlowerName.getTotalPrice().add(orderPosition.getTotalPrice()));
-        orderPositionByFlowerName.setQuantity(orderPositionByFlowerName.getQuantity() + orderPosition.getQuantity());
-        orderPositionDAO.updateOrderPosition(orderPositionByFlowerName);
-        totalSumBasket = totalSumBasket.add(orderPositionByFlowerName.getTotalPrice());
-        return changeQuantityFlower(orderPositionByFlowerName, flower);
-    }
-
-    private boolean changeQuantityFlower(OrderPosition orderPosition, Flower flower) {
-        flower.setQuantity(flower.getQuantity() - orderPosition.getQuantity());
-        flowerBusinessService.updateFlower(flower);
+        Flower flower = flowerBusinessService.getFlowerById(flowerID);
+        BigDecimal sumOrderPosition = sumOrderPosition( flowerID,  quantityFromOrderPosition, userBusinessService.getDiscountOfUser(user));
+        OrderPosition orderPosition = new OrderPosition(newOrderUser.getId(),flowerID,user.getId(),flower.getTitleFlower(), quantityFromOrderPosition,sumOrderPosition);
+        checkIsExistFromBasket(newOrderUser,orderPosition,flower.getTitleFlower(),quantityFromOrderPosition,flower.getPriceFlower());
         return true;
     }
 
-    @Override
-    public BigDecimal getTotalSumFromActualBasket() {
-        return totalSumBasket.setScale(2, BigDecimal.ROUND_HALF_UP);
+
+    private void checkIsExistFromBasket(Order order, OrderPosition orderPosition, String flowerName, Long quantity, BigDecimal flowerPrice){
+        String check = null;
+        for(OrderPosition o : order.getBasketOrder()){
+            if(o.getFlowerName().equals(flowerName)){
+                int i = order.getBasketOrder().indexOf(o);
+                o.setQuantity(o.getQuantity()+quantity);
+                o.setTotalPrice(flowerPrice.multiply(BigDecimal.valueOf(o.getQuantity())));
+                order.getBasketOrder().set(i,o);
+                check = flowerName;
+            }
+        }
+        if(orderPosition !=null && check == null){
+            order.getBasketOrder().add(orderPosition);
+        }
+        setTotalSumBasket(BigDecimal.ZERO);
+        for(OrderPosition o : order.getBasketOrder()){
+            setTotalSumBasket(getTotalSumBasket().add(o.getTotalPrice()));
+        }
+        order.setTotalPrice(getTotalSumBasket());
     }
 
-    @Override
-    public void setTotalSumFromActualBasket(BigDecimal totalSumBasket) {
-        this.totalSumBasket = totalSumBasket;
+    private BigDecimal sumOrderPosition(Long flowerId, Long quantityFromOrderPosition, Double userDiscount){
+        Flower flower = flowerBusinessService.getFlowerById(flowerId);
+        BigDecimal flowerPrice = flower.getPriceFlower().multiply(BigDecimal.valueOf(quantityFromOrderPosition));
+        BigDecimal sumDiscount = flowerPrice.multiply(BigDecimal.valueOf(userDiscount));
+        flowerBusinessService.changeQuantityFlower(flower.getId(),quantityFromOrderPosition);
+        return flowerPrice.subtract(sumDiscount);
     }
 }

@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface OrderPositionDAO {
 
-    List<OrderPosition> getOrderPositionByUserId(Long idUser);
+
+
+    List<OrderPosition> getOrderPositionByUser(Long userId);
+
+    List<OrderPosition> getActualOrderPositionByUserId(Long idUser, Long idOrder);
 
     List<OrderPosition> getOrderPositionByOrderId(Long orderID);
-
-    List<OrderPosition> getActualOrderPositionByUserId(Long idUser);
-
-    OrderPosition getOrderPositionByFlowerName(String flowerName);
 
     boolean addOrderPosition(OrderPosition orderPositionList);
 

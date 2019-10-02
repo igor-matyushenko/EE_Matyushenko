@@ -17,7 +17,7 @@ public class UserDTO {
     private String email;
     private BigDecimal balance ;
     private Integer discount ;
-    private List<OrderDTO> orderList;
+    private List<OrderDTO> orderList = new ArrayList<>();
 
     public UserDTO() {
 
@@ -31,7 +31,10 @@ public class UserDTO {
         this.orderList = new ArrayList<>();
     }
 
-
+    public  void addOrder(OrderDTO order){
+        orderList.add(order);
+        order.setUser(this);
+    }
 
     public Long getId() {
         return id;

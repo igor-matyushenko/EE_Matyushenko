@@ -2,14 +2,13 @@ package com.accenture.flowershop.be.business.user;
 
 import com.accenture.flowershop.be.entity.user.User;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface UserBusinessService {
 
-    List<User> getAllUser();
 
-    BigDecimal userSumDiscount(BigDecimal priceFlower, int discountUser, Long quantityToBasket);
+    List<User> getAllUsers();
+
 
     User userVerification(String login, String password);
 
@@ -17,11 +16,13 @@ public interface UserBusinessService {
 
     Boolean checkLogin(String login);
 
-    boolean payCreatedOrder(String login, Long idOrder);
+    double getDiscountOfUser(User user);
 
-    User findUserByLogin(String loginUser);
+    User findUserByLogin(String login);
+
+    User findUserById(Long userId);
 
     void updateUser(User user);
 
-
+    boolean payOrder(Long userId, Long orderId);
 }

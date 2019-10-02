@@ -15,7 +15,7 @@
               padding: 10px;
               color: white;
               background: #8FD4C1;
-              font-size: 18px;
+              font-size: 15px;
               text-align: left;
               font-weight: bold;
             }

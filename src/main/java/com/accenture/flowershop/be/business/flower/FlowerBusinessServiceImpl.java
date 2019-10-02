@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Transactional
+
 @Service
 public class FlowerBusinessServiceImpl implements FlowerBusinessService {
 
@@ -23,6 +23,7 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
     }
 
     @Override
+    @Transactional
     public List<Flower> getAllFlowersBySearch(String flowerName, BigDecimal minPrice, BigDecimal maxPrice) {
         if (maxPrice == null) {
             maxPrice = new BigDecimal(Long.MAX_VALUE);
@@ -46,8 +47,17 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
 
 
     @Override
+    @Transactional
     public void addFlower(Flower flower) {
         flowerDAO.addFlower(flower);
+    }
+
+    @Override
+    @Transactional
+    public void changeQuantityFlower(Long flowerId, long quantity) {
+        Flower flower = flowerDAO.getFlowerById(flowerId);
+        flower.setQuantity(flower.getQuantity()-quantity);
+        flowerDAO.updateFlower(flower);
     }
 
     @Override
@@ -61,6 +71,7 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
     }
 
     @Override
+    @Transactional
     public Flower getFlowerById(Long idFlower) {
         return flowerDAO.getFlowerById(idFlower);
     }

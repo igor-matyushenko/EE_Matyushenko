@@ -14,15 +14,14 @@ public class OrderPosition implements Serializable {
     @Column(name = "ID_ORDER_POSITION")
     private Long idOrderPosition;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_ORDER")
-    private Order order;
+    @Column(name = "ID_ORDER")
+    private Long orderId;
 
     @Column(name = "ID_FLOWER")
-    private Long flowerID;
+    private Long flowerId;
 
     @Column(name = "ID_USER")
-    private Long userID;
+    private Long userId;
 
     @Column(name = "FLOWER_NAME")
     private String flowerName;
@@ -38,9 +37,10 @@ public class OrderPosition implements Serializable {
     public OrderPosition() {
     }
 
-    public OrderPosition(Long userID, Long flowerID, String flowerName, Long quantity, BigDecimal totalPrice) {
-        this.userID = userID;
-        this.flowerID = flowerID;
+    public OrderPosition(Long orderId, Long flowerId, Long userId, String flowerName, Long quantity, BigDecimal totalPrice) {
+        this.orderId = orderId;
+        this.flowerId = flowerId;
+        this.userId = userId;
         this.flowerName = flowerName;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
@@ -62,28 +62,28 @@ public class OrderPosition implements Serializable {
         this.idOrderPosition = idOrderPosition;
     }
 
-    public Order getOrder() {
-        return order;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
-    public Long getFlowerID() {
-        return flowerID;
+    public Long getFlowerId() {
+        return flowerId;
     }
 
-    public void setFlowerID(Long flowerID) {
-        this.flowerID = flowerID;
+    public void setFlowerId(Long flowerId) {
+        this.flowerId = flowerId;
     }
 
-    public Long getUserID() {
-        return userID;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getQuantity() {
@@ -106,8 +106,10 @@ public class OrderPosition implements Serializable {
     public String toString() {
         return "OrderPosition{" +
                 "idOrderPosition=" + idOrderPosition +
-                ", flowerID=" + flowerID +
-                ", userID=" + userID +
+                ", orderId=" + orderId +
+                ", flowerid=" + flowerId +
+                ", userid=" + userId +
+                ", flowerName='" + flowerName + '\'' +
                 ", quantity=" + quantity +
                 ", totalPrice=" + totalPrice +
                 '}';

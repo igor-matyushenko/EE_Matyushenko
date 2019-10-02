@@ -7,17 +7,10 @@ import java.util.List;
 
 public interface OrderPositionBusinessService {
 
-    List<OrderPosition> getOrderPositionByUserId(Long idUser);
+    boolean addOrderPositionToBasket(Long userId, Long idFlower, Long quantityToOrderPosition, Long quantityFlower);
 
-    List<OrderPosition> getNewOrderPositionByUserId(Long idUser);
 
-    Boolean addOrderPosition(String userLogin, Long idFlower, Long quantityToOrderPosition, Long quantityFlower);
+    BigDecimal getTotalSumBasket();
 
-    List<OrderPosition> getOrderPositionByOrderId(Long idOrder);
-
-    void updateOrderPositionList(List<OrderPosition> orderPositionList);
-
-    BigDecimal getTotalSumFromActualBasket();
-
-    void setTotalSumFromActualBasket(BigDecimal totalSumFromActualBasketSum);
+    List<OrderPosition> getActualBasketByUserId(Long userId);
 }

@@ -17,10 +17,10 @@ public class OrderDTO {
     private StatusOrder statusOrder;
     private Date dateCreate;
     private Date dateClose;
-    private List<OrderPosition> orderPositionList;
+    private List<OrderPosition> basketOrder = new ArrayList<>();;
 
     public OrderDTO() {
-        orderPositionList = new ArrayList<>();
+
     }
 
     public Date getDateCreate() {
@@ -79,12 +79,12 @@ public class OrderDTO {
         this.userId = userId;
     }
 
-    public List<OrderPosition> getOrderPositionList() {
-        return orderPositionList;
+    public List<OrderPosition> getBasketOrder() {
+        return basketOrder;
     }
 
-    public void setOrderPositionList(List<OrderPosition> orderPositionList) {
-        this.orderPositionList = orderPositionList;
+    public void setBasketOrder(List<OrderPosition> basketOrder) {
+        this.basketOrder = basketOrder;
     }
 
     @Override
@@ -96,7 +96,6 @@ public class OrderDTO {
                 ", status=" + statusOrder +
                 ", dateCreate=" + dateCreate +
                 ", dateClose=" + dateClose +
-                ", basketList=" + orderPositionList +
                 '}';
     }
 }

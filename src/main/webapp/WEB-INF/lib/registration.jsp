@@ -3,8 +3,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <title>Flower Shop 1.0</title>
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
         <style type="text/css">
             table {
               font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;

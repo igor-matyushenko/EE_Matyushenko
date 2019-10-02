@@ -1,23 +1,24 @@
 package com.accenture.flowershop.be.business.order;
 
 import com.accenture.flowershop.be.entity.Order.Order;
-import com.accenture.flowershop.be.entity.user.User;
 
 import java.util.List;
 
 public interface OrderBusinessService {
 
+    Order getOrderByIdActualBasket(Long userId);
+
     boolean closeOrder(Long idOrder);
 
     void addOrder(Order order);
 
-    Order newOrderCreate(String loginUser);
+    boolean createOrder(Long userId);
 
-    Order getOrderById(Long idOrder);
+    Order getOrderById(Long orderId);
 
     List<Order> getAllOrders();
 
-    List<Order> getOrdersByUserLogin(String userLogin);
+    List<Order> getAllOrdersByUserId(Long userId);
 
     void updateOrder(Order order);
 }

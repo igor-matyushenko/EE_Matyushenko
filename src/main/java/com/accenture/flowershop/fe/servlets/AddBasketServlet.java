@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "addBasketServlet", urlPatterns = "/addBasketServlet")
@@ -45,11 +46,11 @@ public class AddBasketServlet extends HttpServlet {
             Long flowerID = Long.parseLong(request.getParameter("flowerID"));
             Long quantityToOrderPos =Long.parseLong(request.getParameter("quantityToPos"));
             Long quantityFlower = Long.parseLong(request.getParameter("quantity"));
-            if (orderPositionBusinessService.addOrderPosition(user.getLogin(),flowerID,quantityToOrderPos,quantityFlower)) {
+            if (orderPositionBusinessService.addOrderPositionToBasket(user.getId(),flowerID,quantityToOrderPos,quantityFlower)) {
                 session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
-                session.setAttribute("basket",  mapper.map(orderPositionBusinessService.getNewOrderPositionByUserId(user.getId()), List.class));
+                session.setAttribute("basket",  mapper.map(orderPositionBusinessService.getActualBasketByUserId(user.getId()),List.class));
                 session.setAttribute("user", user);
-                session.setAttribute("total", orderPositionBusinessService.getTotalSumFromActualBasket());
+                session.setAttribute("total", orderPositionBusinessService.getTotalSumBasket());
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         }

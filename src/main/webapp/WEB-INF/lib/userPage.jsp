@@ -3,20 +3,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Flower Shop 1.0</title>
 
-    <style>
-    .raz {
-      all: unset;
-      -moz-appearance: textfield;
-      width: 3em;
-      text-align: center;
-    }
-    .raz::-webkit-inner-spin-button {
-      display: none;
-    }
 
-    </style>
 </head>
 <body>
 <div class="w3-container w3-blue-grey w3-opacity w3-left-align">
@@ -153,7 +143,7 @@
                    <td colspan="5">
                         <details>
                           <table>
-                              <c:forEach items = "${order.orderPositionList}" var="iterator">
+                              <c:forEach items = "${item.basketOrder}" var="iterator">
                                    <tr>
                                         <td >${iterator.flowerName}   </td>
                                         <td >${iterator.quantity}  шт. </td>

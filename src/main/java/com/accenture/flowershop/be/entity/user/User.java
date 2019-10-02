@@ -4,6 +4,7 @@ package com.accenture.flowershop.be.entity.user;
 import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.fe.enums.Roles;
 import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -52,8 +53,19 @@ public class User implements Serializable {
     @Column(name = "DISCOUNT")
     private Integer discount;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Order> orderList;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Order> orderList = new ArrayList<>();
+
+    public  void addOrder(Order order){
+        orderList.add(order);
+        order.setUser(this);
+        order.setUserLogin(this.getLogin());
+    }
+
+    public  void removeOrder(Order order){
+        orderList.remove(order);
+        order.setUser(null);
+    }
 
     public List<Order> getOrderList() {
         return orderList;
@@ -63,9 +75,7 @@ public class User implements Serializable {
         this.orderList = orderList;
     }
 
-    public User() {
-        this.orderList = new ArrayList<>();
-    }
+    public User() {    }
 
     public Long getId() {
         return id;

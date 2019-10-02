@@ -14,6 +14,8 @@ public interface FlowerBusinessService {
 
     void addFlower(Flower flower);
 
+    void changeQuantityFlower(Long flowerId, long quantity);
+
     void deleteFlower(Flower flower);
 
     void updateFlower(Flower flower);

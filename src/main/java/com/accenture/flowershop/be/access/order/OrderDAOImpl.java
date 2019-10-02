@@ -24,8 +24,25 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     @Transactional
-    public void addOrder(Order order) {
+    public Order getOrderByIdActualBasket(Long userId) {
+        try {
+            TypedQuery<Order> query =
+                    em.createQuery(" from Order o where o.statusOrder = 'BASKET' and o.user.id=:userId", Order.class);
+            query.setParameter("userId", userId);
+            LOG.debug("userId: " + userId);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+//            e.printStackTrace();
+            LOG.warn(" Order  : не найден");
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional
+    public Order addOrder(Order order) {
         em.persist(order);
+        return order;
     }
 
     @Override
@@ -36,6 +53,7 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
+    @Transactional
     public List<Order> getAllOrders() {
         try {
             TypedQuery<Order> query =
@@ -50,16 +68,32 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
+    public Order getOrderByUser(User user) {
+        try {
+            TypedQuery<Order> query =
+                    em.createQuery("from Order o where o.statusOrder='CREATED' and o.user.id=:user.id ", Order.class);
+            query.setParameter("user.id", user.getId());
+            LOG.debug("getOrderByUserID: " + user.getId());
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+//            e.printStackTrace();
+            LOG.warn("getOrderByUserID: " + user.getId() + " не найден");
+            return null;
+        }
+    }
+
+
     @Transactional
     public List<Order> getOrderByUser(String userLogin) {
         try {
             TypedQuery<Order> query =
-                    em.createQuery("from Order o where o.userLogin=:userLogin", Order.class);
+                    em.createQuery("from Order o JOIN FETCH o.orderPositionList where o.userLogin=:userLogin " +
+                            " ", Order.class);
             query.setParameter("userLogin", userLogin);
             LOG.debug("getOrderByUserID: " + userLogin);
             return query.getResultList();
         } catch (NoResultException e) {
-//            e.printStackTrace();
+//            e.printStackTrace(); Lazyinitializationexception
             LOG.warn("getOrderByUserID: " + userLogin + " не найден");
             return null;
         }

@@ -56,7 +56,8 @@ public class UserDAOImpl implements UserDAO {
         try {
 //            Roles role = Roles.USER;
             TypedQuery<User> query =
-                    em.createQuery("from User u ", User.class);
+                    em.createQuery(
+                            "from User u ", User.class);
 //            query.setParameter("role",role);where u.role =:role
             LOG.debug("getUserList: " + query.getResultList());
             return query.getResultList();
@@ -72,5 +73,6 @@ public class UserDAOImpl implements UserDAO {
         LOG.debug("findUserById: " + idUser);
         return em.find(User.class, idUser);
     }
+
 
 }

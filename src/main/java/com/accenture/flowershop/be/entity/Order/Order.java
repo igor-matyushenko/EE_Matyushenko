@@ -20,15 +20,15 @@ public class Order implements Serializable {
     @Column(name = "ID_ORDER")
     private Long id;
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ORDER")
-    private List<OrderPosition> orderPositionList = new ArrayList<>();
+    private List<OrderPosition> basketOrder = new ArrayList<>();
 
     @Column(name = "LOGIN_USER")
     private String userLogin;
 
     @Column(name = "TOTAL_PRICE")
-    private BigDecimal totalPrice;
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 
     @Column(name = "STATUS_ORDER")
     @Enumerated(EnumType.STRING)
@@ -40,11 +40,10 @@ public class Order implements Serializable {
     @Column(name = "DATE_CLOSE")
     private Date dateClose;
 
-//    @Column(name = "ID_USER")
-//    private Long userID;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ID_USER")
     private User user;
+
 
     public User getUser() {
         return user;
@@ -54,13 +53,7 @@ public class Order implements Serializable {
         this.user = user;
     }
 
-//    public Long getUserID() {
-//        return userID;
-//    }
-//
-//    public void setUserID(Long userID) {
-//        this.userID = userID;
-//    }
+
 
     public Order() {
     }
@@ -71,13 +64,6 @@ public class Order implements Serializable {
     }
 
 
-    public String getUserLogin() {
-        return userLogin;
-    }
-
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
-    }
 
     public Long getId() {
         return id;
@@ -85,6 +71,22 @@ public class Order implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<OrderPosition> getBasketOrder() {
+        return basketOrder;
+    }
+
+    public void setBasketOrder(List<OrderPosition> basketOrder) {
+        this.basketOrder = basketOrder;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
     public BigDecimal getTotalPrice() {
@@ -103,14 +105,6 @@ public class Order implements Serializable {
         this.statusOrder = statusOrder;
     }
 
-    public List<OrderPosition> getOrderPositionList() {
-        return orderPositionList;
-    }
-
-    public void setOrderPositionList(List<OrderPosition> orderPositionList) {
-        this.orderPositionList = orderPositionList;
-    }
-
     public Date getDateCreate() {
         return dateCreate;
     }
@@ -127,16 +121,16 @@ public class Order implements Serializable {
         this.dateClose = dateClose;
     }
 
-
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", userLogin=" + userLogin +
+                ", userLogin='" + userLogin + '\'' +
                 ", totalPrice=" + totalPrice +
                 ", statusOrder=" + statusOrder +
                 ", dateCreate=" + dateCreate +
                 ", dateClose=" + dateClose +
+                ", user=" + user +
                 '}';
     }
 }

@@ -40,15 +40,15 @@ public class PayCreateOrderServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         if (session != null) {
-            String login = ((UserDTO) session.getAttribute("user")).getLogin();
+            UserDTO user = (UserDTO) session.getAttribute("user");
             Long orderId = Long.parseLong(request.getParameter("orderListPayId"));
-            if (!userBusinessService.payCreatedOrder(login,orderId)){
+            if (!userBusinessService.payOrder(user.getId(),orderId)){
                 request.setAttribute("orderMessage", "Не хватает денежных средств!");
             } else {
-                User userEntity = userBusinessService.findUserByLogin(login);
-                UserDTO user = mapper.map(userEntity,UserDTO.class);
+                User userEntity = userBusinessService.findUserById(user.getId());
+                user = mapper.map(userEntity,UserDTO.class);
                 session.setAttribute("user", user);
-                session.setAttribute("orderList", mapper.map(orderBusinessService.getOrdersByUserLogin(user.getLogin()), List.class));
+                session.setAttribute("orderList", mapper.map(orderBusinessService.getAllOrdersByUserId(user.getId()), List.class));
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         } else {

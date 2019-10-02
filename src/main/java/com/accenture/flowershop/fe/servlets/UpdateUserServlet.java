@@ -3,7 +3,6 @@ package com.accenture.flowershop.fe.servlets;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.dto.UserDTO;
-import com.accenture.flowershop.fe.enums.Roles;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -45,15 +44,11 @@ public class UpdateUserServlet extends HttpServlet {
             User userEntity = mapper.map(newUser, User.class);
             userBusinessService.updateUser(userEntity);
             session.setAttribute("user", userAdmin);
-            session.setAttribute("userListAdmin", userBusinessService.getAllUser());
+            session.setAttribute("userListAdmin", mapper.map(userBusinessService.getAllUsers(),List.class));
             request.setAttribute("updateMessage", " is update! ");
             request.getRequestDispatcher("/WEB-INF/lib/updateUser.jsp").forward(request, response);
         }
-//        request.setAttribute("error", "Заполните все поля! ");
-//        request.getRequestDispatcher("/WEB-INF/lib/updateUser.jsp").forward(request, response);
-
     }
-
 
     private UserDTO updateUserServlet(HttpServletRequest request) {
         UserDTO userDTO = new UserDTO();

@@ -2,7 +2,7 @@ package com.accenture.flowershop.be.business.order;
 
 import com.accenture.flowershop.be.access.order.OrderDAO;
 import com.accenture.flowershop.be.access.user.UserDAO;
-import com.accenture.flowershop.be.entity.Order.OrderPosition;
+import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.enums.StatusOrder;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,9 +27,18 @@ public class OrderBusinessServiceImpl implements OrderBusinessService {
     private UserDAO userDAO;
 
     @Autowired
+    private UserBusinessService userBusinessService;
+
+    @Autowired
     private OrderPositionBusinessService orderPositionBusinessService;
 
-    private static final Logger log = LoggerFactory.getLogger(OrderBusinessServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OrderBusinessServiceImpl.class);
+
+    @Override
+    @Transactional
+    public Order getOrderByIdActualBasket(Long userId) {
+        return orderDAO.getOrderByIdActualBasket(userId);
+    }
 
     @Override
     @Transactional
@@ -53,39 +61,39 @@ public class OrderBusinessServiceImpl implements OrderBusinessService {
 
     @Override
     @Transactional
-    public Order newOrderCreate(String userLogin) {
-        User user = userDAO.findUserByLogin(userLogin);
-        List<OrderPosition> orderPositionList = orderPositionBusinessService.getNewOrderPositionByUserId(user.getId());
-        BigDecimal totalPriceOfBasket = new BigDecimal(0);
-        for (OrderPosition b : orderPositionList) {
-            totalPriceOfBasket = totalPriceOfBasket.add(b.getTotalPrice());
-        }
-        Order order = new Order(StatusOrder.CREATED);
-        order.setOrderPositionList(orderPositionList);
-        order.setUserLogin(user.getLogin());
-        order.setTotalPrice(totalPriceOfBasket);
-        orderPositionBusinessService.setTotalSumFromActualBasket(new BigDecimal(0));
-        addOrder(order);
-        return order;
+    public boolean createOrder(Long userId) {
+        User user = userBusinessService.findUserById(userId);
+        Order order = orderDAO.getOrderByIdActualBasket(userId);
+        order.setStatusOrder(StatusOrder.CREATED);
+        orderDAO.updateOrder(order);
+        userBusinessService.updateUser(user);
+        return true;
     }
 
     @Override
     @Transactional
-    public Order getOrderById(Long idOrder) {
-        return orderDAO.getOrderById(idOrder);
+    public List<Order> getAllOrdersByUserId(Long userId) {
+        User user = userBusinessService.findUserById(userId);
+        for (Order o : user.getOrderList()){
+            o.getBasketOrder().size();
+        }
+        return user.getOrderList();
+    }
+
+    @Override
+    @Transactional
+    public Order getOrderById(Long orderId) {
+        return orderDAO.getOrderById(orderId);
     }
 
     @Override
     @Transactional
     public List<Order> getAllOrders() {
+        userBusinessService.getAllUsers();
         return orderDAO.getAllOrders();
     }
 
-    @Override
-    @Transactional
-    public List<Order> getOrdersByUserLogin(String loginUser) {
-        return  orderDAO.getOrderByUser(loginUser);
-    }
+
 
     @Override
     @Transactional

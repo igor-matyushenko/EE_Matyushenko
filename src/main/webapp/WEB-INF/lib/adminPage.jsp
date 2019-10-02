@@ -88,7 +88,7 @@
 							<td colspan="5">
 					  <details>
 							<table>
-							 <c:forEach items = "${order.orderPositionList}" var="iterator">
+							 <c:forEach items = "${order.basketOrder}" var="iterator">
 							  <tr>
 								<td >${iterator.flowerName}  </td>
 								<td >${iterator.quantity}  </td>

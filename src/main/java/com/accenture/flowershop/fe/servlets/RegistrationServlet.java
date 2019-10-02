@@ -1,6 +1,7 @@
 package com.accenture.flowershop.fe.servlets;
 
 import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
+import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.dto.FlowerDTO;
@@ -31,12 +32,19 @@ public class RegistrationServlet extends HttpServlet {
     private FlowerBusinessService flowerBusinessService;
     @Autowired
     private  Mapper mapper;
+    @Autowired
+    private OrderBusinessService orderBusinessService;
 
     private static final Logger log = LoggerFactory.getLogger(LoginServlet.class);
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/lib/registration.jsp").forward(req,resp);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -48,7 +56,7 @@ public class RegistrationServlet extends HttpServlet {
             setParam(user,request);
             if (!userBusinessService.checkLogin(user.getLogin())) {
                 User userEntity = mapper.map(user, User.class);
-                userBusinessService.userRegistration(userEntity);
+                user = mapper.map(userBusinessService.userRegistration(userEntity),UserDTO.class);
                 log.debug("User успешно зарегистрирован : " + user.getLogin());
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(30 * 60);
@@ -58,21 +66,15 @@ public class RegistrationServlet extends HttpServlet {
             } else {
                 request.setAttribute("error", "Пользователь существует  : " + user.getLogin());
                 log.error("User существует  : " + user.getLogin());
-                doGet(request, response);
+                request.getRequestDispatcher("/WEB-INF/lib/registration.jsp").forward(request, response);
             }
         } else {
             request.setAttribute("error", "Login or passwords введите снова");
             log.error("User не зарегистрирован : " + request.getAttribute("error"));
-            doGet(request, response);
+            request.getRequestDispatcher("/WEB-INF/lib/registration.jsp").forward(request, response);
         }
 
     }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/lib/registration.jsp").forward(request, response);
-    }
-
 
     private void setParam(UserDTO user, HttpServletRequest request){
         user.setFirstName(request.getParameter("firstName"));

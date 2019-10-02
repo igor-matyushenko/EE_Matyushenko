@@ -42,15 +42,13 @@ public class CreateOrderServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session != null) {
             UserDTO user = (UserDTO) session.getAttribute("user");
-            Order order = orderBusinessService.newOrderCreate(user.getLogin());
-            if (order == null) {
-                request.setAttribute("orderMessage", "Создайте заказ!");
+            if (!orderBusinessService.createOrder(user.getId())) {
+                request.setAttribute("orderMessage", "Ошибка создания заказа!");
             } else {
                 session.setAttribute("user", user);
                 session.setAttribute("basket", null);
                 session.setAttribute("total", null);
-                session.setAttribute("order", mapper.map(order, OrderDTO.class));
-                session.setAttribute("orderList", mapper.map(orderBusinessService.getOrdersByUserLogin(user.getLogin()), List.class));
+                session.setAttribute("orderList", mapper.map(orderBusinessService.getAllOrdersByUserId(user.getId()), List.class));
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         } else {

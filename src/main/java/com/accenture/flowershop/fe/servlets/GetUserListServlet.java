@@ -3,7 +3,6 @@ package com.accenture.flowershop.fe.servlets;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.fe.dto.UserDTO;
 import com.accenture.flowershop.fe.enums.Roles;
-import jdk.internal.module.ModuleLoaderMap;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -41,7 +40,7 @@ public class GetUserListServlet extends HttpServlet {
             UserDTO user = (UserDTO) session.getAttribute("user");
             if (user.getRole().equals(Roles.ADMIN)) {
                 session.setAttribute("user", user);
-                session.setAttribute("userListAdmin", userBusinessService.getAllUser());
+                session.setAttribute("userListAdmin", mapper.map(userBusinessService.getAllUsers(),List.class));
                 request.getRequestDispatcher("/WEB-INF/lib/updateUser.jsp").forward(request, response);
             }
         }

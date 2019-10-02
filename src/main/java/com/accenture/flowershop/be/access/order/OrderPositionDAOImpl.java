@@ -21,30 +21,49 @@ public class OrderPositionDAOImpl implements OrderPositionDAO{
 
     private static final Logger LOG = LoggerFactory.getLogger(OrderPositionDAOImpl.class);
 
+//    @Override
+//    @Transactional
+//    public List<OrderPosition> getOrderPositionByUserId(Long idUser, Long idOrder) {
+//        try {
+//            TypedQuery<OrderPosition> query =
+//                    em.createQuery("from OrderPosition e where e.order.id=:idOrder AND e.userID =:idUser", OrderPosition.class);
+//            query.setParameter("idUser", idUser);
+//            query.setParameter("idOrder", idOrder);
+//            LOG.debug("getOrderPositionByUserId: " + idUser + " idOrder: "+idOrder);
+//            return query.getResultList();
+//        } catch (NoResultException e) {
+////            e.printStackTrace();
+//            LOG.warn("getOrderPositionByUserId: " + + idUser + " idOrder: "+idOrder+ " not found");
+//            return null;
+//        }
+//    }
+
     @Override
     @Transactional
-    public List<OrderPosition> getOrderPositionByUserId(Long idUser) {
+    public List<OrderPosition> getOrderPositionByUser(Long userId) {
         try {
             TypedQuery<OrderPosition> query =
-                    em.createQuery("from OrderPosition e where e.order.id IS NULL AND e.userID =:idUser", OrderPosition.class);
-            query.setParameter("idUser", idUser);
-            LOG.debug("getOrderPositionByUserId: " + idUser);
+                    em.createQuery("from OrderPosition e  " +
+                            "where  e.userId =:idUser", OrderPosition.class);
+            query.setParameter("idUser", userId);
+            LOG.debug("getActualOrderPositionByUserId : " + userId);
             return query.getResultList();
         } catch (NoResultException e) {
 //            e.printStackTrace();
-            LOG.warn("getOrderPositionByUserId: " + idUser + " не найден");
+            LOG.warn("getActualOrderPositionByUserId: " + userId + " не найден");
             return null;
         }
     }
 
     @Override
     @Transactional
-    public List<OrderPosition> getActualOrderPositionByUserId(Long idUser) {
+    public List<OrderPosition> getActualOrderPositionByUserId(Long idUser, Long idOrder) {
         try {
             TypedQuery<OrderPosition> query =
                     em.createQuery("from OrderPosition e  " +
-                            "where e.order.id IS NULL and e.userID =:idUser", OrderPosition.class);
+                            "where e.orderId = :idOrder and e.userId =:idUser", OrderPosition.class);
             query.setParameter("idUser", idUser);
+            query.setParameter("idOrder", idOrder);
             LOG.debug("getActualOrderPositionByUserId : " + idUser);
             return query.getResultList();
         } catch (NoResultException e) {
@@ -54,22 +73,6 @@ public class OrderPositionDAOImpl implements OrderPositionDAO{
         }
     }
 
-    @Override
-    @Transactional
-    public OrderPosition getOrderPositionByFlowerName(String flowerName) {
-        try {
-            TypedQuery<OrderPosition> query =
-                    em.createQuery("from OrderPosition e " +
-                            "where e.order.id IS NULL and e.flowerName =:flowerName", OrderPosition.class);
-            query.setParameter("flowerName", flowerName);
-            LOG.debug("getOrderPositionByFlowerName: " + flowerName);
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-//            e.printStackTrace();
-            LOG.debug("getOrderPositionByFlowerName: " + flowerName + " не найден");
-            return null;
-        }
-    }
 
     @Override
     @Transactional

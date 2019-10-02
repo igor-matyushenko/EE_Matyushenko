@@ -5,14 +5,15 @@ import com.accenture.flowershop.be.business.order.OrderPositionBusinessService;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.be.entity.user.User;
+import com.accenture.flowershop.fe.enums.Roles;
 import com.accenture.flowershop.fe.enums.StatusOrder;
+import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -26,23 +27,26 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     private OrderBusinessService orderBusinessService;
     @Autowired
     private OrderPositionBusinessService orderPositionBusinessService;
+    @Autowired
+    private Mapper mapper;
+
+
 
     @Override
     @Transactional
-    public List<User> getAllUser() {
+    public List<User> getAllUsers() {
+        for(User u: userDAO.getUserList()){
+            u.getOrderList().size();
+            for (Order o: u.getOrderList()){
+                o.getBasketOrder().size();
+            }
+        }
         return userDAO.getUserList();
     }
 
-    @Override
-    public BigDecimal userSumDiscount(BigDecimal priceFlower, int discountUser, Long quantityToBasket) {
-        BigDecimal discount = new BigDecimal(discountUser * 0.01);
-        BigDecimal sumFlower = priceFlower.multiply(new BigDecimal(quantityToBasket));
-        BigDecimal discountForUser = sumFlower.multiply(discount);
-        BigDecimal sumForFlowerWithUserCount = sumFlower.subtract(discountForUser);
-        return sumForFlowerWithUserCount.setScale(2, BigDecimal.ROUND_HALF_UP);
-    }
 
     @Override
+    @Transactional
     public User userVerification(String login, String password) {
         if (login.isEmpty() || password.isEmpty()) {
             log.warn("Wrong login or password" + login);
@@ -52,6 +56,10 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 log.debug("Login Access" + login);
+                if(Roles.USER.equals(user.getRole()))
+                    orderBusinessService.getAllOrdersByUserId(user.getId());
+                if(Roles.ADMIN.equals(user.getRole()))
+                    orderBusinessService.getAllOrders();
                 return user;
             }
         }
@@ -59,6 +67,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
+    @Transactional
     public User userRegistration(User user) {
         if (userDAO.findUserByLogin(user.getLogin()) == null) {
             userDAO.saveUser(user);
@@ -80,34 +89,42 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    public boolean payCreatedOrder(String login, Long orderID) {
-        User user = userDAO.findUserByLogin(login);
-        Order order = orderBusinessService.getOrderById(orderID);
-        return payOfOrder(user, order);
-    }
-
-    private boolean payOfOrder(User user, Order order) {
-        if (user.getBalance().compareTo(order.getTotalPrice()) < 0) {
-            return false;
+    public double getDiscountOfUser(User user) {
+        if(user.getDiscount() == 0){
+            return 0D;
         }
-        user = findUserByLogin(user.getLogin());
-        user.setBalance(user.getBalance().subtract(order.getTotalPrice()));
-        updateUser(user);
-        order.setStatusOrder(StatusOrder.PAID);
-        orderBusinessService.updateOrder(order);
-        orderPositionBusinessService.updateOrderPositionList(orderPositionBusinessService.getOrderPositionByUserId(user.getId()));
-        return true;
+        return (double) (user.getDiscount()*0.01);
     }
 
     @Override
     @Transactional
+    public boolean payOrder(Long userId, Long orderId) {
+        User user = findUserById(userId);
+        user.getOrderList().size();
+        Order order = orderBusinessService.getOrderById(orderId);
+        order.getBasketOrder().size();
+        if (user.getBalance().compareTo(order.getTotalPrice()) < 0) {
+            return false;
+        }
+        order.setStatusOrder(StatusOrder.PAID);
+        user.setBalance(user.getBalance().subtract(order.getTotalPrice()));
+        orderBusinessService.updateOrder(order);
+        updateUser(user);
+        return true;
+    }
+
+    @Override
     public User findUserByLogin(String login) {
         log.debug("FindUserByLogin" + login);
         return userDAO.findUserByLogin(login);
     }
 
     @Override
-    @Transactional
+    public User findUserById(Long userId) {
+        return userDAO.findUserById(userId);
+    }
+
+    @Override
     public void updateUser(User user) {
         User updateUser = findUserByLogin(user.getLogin());
         updateUser.setLogin(user.getLogin());
