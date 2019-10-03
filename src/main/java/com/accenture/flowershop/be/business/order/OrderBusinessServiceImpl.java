@@ -89,7 +89,12 @@ public class OrderBusinessServiceImpl implements OrderBusinessService {
     @Override
     @Transactional
     public List<Order> getAllOrders() {
-        userBusinessService.getAllUsers();
+        for(User u: userDAO.getUserList()){
+            u.getOrderList().size();
+            for (Order o: u.getOrderList()){
+                o.getBasketOrder().size();
+            }
+        }
         return orderDAO.getAllOrders();
     }
 

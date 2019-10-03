@@ -57,7 +57,7 @@ public class UserDAOImpl implements UserDAO {
 //            Roles role = Roles.USER;
             TypedQuery<User> query =
                     em.createQuery(
-                            "from User u ", User.class);
+                            " from User u ", User.class);
 //            query.setParameter("role",role);where u.role =:role
             LOG.debug("getUserList: " + query.getResultList());
             return query.getResultList();

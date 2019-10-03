@@ -3,8 +3,7 @@ package com.accenture.flowershop.be.entity.user;
 
 import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.fe.enums.Roles;
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
-import org.hibernate.annotations.Proxy;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +20,7 @@ public class User implements Serializable {
     @SequenceGenerator(name = "USERS_SEQ", sequenceName = "USERS_SEQ", allocationSize = 1)
     @Column(name = "ID_USER")
     private Long id;
+
 
     @Column(name = "LOGIN")
     private String login;
@@ -81,6 +81,7 @@ public class User implements Serializable {
         return id;
     }
 
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -88,6 +89,7 @@ public class User implements Serializable {
     public String getLogin() {
         return login;
     }
+
 
     public void setLogin(String login) {
         this.login = login;
@@ -97,6 +99,7 @@ public class User implements Serializable {
         return password;
     }
 
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -104,6 +107,7 @@ public class User implements Serializable {
     public Roles getRole() {
         return role;
     }
+
 
     public void setRole(Roles role) {
         this.role = role;
@@ -113,6 +117,7 @@ public class User implements Serializable {
         return firstName;
     }
 
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -120,6 +125,7 @@ public class User implements Serializable {
     public String getLastName() {
         return lastName;
     }
+
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -129,6 +135,7 @@ public class User implements Serializable {
         return phoneNumber;
     }
 
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -136,6 +143,7 @@ public class User implements Serializable {
     public String getAddress() {
         return address;
     }
+
 
     public void setAddress(String address) {
         this.address = address;
@@ -145,6 +153,7 @@ public class User implements Serializable {
         return email;
     }
 
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -153,6 +162,7 @@ public class User implements Serializable {
         return balance;
     }
 
+
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
@@ -160,6 +170,7 @@ public class User implements Serializable {
     public Integer getDiscount() {
         return discount;
     }
+
 
     public void setDiscount(Integer discount) {
         this.discount = discount;

@@ -41,6 +41,19 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 o.getBasketOrder().size();
             }
         }
+
+        return userDAO.getUserList();
+    }
+
+    @Override
+    @Transactional
+    public List<User> getAllUsersForLazy() {
+        for(User u:userDAO.getUserList()){
+            for(Order o : u.getOrderList()) {
+                o.setBasketOrder(null);
+            }
+            u.setOrderList(null);
+        }
         return userDAO.getUserList();
     }
 

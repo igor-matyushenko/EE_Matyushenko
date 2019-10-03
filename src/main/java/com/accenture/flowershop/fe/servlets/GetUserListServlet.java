@@ -32,7 +32,7 @@ public class GetUserListServlet extends HttpServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
     }
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null) {
             request.getRequestDispatcher("indexServlet").forward(request, response);
@@ -40,7 +40,7 @@ public class GetUserListServlet extends HttpServlet {
             UserDTO user = (UserDTO) session.getAttribute("user");
             if (user.getRole().equals(Roles.ADMIN)) {
                 session.setAttribute("user", user);
-                session.setAttribute("userListAdmin", mapper.map(userBusinessService.getAllUsers(),List.class));
+                session.setAttribute("userListAdmin", mapper.map(userBusinessService.getAllUsersForLazy(),List.class));
                 request.getRequestDispatcher("/WEB-INF/lib/updateUser.jsp").forward(request, response);
             }
         }

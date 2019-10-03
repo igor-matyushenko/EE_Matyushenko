@@ -1,10 +1,10 @@
 package com.accenture.flowershop.fe.servlets;
 
+import com.accenture.flowershop.be.business.UserMarshgallingServiceImpl;
 import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
-import com.accenture.flowershop.fe.dto.FlowerDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 
 import org.dozer.Mapper;
@@ -34,6 +34,8 @@ public class RegistrationServlet extends HttpServlet {
     private  Mapper mapper;
     @Autowired
     private OrderBusinessService orderBusinessService;
+    @Autowired
+    private UserMarshgallingServiceImpl userMarshgallingService;
 
     private static final Logger log = LoggerFactory.getLogger(LoginServlet.class);
 
@@ -57,6 +59,7 @@ public class RegistrationServlet extends HttpServlet {
             if (!userBusinessService.checkLogin(user.getLogin())) {
                 User userEntity = mapper.map(user, User.class);
                 user = mapper.map(userBusinessService.userRegistration(userEntity),UserDTO.class);
+                userMarshgallingService.convertFromObjectToXML(user,user.getLogin());
                 log.debug("User успешно зарегистрирован : " + user.getLogin());
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(30 * 60);

@@ -9,6 +9,8 @@ public interface UserBusinessService {
 
     List<User> getAllUsers();
 
+    List<User> getAllUsersForLazy();
+
 
     User userVerification(String login, String password);
 

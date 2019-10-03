@@ -53,7 +53,7 @@
 				<tr>
 				    <td></td>
 				    <td>
-				    <form method="get" action="getUserListServlet">
+				    <form method="post" action="getUserListServlet">
                         <input class="w3-btn w3-black w3-hover-light-green w3-round-large " type=submit  value="List users"/>
                      </form>
 				    </td>

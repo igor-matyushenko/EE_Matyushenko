@@ -66,5 +66,11 @@
                   value="classpath*:/dozer/*mapping.xml"/>
     </bean>
 
+    <context:property-placeholder location = "classpath:/conf.properties"/>
+    <bean id="userMarshgallingService" class="com.accenture.flowershop.be.business.UserMarshgallingServiceImpl">
+        <property name="marshaller" ref="castorMarshaller" />
+        <property name="unmarshaller" ref="castorMarshaller" />
+    </bean>
+    <bean id="castorMarshaller" 	class="org.springframework.oxm.castor.CastorMarshaller"/>
 
 </beans>
