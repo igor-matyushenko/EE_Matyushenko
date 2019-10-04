@@ -18,12 +18,16 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
     private FlowerDAO flowerDAO;
 
     @Override
+    public void increaseFlowersStockSize(int count) {
+        flowerDAO.increaseFlowersStockSize(count);
+    }
+
+    @Override
     public List<Flower> getAllFlowers() {
         return flowerDAO.getAllFlowers();
     }
 
     @Override
-    @Transactional
     public List<Flower> getAllFlowersBySearch(String flowerName, BigDecimal minPrice, BigDecimal maxPrice) {
         if (maxPrice == null) {
             maxPrice = new BigDecimal(Long.MAX_VALUE);
@@ -47,13 +51,11 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
 
 
     @Override
-    @Transactional
     public void addFlower(Flower flower) {
         flowerDAO.addFlower(flower);
     }
 
     @Override
-    @Transactional
     public void changeQuantityFlower(Long flowerId, long quantity) {
         Flower flower = flowerDAO.getFlowerById(flowerId);
         flower.setQuantity(flower.getQuantity()-quantity);
@@ -71,7 +73,6 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
     }
 
     @Override
-    @Transactional
     public Flower getFlowerById(Long idFlower) {
         return flowerDAO.getFlowerById(idFlower);
     }

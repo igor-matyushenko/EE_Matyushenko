@@ -10,7 +10,7 @@ public interface OrderPositionBusinessService {
     boolean addOrderPositionToBasket(Long userId, Long idFlower, Long quantityToOrderPosition, Long quantityFlower);
 
 
-    BigDecimal getTotalSumBasket();
+
 
     List<OrderPosition> getActualBasketByUserId(Long userId);
 }

@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" isELIgnored = "false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="java.lang.Double"%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -81,8 +82,11 @@
                     				    <th>Количество</th>
                                         <th>Цена</th>
                      				</tr>
+                     				<c:set var="totalPriceBasket" value="${0}" />
+
                                     <c:forEach items = "${basket}" var="item">
-                     				    <tr>
+                                     <c:set var="totalPriceBasket" value="${totalPriceBasket + item.totalPrice}" />
+                     				 <tr>
                                             <td></td>
                      				        <td>${item.flowerName}</td>
                      				        <td>${item.quantity}</td>
@@ -94,7 +98,7 @@
                      				    </tr>
                      				        <tr>
                                                 <td align="left" colspan="3">total cost: </td>
-                                                <td><input type="number" readonly value="${total}"/></td>
+                                                <td><input type="number" readonly value="${totalPriceBasket}"/></td>
                                             </tr>
                      				        <tr>
                      				            <td colspan="3"></td>

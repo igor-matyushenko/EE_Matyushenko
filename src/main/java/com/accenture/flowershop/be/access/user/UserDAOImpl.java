@@ -69,6 +69,28 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     @Transactional
+    public List<User> getUserListWhithLazy() {
+        try {
+//            Roles role = Roles.USER;
+            TypedQuery<User> query =
+                    em.createQuery(
+                            " select " +
+                                    "u.id, u.login, u.password, u.role, " +
+                                    "u.firstName, u.lastName, " +
+                                    "u.email, u.phoneNumber, u.address,  " +
+                                    "u.discount, u.balance, " +
+                                    "from User u ", User.class);
+//            query.setParameter("role",role);where u.role =:role
+            LOG.debug("getUserList: " + query.getResultList());
+            return query.getResultList();
+        } catch (NoResultException e) {
+//            e.printStackTrace();
+            LOG.warn("getUserList: не найден");
+            return null; }
+    }
+
+    @Override
+    @Transactional
     public User findUserById(Long idUser) {
         LOG.debug("findUserById: " + idUser);
         return em.find(User.class, idUser);

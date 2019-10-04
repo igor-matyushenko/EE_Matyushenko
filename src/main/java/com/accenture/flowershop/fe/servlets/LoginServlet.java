@@ -5,6 +5,8 @@ import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.order.OrderPositionBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
+import com.accenture.flowershop.be.entity.Order.Order;
+import com.accenture.flowershop.be.entity.Order.OrderPosition;
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.dto.UserDTO;
 import com.accenture.flowershop.fe.enums.Roles;
@@ -72,6 +74,8 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("user", user);
                 session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
                 session.setAttribute("orderList",  mapper.map(orderBusinessService.getAllOrdersByUserId(user.getId()), List.class));
+                List<OrderPosition> list = orderPositionBusinessService.getActualBasketByUserId(user.getId());
+                if(list!=null) session.setAttribute("basket", mapper.map(list,List.class));
                 request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
             }
         } else {

@@ -28,7 +28,6 @@ public class UserDTO {
         this.setDiscount(3);
         this.setRole(Roles.USER);
         this.setBalance(new BigDecimal(2000));
-        this.orderList = new ArrayList<>();
     }
 
     public  void addOrder(OrderDTO order){

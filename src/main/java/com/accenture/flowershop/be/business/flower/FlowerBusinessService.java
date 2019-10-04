@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface FlowerBusinessService {
 
+    void increaseFlowersStockSize(int count);
+
     List<Flower> getAllFlowers();
 
     List<Flower> getAllFlowersBySearch(String flowerName, BigDecimal minPrice, BigDecimal maxPrice);

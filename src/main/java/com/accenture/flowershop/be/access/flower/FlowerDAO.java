@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface FlowerDAO {
 
+    void increaseFlowersStockSize(int count);
+
     List<Flower> getAllFlowers();
 
     void addFlower(Flower flower);

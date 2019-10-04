@@ -23,6 +23,14 @@ public class FlowerDAOImpl implements FlowerDAO {
 
     @Override
     @Transactional
+    public void increaseFlowersStockSize(int count) {
+        for(Flower f : getAllFlowers()){
+            f.setQuantity(f.getQuantity()+count);
+        }
+    }
+
+    @Override
+    @Transactional
     public List<Flower> getAllFlowers() {
         try {
             TypedQuery<Flower> query =

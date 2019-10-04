@@ -20,7 +20,7 @@ public class Order implements Serializable {
     @Column(name = "ID_ORDER")
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "ID_ORDER")
     private List<OrderPosition> basketOrder = new ArrayList<>();
 

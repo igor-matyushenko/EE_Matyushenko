@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
+<beans
+       xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -11,7 +13,9 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/jee
-       http://www.springframework.org/schema/jee/spring-jee.xsd">
+       http://www.springframework.org/schema/jee/spring-jee.xsd
+       http://cxf.apache.org/jaxws
+       http://cxf.apache.org/schemas/jaxws.xsd">
 
     <context:annotation-config/>
     <context:component-scan base-package="com.accenture.flowershop"/>
@@ -66,11 +70,20 @@
                   value="classpath*:/dozer/*mapping.xml"/>
     </bean>
 
-    <context:property-placeholder location = "classpath:/conf.properties"/>
+    <context:property-placeholder location="classpath:/conf.properties"/>
     <bean id="userMarshgallingService" class="com.accenture.flowershop.be.business.UserMarshgallingServiceImpl">
-        <property name="marshaller" ref="castorMarshaller" />
-        <property name="unmarshaller" ref="castorMarshaller" />
+        <property name="marshaller" ref="castorMarshaller"/>
+        <property name="unmarshaller" ref="castorMarshaller"/>
     </bean>
-    <bean id="castorMarshaller" 	class="org.springframework.oxm.castor.CastorMarshaller"/>
+    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"/>
+
+    <bean id="FlowersStockWebService" class="com.accenture.flowershop.fe.ws.FlowersStockWebServiceImpl" />
+    <jaxws:endpoint id="FlowersStockWebService1" implementor="#FlowersStockWebService"
+                    address="/FlowersStockWebService"/>
+
+<!--    <jaxws:client id="OrderBatchServiceClient"-->
+<!--                  serviceClass="com.accenture.flowershop.fe.ws.OrderBatchService"-->
+<!--                  address="http://localhost:8080/flower-shop/ws/FlowersStockWebService"/>-->
+
 
 </beans>

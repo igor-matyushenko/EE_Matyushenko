@@ -47,7 +47,6 @@ public class CreateOrderServlet extends HttpServlet {
             } else {
                 session.setAttribute("user", user);
                 session.setAttribute("basket", null);
-                session.setAttribute("total", null);
                 session.setAttribute("orderList", mapper.map(orderBusinessService.getAllOrdersByUserId(user.getId()), List.class));
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);

@@ -14,6 +14,8 @@ public interface UserDAO {
 
     List<User> getUserList();
 
+    List<User> getUserListWhithLazy();
+
     User findUserById(Long idUser);
 
 }

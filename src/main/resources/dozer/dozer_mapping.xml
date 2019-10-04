@@ -16,5 +16,13 @@
         <class-a>com.accenture.flowershop.be.entity.Order.Order</class-a>
         <class-b>com.accenture.flowershop.fe.dto.OrderDTO</class-b>
     </mapping>
+    <mapping>
+        <class-a>com.accenture.flowershop.be.entity.user.User</class-a>
+        <class-b>com.accenture.flowershop.fe.dto.UserLazyDTO</class-b>
+        <field-exclude>
+            <a>orderList</a>
+            <b>orderList</b>
+        </field-exclude>
+    </mapping>
 </mappings>
 

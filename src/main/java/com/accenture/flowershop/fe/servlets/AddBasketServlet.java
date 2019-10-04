@@ -50,7 +50,6 @@ public class AddBasketServlet extends HttpServlet {
                 session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
                 session.setAttribute("basket",  mapper.map(orderPositionBusinessService.getActualBasketByUserId(user.getId()),List.class));
                 session.setAttribute("user", user);
-                session.setAttribute("total", orderPositionBusinessService.getTotalSumBasket());
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         }

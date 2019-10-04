@@ -37,12 +37,12 @@ public class OrderPositionBusinessServiceImpl implements OrderPositionBusinessSe
     private static final Logger LOG = LoggerFactory.getLogger(OrderPositionBusinessServiceImpl.class);
     private BigDecimal totalSumBasket;
 
-    public BigDecimal getTotalSumBasket() {
+    private BigDecimal getTotalSumBasket() {
         return totalSumBasket;
     }
 
 
-    public void setTotalSumBasket(BigDecimal totalSumBasket) {
+    private void setTotalSumBasket(BigDecimal totalSumBasket) {
         this.totalSumBasket = totalSumBasket;
     }
 
@@ -50,6 +50,7 @@ public class OrderPositionBusinessServiceImpl implements OrderPositionBusinessSe
     @Transactional
     public List<OrderPosition> getActualBasketByUserId(Long userId) {
         Order order = orderBusinessService.getOrderByIdActualBasket(userId);
+        if(order == null) return null;
         return orderPositionDAO.getActualOrderPositionByUserId(userId, order.getId());
     }
 

@@ -2,11 +2,13 @@ package com.accenture.flowershop.be.entity.flower;
 
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 
 
 @Entity
 @Table(name = "FLOWERS")
+@XmlRootElement
 public class Flower {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FLOWERS_SEQ")

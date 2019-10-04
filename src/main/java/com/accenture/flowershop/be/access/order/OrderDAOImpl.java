@@ -57,7 +57,7 @@ public class OrderDAOImpl implements OrderDAO {
     public List<Order> getAllOrders() {
         try {
             TypedQuery<Order> query =
-                    em.createQuery(" from Order o ", Order.class);
+                    em.createQuery(" from Order o where o.statusOrder != 'BASKET' ", Order.class);
             LOG.debug("getAllOrder: " + query.getResultList().toString());
             return query.getResultList();
         } catch (NoResultException e) {
@@ -68,13 +68,14 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public Order getOrderByUser(User user) {
+    @Transactional
+    public List<Order> getOrdersByUser(User user) {
         try {
             TypedQuery<Order> query =
-                    em.createQuery("from Order o where o.statusOrder='CREATED' and o.user.id=:user.id ", Order.class);
+                    em.createQuery("from Order o where o.statusOrder!='BASKET' and o.user.id=:user.id ", Order.class);
             query.setParameter("user.id", user.getId());
             LOG.debug("getOrderByUserID: " + user.getId());
-            return query.getSingleResult();
+            return query.getResultList();
         } catch (NoResultException e) {
 //            e.printStackTrace();
             LOG.warn("getOrderByUserID: " + user.getId() + " не найден");
@@ -83,21 +84,6 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
 
-    @Transactional
-    public List<Order> getOrderByUser(String userLogin) {
-        try {
-            TypedQuery<Order> query =
-                    em.createQuery("from Order o JOIN FETCH o.orderPositionList where o.userLogin=:userLogin " +
-                            " ", Order.class);
-            query.setParameter("userLogin", userLogin);
-            LOG.debug("getOrderByUserID: " + userLogin);
-            return query.getResultList();
-        } catch (NoResultException e) {
-//            e.printStackTrace(); Lazyinitializationexception
-            LOG.warn("getOrderByUserID: " + userLogin + " не найден");
-            return null;
-        }
-    }
 
     @Override
     @Transactional

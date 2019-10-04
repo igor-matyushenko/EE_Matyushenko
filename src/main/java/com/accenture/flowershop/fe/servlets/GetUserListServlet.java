@@ -2,6 +2,7 @@ package com.accenture.flowershop.fe.servlets;
 
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.fe.dto.UserDTO;
+import com.accenture.flowershop.fe.dto.UserLazyDTO;
 import com.accenture.flowershop.fe.enums.Roles;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,8 @@ public class GetUserListServlet extends HttpServlet {
             UserDTO user = (UserDTO) session.getAttribute("user");
             if (user.getRole().equals(Roles.ADMIN)) {
                 session.setAttribute("user", user);
-                session.setAttribute("userListAdmin", mapper.map(userBusinessService.getAllUsersForLazy(),List.class));
+
+                session.setAttribute("userListAdmin", userBusinessService.getAllUsersForLazy());
                 request.getRequestDispatcher("/WEB-INF/lib/updateUser.jsp").forward(request, response);
             }
         }

@@ -4,6 +4,7 @@ import com.accenture.flowershop.be.access.order.OrderDAO;
 import com.accenture.flowershop.be.access.user.UserDAO;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.Order.Order;
+import com.accenture.flowershop.be.entity.Order.OrderPosition;
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.enums.StatusOrder;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,7 +37,6 @@ public class OrderBusinessServiceImpl implements OrderBusinessService {
     private static final Logger LOG = LoggerFactory.getLogger(OrderBusinessServiceImpl.class);
 
     @Override
-    @Transactional
     public Order getOrderByIdActualBasket(Long userId) {
         return orderDAO.getOrderByIdActualBasket(userId);
     }
@@ -54,7 +55,6 @@ public class OrderBusinessServiceImpl implements OrderBusinessService {
     }
 
     @Override
-    @Transactional
     public void addOrder(Order order) {
         orderDAO.addOrder(order);
     }
@@ -74,14 +74,17 @@ public class OrderBusinessServiceImpl implements OrderBusinessService {
     @Transactional
     public List<Order> getAllOrdersByUserId(Long userId) {
         User user = userBusinessService.findUserById(userId);
-        for (Order o : user.getOrderList()){
+        List<Order> orders = new ArrayList<>();
+        for (Order o : user.getOrderList()) {
             o.getBasketOrder().size();
+            if(!StatusOrder.BASKET.equals(o.getStatusOrder())){
+                orders.add(o);
+            }
         }
-        return user.getOrderList();
+        return orders;
     }
 
     @Override
-    @Transactional
     public Order getOrderById(Long orderId) {
         return orderDAO.getOrderById(orderId);
     }
@@ -89,9 +92,9 @@ public class OrderBusinessServiceImpl implements OrderBusinessService {
     @Override
     @Transactional
     public List<Order> getAllOrders() {
-        for(User u: userDAO.getUserList()){
+        for (User u : userDAO.getUserList()) {
             u.getOrderList().size();
-            for (Order o: u.getOrderList()){
+            for (Order o : u.getOrderList()) {
                 o.getBasketOrder().size();
             }
         }
@@ -99,9 +102,7 @@ public class OrderBusinessServiceImpl implements OrderBusinessService {
     }
 
 
-
     @Override
-    @Transactional
     public void updateOrder(Order order) {
         orderDAO.updateOrder(order);
     }
