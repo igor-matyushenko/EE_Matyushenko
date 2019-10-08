@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface UserBusinessService {
 
+    User getUser(String login);
 
     List<User> getAllUsers();
 
-    List<UserListDTO> getAllUsersForLazy();
 
 
     User userVerification(String login, String password);
@@ -25,7 +25,7 @@ public interface UserBusinessService {
 
     User findUserById(Long userId);
 
-    void updateUser(User user);
+    boolean updateUser(User user);
 
     boolean payOrder(Long userId, Long orderId);
 }

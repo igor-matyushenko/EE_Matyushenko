@@ -29,34 +29,26 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     private OrderBusinessService orderBusinessService;
     @Autowired
     private OrderPositionBusinessService orderPositionBusinessService;
-    @Autowired
-    private Mapper mapper;
 
 
 
     @Override
     @Transactional
-    public List<User> getAllUsers() {
-//        for(User u: userDAO.getUserList()){
-//            u.getOrderList().size();
-//            for (Order o: u.getOrderList()){
-//                o.getBasketOrder().size();
-//            }
-//        }
+    public User getUser(String login) {
+        User user = findUserByLogin(login);
+        if(user == null) return  null;
+        for(Order o : user.getOrderList()){
+            o.getBasketOrder();
+        }
+        return user;
+    }
 
+    @Override
+    public List<User> getAllUsers() {
         return userDAO.getUserList();
     }
 
-    @Override
-    @Transactional
-    public List<UserListDTO> getAllUsersForLazy() {
-        List<UserListDTO> userListDTOS = new ArrayList<>();
-        for(User u : userDAO.getUserList()){
-            UserListDTO userListDTO = mapper.map(u, UserListDTO.class);
-            userListDTOS.add(userListDTO);
-        }
-        return userListDTOS;
-    }
+
 
 
     @Override
@@ -143,7 +135,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    public void updateUser(User user) {
+    public boolean updateUser(User user) {
         User updateUser = findUserByLogin(user.getLogin());
         updateUser.setLogin(user.getLogin());
         updateUser.setPassword(user.getPassword());
@@ -153,5 +145,6 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         updateUser.setFirstName(user.getFirstName());
         updateUser.setLastName(user.getLastName());
         userDAO.updateUser(updateUser);
+        return true;
     }
 }
