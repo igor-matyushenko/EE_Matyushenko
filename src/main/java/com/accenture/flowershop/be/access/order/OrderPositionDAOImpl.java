@@ -1,6 +1,6 @@
 package com.accenture.flowershop.be.access.order;
 
-import com.accenture.flowershop.be.entity.Order.OrderPosition;
+import com.accenture.flowershop.be.entity.order.OrderPosition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

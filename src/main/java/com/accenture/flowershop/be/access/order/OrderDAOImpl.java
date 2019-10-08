@@ -1,6 +1,6 @@
 package com.accenture.flowershop.be.access.order;
 
-import com.accenture.flowershop.be.entity.Order.Order;
+import com.accenture.flowershop.be.entity.order.Order;
 import com.accenture.flowershop.be.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

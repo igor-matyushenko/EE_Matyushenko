@@ -1,5 +1,6 @@
 package com.accenture.flowershop.fe.servlets;
 
+import com.accenture.flowershop.be.business.ObjectMapperUtils;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
@@ -27,7 +28,7 @@ public class PayCreateOrderServlet extends HttpServlet {
     @Autowired
     private UserBusinessService userBusinessService;
     @Autowired
-    private Mapper mapper;
+    private ObjectMapperUtils mapperUtils;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -46,9 +47,9 @@ public class PayCreateOrderServlet extends HttpServlet {
                 request.setAttribute("orderMessage", "Не хватает денежных средств!");
             } else {
                 User userEntity = userBusinessService.findUserById(user.getId());
-                user = mapper.map(userEntity,UserDTO.class);
+                user = mapperUtils.map(userEntity,UserDTO.class);
                 session.setAttribute("user", user);
-                session.setAttribute("orderList", mapper.map(orderBusinessService.getAllOrdersByUserId(user.getId()), List.class));
+                session.setAttribute("orderList", user.getOrderList());
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         } else {

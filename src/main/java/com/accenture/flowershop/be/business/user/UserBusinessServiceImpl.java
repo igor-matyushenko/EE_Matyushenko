@@ -3,10 +3,10 @@ package com.accenture.flowershop.be.business.user;
 import com.accenture.flowershop.be.access.user.UserDAO;
 import com.accenture.flowershop.be.business.order.OrderPositionBusinessService;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
-import com.accenture.flowershop.be.entity.Order.Order;
+import com.accenture.flowershop.be.entity.order.Order;
+import com.accenture.flowershop.be.entity.order.OrderPosition;
 import com.accenture.flowershop.be.entity.user.User;
-import com.accenture.flowershop.fe.dto.UserLazyDTO;
-import com.accenture.flowershop.fe.enums.Roles;
+import com.accenture.flowershop.fe.dto.UserListDTO;
 import com.accenture.flowershop.fe.enums.StatusOrder;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -49,13 +49,13 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     @Transactional
-    public List<UserLazyDTO> getAllUsersForLazy() {
-        List<UserLazyDTO> userLazyDTOS = new ArrayList<>();
+    public List<UserListDTO> getAllUsersForLazy() {
+        List<UserListDTO> userListDTOS = new ArrayList<>();
         for(User u : userDAO.getUserList()){
-            UserLazyDTO userLazyDTO = mapper.map(u,UserLazyDTO.class);
-            userLazyDTOS.add(userLazyDTO);
+            UserListDTO userListDTO = mapper.map(u, UserListDTO.class);
+            userListDTOS.add(userListDTO);
         }
-        return userLazyDTOS;
+        return userListDTOS;
     }
 
 
@@ -70,6 +70,9 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 log.debug("Login Access" + login);
+                user.getOrderList().size();
+                for(Order o : user.getOrderList())
+                    o.getBasketOrder().size();
                 return user;
             }
         }
@@ -130,7 +133,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
+    @Transactional
     public User findUserById(Long userId) {
+        userDAO.findUserById(userId).getOrderList().size();
+        for(Order o :  userDAO.findUserById(userId).getOrderList()){
+            o.getBasketOrder().size();
+        }
         return userDAO.findUserById(userId);
     }
 
@@ -146,17 +154,4 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         updateUser.setLastName(user.getLastName());
         userDAO.updateUser(updateUser);
     }
-    @Override
-    public void updateUser(UserLazyDTO user) {
-        User updateUser = findUserByLogin(user.getLogin());
-        updateUser.setLogin(user.getLogin());
-        updateUser.setPassword(user.getPassword());
-        updateUser.setBalance(user.getBalance());
-        updateUser.setDiscount(user.getDiscount());
-        updateUser.setAddress(user.getAddress());
-        updateUser.setFirstName(user.getFirstName());
-        updateUser.setLastName(user.getLastName());
-        userDAO.updateUser(updateUser);
-    }
-
 }

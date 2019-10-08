@@ -3,6 +3,21 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+<!--    <configuration>-->
+<!--        <custom-converters>-->
+<!--            <converter type="org.dozer.Mapper">-->
+<!--                <class-a>org.hibernate.EntityMode</class-a>-->
+<!--                <class-b>java.lang.Object</class-b>-->
+<!--            </converter>-->
+<!--            <converter type="org.dozer.DozerConverter">-->
+<!--                <class-a>org.hibernate.collection.PersistentBag</class-a>-->
+<!--                <class-b>java.util.List</class-b>-->
+<!--            </converter>-->
+
+<!--        </custom-converters>-->
+<!--    </configuration>-->
+
     <mapping>
         <class-a>com.accenture.flowershop.be.entity.user.User</class-a>
         <class-b>com.accenture.flowershop.fe.dto.UserDTO</class-b>
@@ -13,16 +28,18 @@
 
     </mapping>
     <mapping>
-        <class-a>com.accenture.flowershop.be.entity.Order.Order</class-a>
+        <class-a>com.accenture.flowershop.be.entity.order.Order</class-a>
         <class-b>com.accenture.flowershop.fe.dto.OrderDTO</class-b>
     </mapping>
     <mapping>
         <class-a>com.accenture.flowershop.be.entity.user.User</class-a>
-        <class-b>com.accenture.flowershop.fe.dto.UserLazyDTO</class-b>
-        <field-exclude>
-            <a>orderList</a>
-            <b>orderList</b>
-        </field-exclude>
+        <class-b>com.accenture.flowershop.fe.dto.UserListDTO</class-b>
+<!--        <field-exclude>-->
+<!--            <a>orderList</a>-->
+<!--            <b>orderList</b>-->
+<!--        </field-exclude>-->
     </mapping>
+
+
 </mappings>
 

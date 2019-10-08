@@ -1,4 +1,4 @@
-package com.accenture.flowershop.be.entity.Order;
+package com.accenture.flowershop.be.entity.order;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -109,7 +109,7 @@ public class OrderPosition implements Serializable {
                 ", orderId=" + orderId +
                 ", flowerid=" + flowerId +
                 ", userid=" + userId +
-                ", flowerName='" + flowerName + '\'' +
+                ", flowerName='" + flowerName +
                 ", quantity=" + quantity +
                 ", totalPrice=" + totalPrice +
                 '}';

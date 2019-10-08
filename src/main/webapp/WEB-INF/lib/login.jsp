@@ -17,7 +17,7 @@
     <div class="w3-bar w3-padding-large w3-padding-24">
 
             <table>
-                <form method="post" action="loginServlet">
+                <form method="post" action="loginServlet" >
                 <tr>
                     <td colspan="1">Login:</td>
                     <td colspan="2"><input type="text"  name="login" required></td>

@@ -7,37 +7,54 @@ import java.util.List;
 
 public class OrderPositionDTO {
 
-    private Long idOrderPos;
-    private List<Flower> flower;
-    private UserDTO user;
+    private Long idOrderPosition;
+    private Long orderId;
+    private Long flowerId;
+    private Long userId;
+    private String flowerName;
     private Long quantity;
-    private BigDecimal sumForFlowers;
-    private OrderDTO order;
+    private BigDecimal totalPrice;
 
     public OrderPositionDTO() {   }
 
-    public Long getIdOrderPos() {
-        return idOrderPos;
+    public Long getIdOrderPosition() {
+        return idOrderPosition;
     }
 
-    public void setIdOrderPos(Long idOrderPos) {
-        this.idOrderPos = idOrderPos;
+    public void setIdOrderPosition(Long idOrderPosition) {
+        this.idOrderPosition = idOrderPosition;
     }
 
-    public List<Flower> getFlower() {
-        return flower;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setFlower(List<Flower> flower) {
-        this.flower = flower;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
-    public UserDTO getUser() {
-        return user;
+    public Long getFlowerId() {
+        return flowerId;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    public void setFlowerId(Long flowerId) {
+        this.flowerId = flowerId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getFlowerName() {
+        return flowerName;
+    }
+
+    public void setFlowerName(String flowerName) {
+        this.flowerName = flowerName;
     }
 
     public Long getQuantity() {
@@ -48,31 +65,24 @@ public class OrderPositionDTO {
         this.quantity = quantity;
     }
 
-    public BigDecimal getSumForFlowers() {
-        return sumForFlowers;
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setSumForFlowers(BigDecimal sumForFlowers) {
-        this.sumForFlowers = sumForFlowers;
-    }
-
-    public OrderDTO getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderDTO order) {
-        this.order = order;
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
     public String toString() {
-        return "OrderPosDTO{" +
-                "idOrderPos=" + idOrderPos +
-                ", flower=" + flower +
-                ", user=" + user.getLogin() +
+        return "OrderPositionDTO{" +
+                "idOrderPosition=" + idOrderPosition +
+                ", orderId=" + orderId +
+                ", flowerId=" + flowerId +
+                ", userId=" + userId +
+                ", flowerName='" + flowerName + '\'' +
                 ", quantity=" + quantity +
-                ", sumForFlowers=" + sumForFlowers +
-                ", order=" + order.getId() +
+                ", totalPrice=" + totalPrice +
                 '}';
     }
 }

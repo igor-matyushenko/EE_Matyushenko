@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserLazyDTO {
+public class UserListDTO {
     private Long id;
     private String login;
     private String password;
@@ -18,20 +18,11 @@ public class UserLazyDTO {
     private String email;
     private BigDecimal balance ;
     private Integer discount ;
-    private List<OrderDTO> orderList = new ArrayList<>();
+    //private List<OrderDTO> orderList = new ArrayList<>();
 
-    public UserLazyDTO() {
+    public UserListDTO() {
 
     }
-    public UserLazyDTO(String login, String password) {
-        this.login = login;
-        this.password = password;
-        this.setDiscount(3);
-        this.setRole(Roles.USER);
-        this.setBalance(new BigDecimal(2000));
-    }
-
-
 
     public Long getId() {
         return id;

@@ -1,9 +1,14 @@
 package com.accenture.flowershop.fe.servlets;
 
+import com.accenture.flowershop.be.business.ObjectMapperUtils;
 import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.order.OrderPositionBusinessService;
+import com.accenture.flowershop.fe.dto.FlowerDTO;
+import com.accenture.flowershop.fe.dto.OrderDTO;
+import com.accenture.flowershop.fe.dto.OrderPositionDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 import org.dozer.Mapper;
+import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -28,7 +33,8 @@ public class AddBasketServlet extends HttpServlet {
     @Autowired
     private OrderPositionBusinessService orderPositionBusinessService;
     @Autowired
-    private Mapper mapper;
+    private ObjectMapperUtils mapperUtils;
+
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -47,8 +53,9 @@ public class AddBasketServlet extends HttpServlet {
             Long quantityToOrderPos =Long.parseLong(request.getParameter("quantityToPos"));
             Long quantityFlower = Long.parseLong(request.getParameter("quantity"));
             if (orderPositionBusinessService.addOrderPositionToBasket(user.getId(),flowerID,quantityToOrderPos,quantityFlower)) {
-                session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
-                session.setAttribute("basket",  mapper.map(orderPositionBusinessService.getActualBasketByUserId(user.getId()),List.class));
+
+                session.setAttribute("flowers", mapperUtils.mapList(flowerBusinessService.getAllFlowers(), FlowerDTO.class));
+                session.setAttribute("basket",  mapperUtils.mapList(orderPositionBusinessService.getActualBasketByUserId(user.getId()), OrderPositionDTO.class));
                 session.setAttribute("user", user);
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);

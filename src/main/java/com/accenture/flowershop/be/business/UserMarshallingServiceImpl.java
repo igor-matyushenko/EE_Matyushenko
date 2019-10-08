@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Service
-public class UserMarshgallingServiceImpl  {
+public class UserMarshallingServiceImpl {
 
     private Marshaller marshaller;
     private Unmarshaller unmarshaller;
@@ -19,11 +19,7 @@ public class UserMarshgallingServiceImpl  {
     @Value("${filepath}")
     private String filepath;
 
-
-    private FileOutputStream os;
-    private FileInputStream is;
-
-    public UserMarshgallingServiceImpl() {
+    public UserMarshallingServiceImpl() {
     }
 
     public void convertFromObjectToXML(Object object, String fileName)
@@ -36,6 +32,7 @@ public class UserMarshgallingServiceImpl  {
     }
 
     public Object convertFromXMLToObject(String xmlfile) throws IOException {
+        FileInputStream is = null;
         is = new FileInputStream(xmlfile);
         return getUnmarshaller().unmarshal(new StreamSource(is));
     }

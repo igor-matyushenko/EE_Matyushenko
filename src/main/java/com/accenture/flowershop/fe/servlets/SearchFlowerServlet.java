@@ -1,6 +1,9 @@
 package com.accenture.flowershop.fe.servlets;
 
+import com.accenture.flowershop.be.business.ObjectMapperUtils;
 import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
+import com.accenture.flowershop.be.entity.flower.Flower;
+import com.accenture.flowershop.fe.dto.FlowerDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -21,6 +24,8 @@ public class SearchFlowerServlet extends HttpServlet {
 
     @Autowired
     private FlowerBusinessService flowerBusinessService;
+    @Autowired
+    private ObjectMapperUtils mapperUtils;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -40,24 +45,17 @@ public class SearchFlowerServlet extends HttpServlet {
                 long max = Long.MAX_VALUE;
                 flowerMax = ""+ max;
             }
-
             BigDecimal flowerMinPrice =  BigDecimal.valueOf(Long.parseLong(flowerMin));
             BigDecimal flowerMaxPrice =  BigDecimal.valueOf(Long.parseLong(flowerMax));
-
             UserDTO user = ((UserDTO) session.getAttribute("user"));
             session.setAttribute("flowerName", flowerName);
             session.setAttribute("flowerMinPrice", flowerMinPrice);
             session.setAttribute("flowerMaxPrice", flowerMaxPrice);
             session.setAttribute("user", user);
-            session.setAttribute("flowers", flowerBusinessService.getAllFlowersBySearch(flowerName,flowerMinPrice,flowerMaxPrice));
+            session.setAttribute("flowers", mapperUtils.mapList(flowerBusinessService.getAllFlowersBySearch(flowerName,flowerMinPrice,flowerMaxPrice), FlowerDTO.class));
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, resp);
         } else{
-            doGet(request,resp);
+            request.getRequestDispatcher("/loginServlet").forward(request, resp);
         }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/loginServlet").forward(req, resp);
     }
 }

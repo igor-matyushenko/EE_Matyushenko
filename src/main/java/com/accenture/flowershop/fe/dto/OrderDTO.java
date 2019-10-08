@@ -1,6 +1,6 @@
 package com.accenture.flowershop.fe.dto;
 
-import com.accenture.flowershop.be.entity.Order.OrderPosition;
+import com.accenture.flowershop.be.entity.order.OrderPosition;
 import com.accenture.flowershop.fe.enums.StatusOrder;
 
 import java.math.BigDecimal;
@@ -17,6 +17,7 @@ public class OrderDTO {
     private StatusOrder statusOrder;
     private Date dateCreate;
     private Date dateClose;
+    private String userLogin;
     private List<OrderPosition> basketOrder = new ArrayList<>();;
 
     public OrderDTO() {
@@ -86,6 +87,16 @@ public class OrderDTO {
     public void setBasketOrder(List<OrderPosition> basketOrder) {
         this.basketOrder = basketOrder;
     }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
+
 
     @Override
     public String toString() {

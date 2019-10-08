@@ -1,9 +1,9 @@
 package com.accenture.flowershop.fe.servlets;
 
+import com.accenture.flowershop.be.business.ObjectMapperUtils;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 
-import com.accenture.flowershop.be.entity.Order.Order;
 import com.accenture.flowershop.fe.dto.OrderDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 import org.dozer.Mapper;
@@ -29,7 +29,7 @@ public class CreateOrderServlet extends HttpServlet {
     @Autowired
     private UserBusinessService userBusinessService;
     @Autowired
-    private Mapper mapper;
+    private ObjectMapperUtils mapperUtils;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -47,7 +47,7 @@ public class CreateOrderServlet extends HttpServlet {
             } else {
                 session.setAttribute("user", user);
                 session.setAttribute("basket", null);
-                session.setAttribute("orderList", mapper.map(orderBusinessService.getAllOrdersByUserId(user.getId()), List.class));
+                session.setAttribute("orderList", mapperUtils.mapList(orderBusinessService.getAllOrdersByUserId(user.getId()), OrderDTO.class));
             }
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
         } else {

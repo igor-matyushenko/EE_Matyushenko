@@ -1,4 +1,4 @@
-package com.accenture.flowershop.be.entity.Order;
+package com.accenture.flowershop.be.entity.order;
 
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.enums.StatusOrder;

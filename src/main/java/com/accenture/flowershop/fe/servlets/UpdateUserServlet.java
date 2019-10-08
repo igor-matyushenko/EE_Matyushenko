@@ -1,9 +1,10 @@
 package com.accenture.flowershop.fe.servlets;
 
+import com.accenture.flowershop.be.business.ObjectMapperUtils;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.dto.UserDTO;
-import com.accenture.flowershop.fe.dto.UserLazyDTO;
+import com.accenture.flowershop.fe.dto.UserListDTO;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.List;
 
 @WebServlet(name = "updateUserServlet", urlPatterns = "/updateUserServlet")
 public class UpdateUserServlet extends HttpServlet {
@@ -27,7 +27,7 @@ public class UpdateUserServlet extends HttpServlet {
     private UserBusinessService userBusinessService;
 
     @Autowired
-    private Mapper mapper;
+    private ObjectMapperUtils mapperUtils;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -41,18 +41,17 @@ public class UpdateUserServlet extends HttpServlet {
             request.getRequestDispatcher("indexServlet").forward(request, response);
         } else {
             UserDTO userAdmin = (UserDTO) session.getAttribute("user");
-            UserLazyDTO newUser = updateUserServlet(request);
-//            User userEntity = mapper.map(newUser, User.class);
-            userBusinessService.updateUser(newUser);
+            User userEntity = mapperUtils.map(updateUserServlet(request), User.class);
+            userBusinessService.updateUser(userEntity);
             session.setAttribute("user", userAdmin);
-            session.setAttribute("userListAdmin", userBusinessService.getAllUsersForLazy());
+            session.setAttribute("userListAdmin", mapperUtils.mapList(userBusinessService.getAllUsers(),UserListDTO.class));
             request.setAttribute("updateMessage", " is update! ");
             request.getRequestDispatcher("/WEB-INF/lib/updateUser.jsp").forward(request, response);
         }
     }
 
-    private UserLazyDTO updateUserServlet(HttpServletRequest request) {
-        UserLazyDTO userDTO = new UserLazyDTO();
+    private UserListDTO updateUserServlet(HttpServletRequest request) {
+        UserListDTO userDTO = new UserListDTO();
         userDTO.setLogin(request.getParameter("login"));
         userDTO.setPassword(request.getParameter("password"));
         userDTO.setFirstName(request.getParameter("firstName"));

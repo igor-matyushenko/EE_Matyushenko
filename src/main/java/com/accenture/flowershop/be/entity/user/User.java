@@ -1,16 +1,18 @@
 package com.accenture.flowershop.be.entity.user;
 
 
-import com.accenture.flowershop.be.entity.Order.Order;
+import com.accenture.flowershop.be.entity.order.Order;
 import com.accenture.flowershop.fe.enums.Roles;
 
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlRootElement
 @Entity
 @Table(name = "USERS")
 public class User implements Serializable {

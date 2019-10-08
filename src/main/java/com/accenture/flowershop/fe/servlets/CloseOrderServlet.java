@@ -1,7 +1,9 @@
 package com.accenture.flowershop.fe.servlets;
 
+import com.accenture.flowershop.be.business.ObjectMapperUtils;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 
+import com.accenture.flowershop.fe.dto.OrderDTO;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -24,7 +26,7 @@ public class CloseOrderServlet extends HttpServlet {
     @Autowired
     private OrderBusinessService orderBusinessService;
     @Autowired
-    private Mapper mapper;
+    private ObjectMapperUtils mapperUtils;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -36,14 +38,11 @@ public class CloseOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Long idOrder = Long.parseLong(request.getParameter("orderId"));
-        if(orderBusinessService.closeOrder(idOrder)){
+        if(!orderBusinessService.closeOrder(idOrder)){
             request.setAttribute("error","не закрылся заказ");
         }
-        session.setAttribute("orderListAdmin", mapper.map(orderBusinessService.getAllOrders(), List.class));
-        doGet(request,resp);
+        session.setAttribute("orderListAdmin", mapperUtils.mapList(orderBusinessService.getAllOrders(), OrderDTO.class));
+        request.getRequestDispatcher("/WEB-INF/lib/adminPage.jsp").forward(request, resp);
     }
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/lib/adminPage.jsp").forward(req, resp);
-    }
+
 }

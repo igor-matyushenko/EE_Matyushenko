@@ -24,6 +24,7 @@
         <hibernate.version>4.3.11.Final</hibernate.version>
         <dozer.version>5.5.1</dozer.version>
         <cxf.version>3.0.8</cxf.version>
+        <jersey.version>2.24.1</jersey.version>
 
     </properties>
 
@@ -157,6 +158,27 @@
             <artifactId>jaxws-api</artifactId>
             <version>2.2.3</version>
         </dependency>
+
+        <!--   Add jersey dependencies (v2.24.1)     -->
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-servlet -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-json-jackson -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.ext/jersey-spring3 -->
+        <dependency>
+            <groupId>org.glassfish.jersey.ext</groupId>
+            <artifactId>jersey-spring3</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
 
 
 

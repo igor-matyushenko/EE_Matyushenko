@@ -37,14 +37,17 @@
         </style>
 
 
+
 </head>
 
 <body class="w3-light-grey">
-<script>
-    document.getElementById('check').onkeydown = function (e) {
-        return !(/^[А-Яа-яA-Za-z ]$/.test(e.key));  // IE > 9
-    }
-    </script>
+<script src="http://code.jquery.com/jquery-2.2.4.js" type="text/javascript"></script>
+        <script>
+            document.getElementById('check').onkeydown = function (e) {
+                return !(/^[А-Яа-яA-Za-z ]$/.test(e.key));  // IE > 9
+            }
+        </script>
+
 <div class="w3-container w3-blue-grey w3-opacity w3-left-align">
     <h1>Registration</h1>
 </div>
@@ -56,11 +59,11 @@
             <form method="post" action="registrationServlet">
                 <tr>
                     <td colspan="1">Login:</td>
-                    <td colspan="2"><input type="text"  name="login" required></td>
+                    <td colspan="2"><input type="text" id="login" name="login"   autocomplete="off" required></td>
                 </tr>
                 <tr>
                     <td colspan="1">Passwords:</td>
-                    <td colspan="2"><input type="password" name="password" required></td>
+                    <td colspan="2"><input type="password" id="password" name="password" required></td>
                 </tr>
                 <tr>
                     <td colspan="1">First Name:</td>
@@ -85,7 +88,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td colspan="1"><input class="w3-btn w3-grey w3-hover-light-green w3-round-large " type=submit  value="Registration"/></td>
+                    <td colspan="1"><input class="w3-btn w3-grey w3-hover-light-green w3-round-large" id="registration" type=submit  value="Registration"/></td>
             </form>
             <form method="get" action="indexServlet">
                 <td colspan="1"><input class="w3-btn w3-black w3-hover-light-green w3-round-large " type=submit  value="Back"/></td>
@@ -94,13 +97,31 @@
         </table>
     </div>
 
-    <div class="w3-container w3-center"><%
-        Object error = request.getAttribute("error");
-        if(error!=null) {
-            out.println("<div style=\"color: red\">" + request.getAttribute("error") + "</p>");
-        }%>
+    <div class="w3-container w3-center">
+
+        <div id ="verificationUserLoginMessage" style="color:red">${verificationUserLoginMessage}</div>
     </div>
 
 </div>
+    <script>
+       $("#login").on('keyup',function() {
+            $("#verificationUserLoginMessage").text( "" );
+                    $("#registration").attr("disabled", false);
+                    if(this.value) {
+                        $.ajax({
+                            url: "http://localhost:8080/flowershop/rest/verificationUserLogin/" + this.value,
+                            success: function(data) {
+                                if(data == "true"){
+                                    $("#registration").attr("disabled", true);
+                                    $("#verificationUserLoginMessage").text("User is exist in system, Please Log In!");
+                                }
+                            },
+                            error: function(data){
+                                $("#verificationUserLoginMessage").text("Unknown error!");
+                            }
+                        });
+                    }
+                });
+            </script>
 </body>
 </html>

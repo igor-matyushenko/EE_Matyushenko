@@ -1,9 +1,5 @@
 package com.accenture.flowershop.fe.ws.ClientWS;
 
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class ClientWS {
     public static void main(String[] arg) {
@@ -13,8 +9,8 @@ public class ClientWS {
                 int count = 10 + (int) (Math.random() * 30);
                 increase(count);
                 // For example 10 sec :
-                Thread.sleep(10 * 1000L);
-//                Thread.sleep(10000L * 60);
+                Thread.sleep( 1000L * 10);
+//                Thread.sleep(1000L * 10 * 60);
             } catch (Exception e) {
                 e.printStackTrace();
             }

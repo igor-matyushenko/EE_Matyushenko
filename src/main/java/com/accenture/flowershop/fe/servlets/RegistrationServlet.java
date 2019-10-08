@@ -1,10 +1,12 @@
 package com.accenture.flowershop.fe.servlets;
 
-import com.accenture.flowershop.be.business.UserMarshgallingServiceImpl;
+import com.accenture.flowershop.be.business.ObjectMapperUtils;
+import com.accenture.flowershop.be.business.UserMarshallingServiceImpl;
 import com.accenture.flowershop.be.business.flower.FlowerBusinessService;
 import com.accenture.flowershop.be.business.order.OrderBusinessService;
 import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
+import com.accenture.flowershop.fe.dto.FlowerDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 
 import org.dozer.Mapper;
@@ -31,11 +33,11 @@ public class RegistrationServlet extends HttpServlet {
     @Autowired
     private FlowerBusinessService flowerBusinessService;
     @Autowired
-    private  Mapper mapper;
+    private ObjectMapperUtils mapperUtils;
     @Autowired
     private OrderBusinessService orderBusinessService;
     @Autowired
-    private UserMarshgallingServiceImpl userMarshgallingService;
+    private UserMarshallingServiceImpl userMarshgallingService;
 
     private static final Logger log = LoggerFactory.getLogger(LoginServlet.class);
 
@@ -57,14 +59,13 @@ public class RegistrationServlet extends HttpServlet {
             UserDTO user = new UserDTO(login, password);
             setParam(user,request);
             if (!userBusinessService.checkLogin(user.getLogin())) {
-                User userEntity = mapper.map(user, User.class);
-                user = mapper.map(userBusinessService.userRegistration(userEntity),UserDTO.class);
+                user = mapperUtils.map(userBusinessService.userRegistration(mapperUtils.map(user, User.class)),UserDTO.class);
                 userMarshgallingService.convertFromObjectToXML(user,user.getLogin());
                 log.debug("User успешно зарегистрирован : " + user.getLogin());
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(30 * 60);
                 session.setAttribute("user", user);
-                session.setAttribute("flowers", mapper.map(flowerBusinessService.getAllFlowers(), List.class));
+                session.setAttribute("flowers", mapperUtils.mapList(flowerBusinessService.getAllFlowers(), FlowerDTO.class));
                 request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Пользователь существует  : " + user.getLogin());

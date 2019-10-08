@@ -20,8 +20,8 @@ public class UserDTO {
     private List<OrderDTO> orderList = new ArrayList<>();
 
     public UserDTO() {
-
     }
+
     public UserDTO(String login,String password) {
         this.login = login;
         this.password = password;
@@ -121,6 +121,14 @@ public class UserDTO {
 
     public void setDiscount(Integer discount) {
         this.discount = discount;
+    }
+
+    public List<OrderDTO> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<OrderDTO> orderList) {
+        this.orderList = orderList;
     }
 
     @Override
