@@ -9,10 +9,12 @@ import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.dto.FlowerDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 
+import com.accenture.flowershop.fe.ws.jsm.FlowersGlobalCRM;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.ServletConfig;
@@ -37,7 +39,7 @@ public class RegistrationServlet extends HttpServlet {
     @Autowired
     private OrderBusinessService orderBusinessService;
     @Autowired
-    private UserMarshallingServiceImpl userMarshgallingService;
+    private UserMarshallingServiceImpl userMarshallingService;
 
     private static final Logger log = LoggerFactory.getLogger(LoginServlet.class);
 
@@ -60,7 +62,7 @@ public class RegistrationServlet extends HttpServlet {
             setParam(user,request);
             if (!userBusinessService.checkLogin(user.getLogin())) {
                 user = mapperUtils.map(userBusinessService.userRegistration(mapperUtils.map(user, User.class)),UserDTO.class);
-                userMarshgallingService.convertFromObjectToXML(user,user.getLogin());
+                userMarshallingService.convertFromObjectToXML(user,user.getLogin());
                 log.debug("User успешно зарегистрирован : " + user.getLogin());
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(30 * 60);

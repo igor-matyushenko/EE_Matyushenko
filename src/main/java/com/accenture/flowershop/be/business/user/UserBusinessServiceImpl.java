@@ -137,13 +137,13 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     @Override
     public boolean updateUser(User user) {
         User updateUser = findUserByLogin(user.getLogin());
-        updateUser.setLogin(user.getLogin());
-        updateUser.setPassword(user.getPassword());
-        updateUser.setBalance(user.getBalance());
-        updateUser.setDiscount(user.getDiscount());
-        updateUser.setAddress(user.getAddress());
-        updateUser.setFirstName(user.getFirstName());
-        updateUser.setLastName(user.getLastName());
+        if(user.getLogin() != null) updateUser.setLogin(user.getLogin());
+        if(user.getPassword() != null) updateUser.setPassword(user.getPassword());
+        if(user.getBalance() != null) updateUser.setBalance(user.getBalance());
+        if(user.getDiscount() != null) updateUser.setDiscount(user.getDiscount());
+        if(user.getAddress() != null) updateUser.setAddress(user.getAddress());
+        if(user.getFirstName() != null) updateUser.setFirstName(user.getFirstName());
+        if(user.getLastName() != null) updateUser.setLastName(user.getLastName());
         userDAO.updateUser(updateUser);
         return true;
     }

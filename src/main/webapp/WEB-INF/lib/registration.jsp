@@ -4,6 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="http://code.jquery.com/jquery-2.2.4.js"
+                    type="text/javascript"></script>
+            <script src="js/app-ajax.js" type="text/javascript"></script>
+                    <script>
+                        document.getElementById('check').onkeydown = function (e) {
+                            return !(/^[А-Яа-яA-Za-z ]$/.test(e.key));  // IE > 9
+                        }
+                    </script>
         <title>Flower Shop 1.0</title>
 
         <style type="text/css">
@@ -41,12 +49,7 @@
 </head>
 
 <body class="w3-light-grey">
-<script src="http://code.jquery.com/jquery-2.2.4.js" type="text/javascript"></script>
-        <script>
-            document.getElementById('check').onkeydown = function (e) {
-                return !(/^[А-Яа-яA-Za-z ]$/.test(e.key));  // IE > 9
-            }
-        </script>
+
 
 <div class="w3-container w3-blue-grey w3-opacity w3-left-align">
     <h1>Registration</h1>
@@ -99,28 +102,22 @@
 
     <div class="w3-container w3-center">
 
-        <div id ="verificationUserLoginMessage" style="color:red">${verificationUserLoginMessage}</div>
+        <div id ="verificationUserLoginMessage" style="color:red"></div>
     </div>
 
 </div>
     <script>
-       $("#login").on('keyup',function() {
-            $("#verificationUserLoginMessage").text( "" );
-                    $("#registration").attr("disabled", false);
-                    if(this.value) {
-                        $.ajax({
-                            url: "http://localhost:8080/flowershop/rest/verificationUserLogin/" + this.value,
+       $('#login').on('dblclick',function() {
+            $('#verificationUserLoginMessage').text( "" );
+                      $.ajax({
+                            url: 'http://localhost:8080/flowershop/rest/v/verify/' + this.value,
                             success: function(data) {
-                                if(data == "true"){
-                                    $("#registration").attr("disabled", true);
-                                    $("#verificationUserLoginMessage").text("User is exist in system, Please Log In!");
-                                }
+                                $('#verificationUserLoginMessage').text(data.value);
                             },
                             error: function(data){
-                                $("#verificationUserLoginMessage").text("Unknown error!");
+                                $('#verificationUserLoginMessage').text("Is Empty!");
                             }
                         });
-                    }
                 });
             </script>
 </body>

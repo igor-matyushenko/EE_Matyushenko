@@ -81,9 +81,7 @@
     <jaxws:endpoint id="FlowersStockWebService1" implementor="#FlowersStockWebService"
                     address="/FlowersStockWebService"/>
 
-<!--    <jaxws:client id="OrderBatchServiceClient"-->
-<!--                  serviceClass="com.accenture.flowershop.fe.ws.OrderBatchService"-->
-<!--                  address="http://localhost:8080/flower-shop/ws/FlowersStockWebService"/>-->
-
+    <jee:jndi-lookup id="connectionFactory" jndi-name="jms/connectionFactory"/>
+    <jee:jndi-lookup id="esbToMcpRequestQueue" jndi-name="jms/queue/mainQueue"/>
 
 </beans>
