@@ -9,14 +9,14 @@ import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.dto.FlowerDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 
-import com.accenture.flowershop.fe.ws.jsm.FlowersGlobalCRM;
-import org.dozer.Mapper;
+import com.accenture.flowershop.fe.ws.jms.Consumer;
+import com.accenture.flowershop.fe.ws.jms.Producer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.jms.JMSException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "registrationServlet", urlPatterns = "/registrationServlet")
 public class RegistrationServlet extends HttpServlet {
@@ -40,6 +39,8 @@ public class RegistrationServlet extends HttpServlet {
     private OrderBusinessService orderBusinessService;
     @Autowired
     private UserMarshallingServiceImpl userMarshallingService;
+    @Autowired
+    private Producer producer;
 
     private static final Logger log = LoggerFactory.getLogger(LoginServlet.class);
 
@@ -61,8 +62,14 @@ public class RegistrationServlet extends HttpServlet {
             UserDTO user = new UserDTO(login, password);
             setParam(user,request);
             if (!userBusinessService.checkLogin(user.getLogin())) {
-                user = mapperUtils.map(userBusinessService.userRegistration(mapperUtils.map(user, User.class)),UserDTO.class);
-                userMarshallingService.convertFromObjectToXML(user,user.getLogin());
+                User userEntity = userBusinessService.userRegistration(mapperUtils.map(user, User.class));
+                user = mapperUtils.map(userEntity,UserDTO.class);
+                userMarshallingService.convertFromObjectToXML(userEntity,userEntity.getLogin());
+                try {
+                   producer.sendMessage(userMarshallingService.convertFromObjectToString(userEntity));
+                } catch (JMSException e) {
+                    e.printStackTrace();
+                }
                 log.debug("User успешно зарегистрирован : " + user.getLogin());
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(30 * 60);

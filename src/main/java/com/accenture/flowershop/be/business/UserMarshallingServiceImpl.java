@@ -1,4 +1,5 @@
 package com.accenture.flowershop.be.business;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
@@ -6,9 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 @Service
 public class UserMarshallingServiceImpl {
@@ -31,10 +30,21 @@ public class UserMarshallingServiceImpl {
         os.close();
     }
 
-    public Object convertFromXMLToObject(String xmlfile) throws IOException {
+    public Object convertFromXMLToObject(String xmlFile) throws IOException {
         FileInputStream is = null;
-        is = new FileInputStream(xmlfile);
+        is = new FileInputStream(xmlFile);
         return getUnmarshaller().unmarshal(new StreamSource(is));
+    }
+
+    public String convertFromObjectToString(Object object) throws IOException {
+        StringWriter os = new StringWriter();
+        getMarshaller().marshal(object, new StreamResult(os));
+        return os.toString();
+    }
+
+    public Object convertStringXmlToObject(String stringXml) throws IOException {
+        StringReader stringReader = new StringReader(stringXml);
+        return getUnmarshaller().unmarshal(new StreamSource(stringReader));
     }
 
     private Unmarshaller getUnmarshaller() {
@@ -52,4 +62,5 @@ public class UserMarshallingServiceImpl {
     public void setUnmarshaller(Unmarshaller unmarshaller) {
         this.unmarshaller = unmarshaller;
     }
+
 }

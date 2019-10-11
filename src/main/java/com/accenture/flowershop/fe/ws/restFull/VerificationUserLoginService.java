@@ -1,4 +1,4 @@
-package com.accenture.flowershop.fe.ws.rest;
+package com.accenture.flowershop.fe.ws.restFull;
 
 
 import com.accenture.flowershop.be.business.user.UserBusinessService;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 
 @Component
@@ -36,17 +37,10 @@ public class VerificationUserLoginService {
     }
 
     @GET
-    @Path("/users/{userLogin}")
-    @Produces("application/json")
-    public User getUser(@PathParam("userLogin") String userLogin) {
-        return userBusinessService.getUser(userLogin);
-    }
-
-    @GET
     @Path("/usersDto/{userLogin}")
     @Produces("application/json")
     public UserWsDTO getUserDto(@PathParam("userLogin") String userLogin) {
-        User userEntity = userBusinessService.getUser(userLogin);
+        User userEntity = userBusinessService.findUserByLogin(userLogin);
         if (userEntity == null) return null;
         return mapper.map(userEntity, UserWsDTO.class);
     }
@@ -55,11 +49,12 @@ public class VerificationUserLoginService {
     @Path("/promo")
     @Consumes("application/json")
     @Produces("html/text")
-    public String addPromoActionForUser(User user) {
+    public String addPromoActionForUser(UserWsDTO user) {
         user.setBalance(user.getBalance().add(new BigDecimal(999)));
-        if (userBusinessService.updateUser(user)) {
+        if (userBusinessService.updateUser(mapper.map(user, User.class))) {
             return SUCCESS_RESULT;
         }
         return FAILURE_RESULT;
+
     }
 }

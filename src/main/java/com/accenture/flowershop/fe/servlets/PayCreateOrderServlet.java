@@ -46,7 +46,7 @@ public class PayCreateOrderServlet extends HttpServlet {
             if (!userBusinessService.payOrder(user.getId(),orderId)){
                 request.setAttribute("orderMessage", "Не хватает денежных средств!");
             } else {
-                User userEntity = userBusinessService.findUserById(user.getId());
+                User userEntity = userBusinessService.getUser(user.getId());
                 user = mapperUtils.map(userEntity,UserDTO.class);
                 session.setAttribute("user", user);
                 session.setAttribute("orderList", user.getOrderList());

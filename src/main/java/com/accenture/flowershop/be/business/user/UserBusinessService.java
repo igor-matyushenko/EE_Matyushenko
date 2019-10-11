@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface UserBusinessService {
 
-    User getUser(String login);
+    User getUser(Long userId);
 
     List<User> getAllUsers();
 
-
+    void updateUserFromJsm(User user);
 
     User userVerification(String login, String password);
 

@@ -34,12 +34,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     @Transactional
-    public User getUser(String login) {
-        User user = findUserByLogin(login);
+    public User getUser(Long userId) {
+        User user = findUserById(userId);
         if(user == null) return  null;
         for(Order o : user.getOrderList()){
-            o.getBasketOrder();
-        }
+            o.getBasketOrder().size();
+         }
         return user;
     }
 
@@ -48,7 +48,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         return userDAO.getUserList();
     }
 
-
+    @Override
+    public void updateUserFromJsm(User user) {
+        User userEntity = findUserById(user.getId());
+        userEntity.setDiscount(user.getDiscount());
+        userDAO.updateUser(userEntity);
+    }
 
 
     @Override
@@ -87,10 +92,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     public Boolean checkLogin(String login) {
         log.debug("Check login: " + login);
         User user = userDAO.findUserByLogin(login);
-        if (user != null) {
-            return true;
-        }
-        return false;
+        if (user == null) return false;
+        return true;
     }
 
     @Override
@@ -125,18 +128,13 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    @Transactional
     public User findUserById(Long userId) {
-        userDAO.findUserById(userId).getOrderList().size();
-        for(Order o :  userDAO.findUserById(userId).getOrderList()){
-            o.getBasketOrder().size();
-        }
         return userDAO.findUserById(userId);
     }
 
     @Override
     public boolean updateUser(User user) {
-        User updateUser = findUserByLogin(user.getLogin());
+        User updateUser = findUserById(user.getId());
         if(user.getLogin() != null) updateUser.setLogin(user.getLogin());
         if(user.getPassword() != null) updateUser.setPassword(user.getPassword());
         if(user.getBalance() != null) updateUser.setBalance(user.getBalance());

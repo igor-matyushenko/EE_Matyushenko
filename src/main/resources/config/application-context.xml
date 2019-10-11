@@ -71,7 +71,7 @@
     </bean>
 
     <context:property-placeholder location="classpath:/conf.properties"/>
-    <bean id="userMarshgallingService" class="com.accenture.flowershop.be.business.UserMarshallingServiceImpl">
+    <bean id="userMarshallingService" class="com.accenture.flowershop.be.business.UserMarshallingServiceImpl">
         <property name="marshaller" ref="castorMarshaller"/>
         <property name="unmarshaller" ref="castorMarshaller"/>
     </bean>
@@ -82,6 +82,8 @@
                     address="/FlowersStockWebService"/>
 
     <jee:jndi-lookup id="connectionFactory" jndi-name="jms/connectionFactory"/>
-    <jee:jndi-lookup id="esbToMcpRequestQueue" jndi-name="jms/queue/mainQueue"/>
+
+    <jee:jndi-lookup id="inQueue" jndi-name="jms/inQueue"/>
+    <jee:jndi-lookup id="outQueue" jndi-name="jms/outQueue"/>
 
 </beans>

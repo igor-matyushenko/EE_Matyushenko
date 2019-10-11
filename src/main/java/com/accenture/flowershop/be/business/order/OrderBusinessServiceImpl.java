@@ -61,7 +61,7 @@ public class OrderBusinessServiceImpl implements OrderBusinessService {
     @Override
     @Transactional
     public boolean createOrder(Long userId) {
-        User user = userBusinessService.findUserById(userId);
+        User user = userBusinessService.getUser(userId);
         Order order = orderDAO.getOrderByIdActualBasket(userId);
         order.setStatusOrder(StatusOrder.CREATED);
         orderDAO.updateOrder(order);
