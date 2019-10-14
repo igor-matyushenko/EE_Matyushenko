@@ -5,17 +5,22 @@ import com.accenture.flowershop.be.business.user.UserBusinessService;
 import com.accenture.flowershop.be.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import javax.jms.*;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 
 @EnableScheduling
 @Component
 public class Consumer {
 
+    @Value("${filepath}")
+    private String filePath;
     @Autowired
     private ConnectionFactory connectionFactory;
     @Autowired
@@ -29,6 +34,7 @@ public class Consumer {
     @Autowired
     @Qualifier("outQueue")
     private  Destination outQueue; // буфер получения сообщений
+
 
     public Consumer() {
     }
@@ -51,9 +57,10 @@ public class Consumer {
                         try {
                             TextMessage textmessage = (TextMessage) message;
                             textFromMessage = textmessage.getText();
-                            System.out.println("TextMessage: " + textFromMessage);
-                            User user = (User) userMarshallingService.convertStringXmlToObject(textFromMessage);
-                            userBusinessService.updateUser(user);
+//                            System.out.println("TextMessage: " + textFromMessage);
+                            DiscountRequestObject requestObject = (DiscountRequestObject) userMarshallingService
+                                            .convertStringXmlToObject(textFromMessage);
+                            userBusinessService.updateDiscountOfUser(requestObject.getId(),requestObject.getDiscount());
                         } catch (JMSException  e) {
                             e.printStackTrace();
                         } catch (IOException e) {

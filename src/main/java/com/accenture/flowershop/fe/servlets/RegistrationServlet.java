@@ -10,6 +10,7 @@ import com.accenture.flowershop.fe.dto.FlowerDTO;
 import com.accenture.flowershop.fe.dto.UserDTO;
 
 import com.accenture.flowershop.fe.ws.jms.Consumer;
+import com.accenture.flowershop.fe.ws.jms.DiscountRequestObject;
 import com.accenture.flowershop.fe.ws.jms.Producer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,8 +66,10 @@ public class RegistrationServlet extends HttpServlet {
                 User userEntity = userBusinessService.userRegistration(mapperUtils.map(user, User.class));
                 user = mapperUtils.map(userEntity,UserDTO.class);
                 userMarshallingService.convertFromObjectToXML(userEntity,userEntity.getLogin());
+                DiscountRequestObject requestObject = new DiscountRequestObject(userEntity.getId(),9);
                 try {
                    producer.sendMessage(userMarshallingService.convertFromObjectToString(userEntity));
+                   producer.sendMessage(userMarshallingService.convertFromObjectToString(requestObject));
                 } catch (JMSException e) {
                     e.printStackTrace();
                 }

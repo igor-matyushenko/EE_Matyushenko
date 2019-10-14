@@ -49,12 +49,11 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    public void updateUserFromJsm(User user) {
-        User userEntity = findUserById(user.getId());
-        userEntity.setDiscount(user.getDiscount());
+    public void updateDiscountOfUser(long userId, int userDiscount) {
+        User userEntity = findUserById(userId);
+        userEntity.setDiscount(userDiscount);
         userDAO.updateUser(userEntity);
     }
-
 
     @Override
     @Transactional

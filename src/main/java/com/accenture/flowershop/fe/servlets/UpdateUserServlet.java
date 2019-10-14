@@ -52,6 +52,7 @@ public class UpdateUserServlet extends HttpServlet {
 
     private UserListDTO updateUserServlet(HttpServletRequest request) {
         UserListDTO userDTO = new UserListDTO();
+        userDTO.setId(Long.parseLong(request.getParameter("userId")));
         userDTO.setLogin(request.getParameter("login"));
         userDTO.setPassword(request.getParameter("password"));
         userDTO.setFirstName(request.getParameter("firstName"));

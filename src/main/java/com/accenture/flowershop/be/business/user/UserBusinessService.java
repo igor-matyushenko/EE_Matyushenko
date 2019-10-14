@@ -2,6 +2,7 @@ package com.accenture.flowershop.be.business.user;
 
 import com.accenture.flowershop.be.entity.user.User;
 import com.accenture.flowershop.fe.dto.UserListDTO;
+import com.accenture.flowershop.fe.ws.jms.DiscountRequestObject;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface UserBusinessService {
 
     List<User> getAllUsers();
 
-    void updateUserFromJsm(User user);
+    void updateDiscountOfUser(long userId, int userDiscount);
 
     User userVerification(String login, String password);
 
