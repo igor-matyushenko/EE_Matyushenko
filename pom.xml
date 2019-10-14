@@ -50,7 +50,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -127,7 +127,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
-            <version>4.2.0.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.codehaus.castor/castor -->
         <dependency>
@@ -177,6 +177,12 @@
             <groupId>org.glassfish.jersey.ext</groupId>
             <artifactId>jersey-spring3</artifactId>
             <version>${jersey.version}</version>
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.glassfish.hk2</groupId>-->
+<!--                    <artifactId>hk2</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
         </dependency>
 <!--            JMS-->
         <dependency>
@@ -190,6 +196,16 @@
             <artifactId>activemq-client</artifactId>
             <version>5.15.9</version>
         </dependency>
+
+<!--        Spring DATA-->
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>1.11.11.RELEASE</version>
+        </dependency>
+
+
 
 
     </dependencies>

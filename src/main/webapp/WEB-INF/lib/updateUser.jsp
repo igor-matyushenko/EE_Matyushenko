@@ -67,8 +67,11 @@
 
 
             <form method="post" action="updateUserServlet">
-               <tr>  <input type="hiding" name="userId" value="${iterator.id}"
-                    <td colspan="1"><input type="text"  name="login" value="${iterator.login}" required></td>
+               <tr>
+                    <td colspan="1">
+                            <input type="hidden" name="userId" value="${iterator.id}"
+                            <input type="text"  name="login" value="${iterator.login}" required>
+                    </td>
                     <td colspan="1"><input type="text"  name="password" value="${iterator.password}" required></td>
                     <td colspan="1"><input type="text"  name="discount" value="${iterator.discount}" required></td>
                     <td colspan="1"><input type="text"  name="balance" value="${iterator.balance}" required></td>

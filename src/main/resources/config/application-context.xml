@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans
-       xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jee="http://www.springframework.org/schema/jee"
-       xmlns:jaxws="http://cxf.apache.org/jaxws"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:jee="http://www.springframework.org/schema/jee"
+        xmlns:jaxws="http://cxf.apache.org/jaxws"
+        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
@@ -15,12 +16,14 @@
        http://www.springframework.org/schema/jee
        http://www.springframework.org/schema/jee/spring-jee.xsd
        http://cxf.apache.org/jaxws
-       http://cxf.apache.org/schemas/jaxws.xsd">
+       http://cxf.apache.org/schemas/jaxws.xsd
+       http://www.springframework.org/schema/data/jpa
+       https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 
     <context:annotation-config/>
     <context:component-scan base-package="com.accenture.flowershop"/>
-
+    <jpa:repositories base-package="com.accenture.flowershop.be.access.flower"/>
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
@@ -85,7 +88,7 @@
         </property>
     </bean>
 
-    <bean id="FlowersStockWebService" class="com.accenture.flowershop.fe.ws.FlowersStockWebServiceImpl" />
+    <bean id="FlowersStockWebService" class="com.accenture.flowershop.fe.ws.FlowersStockWebServiceImpl"/>
     <jaxws:endpoint id="FlowersStockWebService1" implementor="#FlowersStockWebService"
                     address="/FlowersStockWebService"/>
 

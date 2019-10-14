@@ -1,10 +1,9 @@
 package com.accenture.flowershop.be.business.flower;
 
-import com.accenture.flowershop.be.access.flower.FlowerDAO;
 import com.accenture.flowershop.be.entity.flower.Flower;
+import com.accenture.flowershop.be.access.flower.FlowerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,18 +14,14 @@ import java.util.List;
 public class FlowerBusinessServiceImpl implements FlowerBusinessService {
 
     @Autowired
-    private FlowerDAO flowerDAO;
+    private FlowerRepository flowerRepository;
 
-    @Override
-    public void increaseFlowersStockSize(int count) {
-        flowerDAO.increaseFlowersStockSize(count);
-    }
 
-    @Override
-    public List<Flower> getAllFlowers() {
-        return flowerDAO.getAllFlowers();
-    }
-
+//    @Override
+//    public void increaseFlowersStockSize(int count) {
+//        flowerRepository.increaseFlowersStockSize(count);
+//    }
+//
     @Override
     public List<Flower> getAllFlowersBySearch(String flowerName, BigDecimal minPrice, BigDecimal maxPrice) {
         if (maxPrice == null) {
@@ -37,7 +32,7 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
         }
         if (flowerName == null || flowerName.equals("")) {
             List<Flower> flowerListBySearch = new ArrayList<>();
-            for (Flower flower : flowerDAO.getAllFlowers()) {
+            for (Flower flower : getAllFlowers()) {
                 int minP = flower.getPriceFlower().compareTo(minPrice);
                 int maxP = flower.getPriceFlower().compareTo(maxPrice);
                 if (maxP <= 0 && minP >= 0) {
@@ -46,34 +41,39 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
             }
             return flowerListBySearch;
         }
-        return flowerDAO.getAllFlowersBySearch(flowerName.toUpperCase(), minPrice, maxPrice);
+        return flowerRepository.getAllFlowersBySearch(flowerName.toUpperCase(), minPrice, maxPrice);
+    }
+
+    @Override
+    public List<Flower> getAllFlowers() {
+        return flowerRepository.findAll();
     }
 
 
     @Override
     public void addFlower(Flower flower) {
-        flowerDAO.addFlower(flower);
+        flowerRepository.save(flower);
     }
 
     @Override
     public void changeQuantityFlower(Long flowerId, long quantity) {
-        Flower flower = flowerDAO.getFlowerById(flowerId);
+        Flower flower = flowerRepository.getOne(flowerId);
         flower.setQuantity(flower.getQuantity()-quantity);
-        flowerDAO.updateFlower(flower);
+        flowerRepository.saveAndFlush(flower);
     }
 
     @Override
     public void deleteFlower(Flower flower) {
-        flowerDAO.deleteFlower(flower);
+        flowerRepository.delete(flower);
     }
 
     @Override
     public void updateFlower(Flower flower) {
-        flowerDAO.updateFlower(flower);
+        flowerRepository.saveAndFlush(flower);
     }
 
     @Override
     public Flower getFlowerById(Long idFlower) {
-        return flowerDAO.getFlowerById(idFlower);
+        return flowerRepository.getOne(idFlower);
     }
 }

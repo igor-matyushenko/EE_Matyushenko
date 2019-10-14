@@ -11,7 +11,7 @@ public class FlowersStockWebServiceImpl implements FlowersStockWebService {
 
     @Override
     public void increaseFlowersStockSize(int count) {
-        flowerBusinessService.increaseFlowersStockSize(count);
+//        flowerBusinessService.increaseFlowersStockSize(count);
     }
 
 }
