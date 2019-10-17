@@ -1,9 +1,13 @@
 package com.accenture.flowershop.be.business.flower;
 
 import com.accenture.flowershop.be.entity.flower.Flower;
+
 import com.accenture.flowershop.be.access.flower.FlowerRepository;
+import com.querydsl.core.BooleanBuilder;
+import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.accenture.flowershop.be.entity.flower.QFlower;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,7 +21,7 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
     private FlowerRepository flowerRepository;
 
 
-//    @Override
+    //    @Override
 //    public void increaseFlowersStockSize(int count) {
 //        flowerRepository.increaseFlowersStockSize(count);
 //    }
@@ -31,17 +35,24 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
             minPrice = BigDecimal.ZERO;
         }
         if (flowerName == null || flowerName.equals("")) {
-            List<Flower> flowerListBySearch = new ArrayList<>();
-            for (Flower flower : getAllFlowers()) {
-                int minP = flower.getPriceFlower().compareTo(minPrice);
-                int maxP = flower.getPriceFlower().compareTo(maxPrice);
-                if (maxP <= 0 && minP >= 0) {
-                    flowerListBySearch.add(flower);
-                }
-            }
-            return flowerListBySearch;
+            return flowerRepository.findByPriceFlowerBetween(minPrice, maxPrice);
         }
-        return flowerRepository.getAllFlowersBySearch(flowerName.toUpperCase(), minPrice, maxPrice);
+        return flowerRepository.findByTitleFlowerContainingAndPriceFlowerBetween(flowerName, minPrice, maxPrice);
+    }
+
+    @Override
+    public List<Flower> getAllFlowersBySearchQueryDsl(String flowerName, BigDecimal minPrice, BigDecimal maxPrice) {
+        BooleanBuilder where = new BooleanBuilder();
+        if (flowerName != null) {
+            where.and(QFlower.flower.titleFlower.containsIgnoreCase(flowerName));
+        }
+        if (maxPrice != null) {
+            where.and(QFlower.flower.priceFlower.loe(maxPrice));
+        }
+        if (minPrice != null) {
+            where.and(QFlower.flower.priceFlower.goe(minPrice));
+        }
+        return Lists.newArrayList(flowerRepository.findAll(where.getValue()));
     }
 
     @Override
@@ -58,7 +69,7 @@ public class FlowerBusinessServiceImpl implements FlowerBusinessService {
     @Override
     public void changeQuantityFlower(Long flowerId, long quantity) {
         Flower flower = flowerRepository.getOne(flowerId);
-        flower.setQuantity(flower.getQuantity()-quantity);
+        flower.setQuantity(flower.getQuantity() - quantity);
         flowerRepository.saveAndFlush(flower);
     }
 

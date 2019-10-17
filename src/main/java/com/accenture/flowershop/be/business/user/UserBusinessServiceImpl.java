@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,10 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     private OrderPositionBusinessService orderPositionBusinessService;
 
 
+    @Override
+    public void save(User user) {
+        userDAO.saveUser(user);
+    }
 
     @Override
     @Transactional
@@ -114,10 +119,14 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             return false;
         }
         order.setStatusOrder(StatusOrder.PAID);
-        user.setBalance(user.getBalance().subtract(order.getTotalPrice()));
         orderBusinessService.updateOrder(order);
-        updateUser(user);
+        updateUser(pay(user,order.getTotalPrice()));
         return true;
+    }
+    @Override
+    public User pay(User user, BigDecimal price){
+        user.setBalance(user.getBalance().subtract(price));
+        return user;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class VerificationUserLoginService {
     private Mapper mapper;
 
     private static final String SUCCESS_RESULT = "<result>success</result>";
-    private static final String FAILURE_RESULT = "<result>failure</result>";
+    private static final String FAILURE_RESULT = "failure";
 
 
     @GET
@@ -37,24 +37,25 @@ public class VerificationUserLoginService {
     }
 
     @GET
-    @Path("/usersDto/{userLogin}")
+    @Path("/usersDto/{id}")
     @Produces("application/json")
-    public UserWsDTO getUserDto(@PathParam("userLogin") String userLogin) {
-        User userEntity = userBusinessService.findUserByLogin(userLogin);
+    public UserWsDTO getUserDto(@PathParam("id") Long id) {
+        User userEntity = userBusinessService.getUser(id);
         if (userEntity == null) return null;
         return mapper.map(userEntity, UserWsDTO.class);
     }
 
     @POST
     @Path("/promo")
-    @Consumes("application/json")
-    @Produces("html/text")
+    @Consumes(value={"text/xml", "application/json"})
+    @Produces("text/html")
     public String addPromoActionForUser(UserWsDTO user) {
-        user.setBalance(user.getBalance().add(new BigDecimal(999)));
-        if (userBusinessService.updateUser(mapper.map(user, User.class))) {
-            return SUCCESS_RESULT;
+        User userEntity = userBusinessService.getUser(user.getId());
+        if(userEntity != null){
+            userEntity.setBalance(userEntity.getBalance().add(user.getBalance()));
+            userBusinessService.updateUser(userEntity);
+            return String.valueOf(Response.Status.OK);
         }
         return FAILURE_RESULT;
-
     }
 }

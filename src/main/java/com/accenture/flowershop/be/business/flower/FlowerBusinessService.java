@@ -12,6 +12,8 @@ public interface FlowerBusinessService {
 //
     List<Flower> getAllFlowersBySearch(String flowerName, BigDecimal minPrice, BigDecimal maxPrice);
 
+    public List<Flower> getAllFlowersBySearchQueryDsl(String flowerName, BigDecimal minPrice, BigDecimal maxPrice);
+
     List<Flower> getAllFlowers();
 
     void addFlower(Flower flower);

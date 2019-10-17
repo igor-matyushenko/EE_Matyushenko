@@ -52,7 +52,7 @@ public class SearchFlowerServlet extends HttpServlet {
             session.setAttribute("flowerMinPrice", flowerMinPrice);
             session.setAttribute("flowerMaxPrice", flowerMaxPrice);
             session.setAttribute("user", user);
-            session.setAttribute("flowers", mapperUtils.mapList(flowerBusinessService.getAllFlowersBySearch(flowerName,flowerMinPrice,flowerMaxPrice), FlowerDTO.class));
+            session.setAttribute("flowers", mapperUtils.mapList(flowerBusinessService.getAllFlowersBySearchQueryDsl(flowerName,flowerMinPrice,flowerMaxPrice), FlowerDTO.class));
             request.getRequestDispatcher("/WEB-INF/lib/userPage.jsp").forward(request, resp);
         } else{
             request.getRequestDispatcher("/loginServlet").forward(request, resp);
